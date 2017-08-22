@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Pathfinder.UI": {
+      "commandName": "Project",
+      "commandLineArgs": "genmap -w 10 -h 10"
+    }
+  }
+}
