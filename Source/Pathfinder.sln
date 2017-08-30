@@ -1,12 +1,15 @@
-Microsoft Visual Studio Solution File, Format Version 15.00
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.0
+VisualStudioVersion = 15.0.26823.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1259EAD0-45FC-456E-99F1-4AA95FD6E7DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder", "PathFinder\PathFinder.csproj", "{7C5084E0-79E9-419D-B3F8-59A7186190F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pathfinder", "src\Pathfinder\Pathfinder.csproj", "{A0A91A59-146A-4897-B028-7BA4367A97FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder.Routes", "PathFinder.Routes\PathFinder.Routes.csproj", "{A4041902-9E61-478B-A654-49BF17A1B685}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pathfinder.CLI", "src\Pathfinder.CLI\Pathfinder.CLI.csproj", "{E25E450C-E888-4150-9941-8F9C9826D62A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maps.ConsoleTest", "Maps.ConsoleTest\Maps.ConsoleTest.csproj", "{44CA5941-B81C-4286-8B75-85DAE55E3965}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathFinder.GeneticAlgorithm", "PathFinder.GeneticAlgorithm\PathFinder.GeneticAlgorithm.csproj", "{BD082D95-1AC1-4B25-AEA3-EC9AB9F1B7F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,32 +17,27 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A0A91A59-146A-4897-B028-7BA4367A97FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A0A91A59-146A-4897-B028-7BA4367A97FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A0A91A59-146A-4897-B028-7BA4367A97FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A0A91A59-146A-4897-B028-7BA4367A97FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E25E450C-E888-4150-9941-8F9C9826D62A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E25E450C-E888-4150-9941-8F9C9826D62A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E25E450C-E888-4150-9941-8F9C9826D62A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E25E450C-E888-4150-9941-8F9C9826D62A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C5084E0-79E9-419D-B3F8-59A7186190F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C5084E0-79E9-419D-B3F8-59A7186190F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C5084E0-79E9-419D-B3F8-59A7186190F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C5084E0-79E9-419D-B3F8-59A7186190F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4041902-9E61-478B-A654-49BF17A1B685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4041902-9E61-478B-A654-49BF17A1B685}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4041902-9E61-478B-A654-49BF17A1B685}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4041902-9E61-478B-A654-49BF17A1B685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44CA5941-B81C-4286-8B75-85DAE55E3965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44CA5941-B81C-4286-8B75-85DAE55E3965}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44CA5941-B81C-4286-8B75-85DAE55E3965}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44CA5941-B81C-4286-8B75-85DAE55E3965}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD082D95-1AC1-4B25-AEA3-EC9AB9F1B7F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD082D95-1AC1-4B25-AEA3-EC9AB9F1B7F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD082D95-1AC1-4B25-AEA3-EC9AB9F1B7F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD082D95-1AC1-4B25-AEA3-EC9AB9F1B7F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{A0A91A59-146A-4897-B028-7BA4367A97FA} = {1259EAD0-45FC-456E-99F1-4AA95FD6E7DB}
-		{E25E450C-E888-4150-9941-8F9C9826D62A} = {1259EAD0-45FC-456E-99F1-4AA95FD6E7DB}
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4785438E-72BE-408E-83B6-F465C1C44EAE}
 	EndGlobalSection
 EndGlobal
