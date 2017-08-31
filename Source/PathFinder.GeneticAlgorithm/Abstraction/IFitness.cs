@@ -1,4 +1,6 @@
-﻿namespace Pathfinder.Abstraction
+﻿using PathFinder.GeneticAlgorithm.Abstraction;
+
+namespace Pathfinder.Abstraction
 {
     public interface IFitness
     {

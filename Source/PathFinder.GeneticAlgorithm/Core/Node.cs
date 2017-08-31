@@ -1,4 +1,4 @@
-﻿namespace Pathfinder
+﻿namespace PathFinder.GeneticAlgorithm
 {
     public class Node
     {
@@ -8,7 +8,7 @@
             foreach (var item in type.GetProperties())
                 item.SetValue(this, item.GetValue(node));
         }
-        public Node(Node node, Node parent, DirectionMovement direction)
+        public Node(Node node, Node parent)
         {
             var type = node.GetType();
             foreach (var item in type.GetProperties())
@@ -16,36 +16,14 @@
                 item.SetValue(this, item.GetValue(node));
             }
             ParentNode = parent;
-            Direction = direction;
         }
         public Node(int x, int y)
         {
             X = x;
             Y = y;
-            Walkable = true;
         }
-        public Node(int x, int y, bool walkable)
-        {
-            X = x;
-            Y = y;
-            Walkable = walkable;
-        }
-        public Node(int x, int y, DirectionMovement direction)
-        {
-            X = x;
-            Y = y;
-            Direction = direction;
-        }
-        public Node(int x, int y, bool walkable, DirectionMovement direction)
-        {
-            X = x;
-            Y = y;
-            Walkable = walkable;
-            Direction = direction;
-        }
-        public DirectionMovement Direction { get; set; } = DirectionMovement.None;
+
         public Node ParentNode { get; set; }
-        public bool Walkable { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
         public double G { get; set; }
@@ -61,7 +39,7 @@
         }
         public bool EqualsAll(Node other)
         {
-            return X == other?.X && Y == other?.Y && Direction == other.Direction;
+            return X == other?.X && Y == other?.Y;
         }
         public override int GetHashCode()
         {
@@ -85,7 +63,7 @@
         }
         public override string ToString()
         {
-            return $"{{{this.X},{this.Y},{(!Walkable ? "Wall" : nameof(Walkable))},{Cost}}} {Direction} {(Collision ? " COLIDE!" : "")}";
+            return $"{{{this.X},{this.Y}";
         }
     }
 }
