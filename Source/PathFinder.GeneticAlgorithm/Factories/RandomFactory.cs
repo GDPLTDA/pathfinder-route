@@ -1,5 +1,6 @@
-﻿using Pathfinder.Abstraction;
-namespace Pathfinder.Factories
+﻿using PathFinder.GeneticAlgorithm.Abstraction;
+
+namespace PathFinder.GeneticAlgorithm.Factories
 {
     public class RandomFactory : IFactory<IRandom>
     {

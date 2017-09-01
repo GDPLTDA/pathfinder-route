@@ -1,7 +1,8 @@
-﻿using Pathfinder.Abstraction;
-using Pathfinder.Factories;
+﻿using PathFinder.GeneticAlgorithm.Factories;
+using PathFinder.GeneticAlgorithm.Abstraction;
 using System.Collections.Generic;
-namespace Pathfinder.Selection
+
+namespace PathFinder.GeneticAlgorithm
 {
     public class SelectionRandom : ISelection
     {

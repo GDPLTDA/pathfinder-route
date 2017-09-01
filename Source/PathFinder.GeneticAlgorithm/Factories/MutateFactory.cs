@@ -1,8 +1,8 @@
-﻿
-using Pathfinder.Abstraction;
-using Pathfinder.Mutation;
+﻿using PathFinder.GeneticAlgorithm;
+using PathFinder.GeneticAlgorithm.Abstraction;
 using System;
-namespace Pathfinder.Factories
+
+namespace PathFinder.GeneticAlgorithm.Factories
 {
     public class MutateFactory : IFactory<IMutate, MutateEnum>
     {
@@ -18,8 +18,6 @@ namespace Pathfinder.Factories
             => new MutateIVM();
         public static IMutate GetSMImplementation()
             => new MutateSM();
-        public static IMutate GetBitwiseImplementation()
-            => new MutateBitwise();
         public IMutate GetImplementation(MutateEnum option)
             => Decide(option);
 
@@ -39,8 +37,6 @@ namespace Pathfinder.Factories
                     return GetIVMImplementation();
                 case MutateEnum.SM:
                     return GetSMImplementation();
-                case MutateEnum.Bitwise:
-                    return GetBitwiseImplementation();
             }
             throw new Exception("No mutate passed");
         }

@@ -1,8 +1,9 @@
-﻿using Pathfinder.Abstraction;
-using Pathfinder.Factories;
+﻿using PathFinder.GeneticAlgorithm.Factories;
+using PathFinder.GeneticAlgorithm.Abstraction;
 using System.Collections.Generic;
 using System.Linq;
-namespace Pathfinder.Selection
+
+namespace PathFinder.GeneticAlgorithm
 {
     public class SelectionRouletteWheel : ISelection
     {

@@ -1,8 +1,7 @@
-﻿
-using Pathfinder.Abstraction;
-using Pathfinder.Fitness;
+﻿using PathFinder.GeneticAlgorithm.Abstraction;
 using System;
-namespace Pathfinder.Factories
+
+namespace PathFinder.GeneticAlgorithm.Factories
 {
     public class FitnessFactory : IFactory<IFitness, FitnessEnum>
     {

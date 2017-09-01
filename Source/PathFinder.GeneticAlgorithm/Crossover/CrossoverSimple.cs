@@ -1,7 +1,8 @@
-﻿using Pathfinder.Abstraction;
-using Pathfinder.Factories;
+﻿using PathFinder.GeneticAlgorithm.Factories;
+using PathFinder.GeneticAlgorithm.Abstraction;
 using System;
-namespace Pathfinder.Crossover
+
+namespace PathFinder.Crossover
 {
     public class CrossoverSimple : AbstractCrossover
     {

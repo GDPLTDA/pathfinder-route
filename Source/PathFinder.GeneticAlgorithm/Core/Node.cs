@@ -17,29 +17,22 @@
             }
             ParentNode = parent;
         }
-        public Node(int x, int y)
+        public Node(int latitude, int longitude)
         {
-            X = x;
-            Y = y;
+            Latitude = latitude;
+            Longitude = longitude;
         }
 
         public Node ParentNode { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
-        public double G { get; set; }
-        public double H { get; set; }
-        public double Cost { get; set; }
-        public bool Tested { get; set; }
-        public int RetainCount { get; set; }
-        public bool Collision { get; set; }
+        public int Latitude { get; set; }
+        public int Longitude { get; set; }
+        public double D { get; set; }
+        public double T { get; set; }
+
         public override bool Equals(object _other)
         {
             var other = (Node)_other;
-            return X == other?.X && Y == other?.Y;
-        }
-        public bool EqualsAll(Node other)
-        {
-            return X == other?.X && Y == other?.Y;
+            return Latitude == other?.Latitude && Longitude== other?.Longitude;
         }
         public override int GetHashCode()
         {
@@ -47,23 +40,23 @@
         }
         public static bool operator ==(Node node1, Node node2)
         {
-            if (object.ReferenceEquals(node1, null))
+            if (ReferenceEquals(node1, null))
             {
-                return object.ReferenceEquals(node2, null);
+                return ReferenceEquals(node2, null);
             }
             return node1.Equals(node2);
         }
         public static bool operator !=(Node node1, Node node2)
         {
-            if (object.ReferenceEquals(node1, null))
+            if (ReferenceEquals(node1, null))
             {
-                return !object.ReferenceEquals(node2, null);
+                return !ReferenceEquals(node2, null);
             }
             return !node1.Equals(node2);
         }
         public override string ToString()
         {
-            return $"{{{this.X},{this.Y}";
+            return $"{{{this.Latitude},{this.Longitude}";
         }
     }
 }

@@ -1,9 +1,6 @@
-﻿using Pathfinder.Abstraction;
-using PathFinder.GeneticAlgorithm.Abstraction;
-using System.Linq;
-using static System.Math;
+﻿using PathFinder.GeneticAlgorithm.Abstraction;
 
-namespace PathFinder.GeneticAlgorithm.Fitness
+namespace PathFinder.GeneticAlgorithm
 {
     public class FitnessHeuristic : IFitness
     {

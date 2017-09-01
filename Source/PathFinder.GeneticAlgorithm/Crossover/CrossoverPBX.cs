@@ -1,10 +1,10 @@
-﻿using Pathfinder.Abstraction;
-using Pathfinder.Factories;
+﻿using PathFinder.GeneticAlgorithm.Factories;
+using PathFinder.GeneticAlgorithm;
+using PathFinder.GeneticAlgorithm.Abstraction;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-namespace Pathfinder.Crossover
+
+namespace PathFinder.Crossover
 {
     public class CrossoverPBX : AbstractCrossover
     {
@@ -20,7 +20,7 @@ namespace Pathfinder.Crossover
             var listdad = Operation.Dad.ListNodes;
             var minindex = Math.Min(listmom.Count, listdad.Count);
             for (int i = 0; i < minindex; i++)
-                babymom.ListNodes[i] = babydad.ListNodes[i] = new Node(-1, -1,DirectionMovement.None);
+                babymom.ListNodes[i] = babydad.ListNodes[i] = new Node(-1, -1);
             var Pos = rand.Next(0, minindex - 1);
             while (Pos < minindex)
             {
@@ -36,15 +36,15 @@ namespace Pathfinder.Crossover
             c1 = c2 = 0;
             for (int pos = 0; pos < minindex; pos++)
             {
-                while (c2 < minindex && babydad.ListNodes[c2].X > -1)
+                while (c2 < minindex && babydad.ListNodes[c2].Latitude > -1)
                     ++c2;
                 if (c2 < babydad.ListNodes.Count)
-                    if (!babydad.ListNodes.Exists(i => i.EqualsAll(listmom[pos])))
+                    if (!babydad.ListNodes.Exists(i => i.Equals(listmom[pos])))
                         babydad.ListNodes[c2] = listmom[pos];
-                while (c1 < minindex && babymom.ListNodes[c1].X > -1)
+                while (c1 < minindex && babymom.ListNodes[c1].Latitude > -1)
                     ++c1;
                 if (c1 < babymom.ListNodes.Count)
-                    if (!babymom.ListNodes.Exists(i => i.EqualsAll(listdad[pos])))
+                    if (!babymom.ListNodes.Exists(i => i.Equals(listdad[pos])))
                         babymom.ListNodes[c1] = listdad[pos];
             }
             return new CrossoverOperation(babymom, babydad);

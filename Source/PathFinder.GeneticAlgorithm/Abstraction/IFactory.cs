@@ -1,6 +1,4 @@
-﻿
-
-namespace Pathfinder.Abstraction
+﻿namespace PathFinder.GeneticAlgorithm.Abstraction
 {
     public interface IFactory<T, TEnum> where TEnum : struct
     {

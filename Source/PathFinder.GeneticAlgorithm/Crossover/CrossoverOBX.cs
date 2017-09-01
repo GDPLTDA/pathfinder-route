@@ -1,10 +1,10 @@
-﻿using Pathfinder.Abstraction;
-using Pathfinder.Factories;
+﻿using PathFinder.GeneticAlgorithm.Factories;
+using PathFinder.GeneticAlgorithm;
+using PathFinder.GeneticAlgorithm.Abstraction;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-namespace Pathfinder.Crossover
+
+namespace PathFinder.Crossover
 {
     public class CrossoverOBX : AbstractCrossover
     {
@@ -32,7 +32,7 @@ namespace Pathfinder.Crossover
             {
                 for (int i = 0; i < lstTempCities.Count; ++i)
                 {
-                    if (babydad.ListNodes[cit].EqualsAll(lstTempCities[i]))
+                    if (babydad.ListNodes[cit].Equals(lstTempCities[i]))
                     {
                         if (lstTempCities.Count < cPos)
                             babydad.ListNodes[cit] = lstTempCities[cPos];
@@ -52,7 +52,7 @@ namespace Pathfinder.Crossover
             {
                 for (int i = 0; i < lstTempCities.Count; ++i)
                 {
-                    if (babymom.ListNodes[cit].EqualsAll(lstTempCities[i]))
+                    if (babymom.ListNodes[cit].Equals(lstTempCities[i]))
                     {
                         if(lstTempCities.Count < cPos)
                             babymom.ListNodes[cit] = lstTempCities[cPos];

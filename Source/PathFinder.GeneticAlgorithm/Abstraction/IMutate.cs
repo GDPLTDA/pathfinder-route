@@ -1,4 +1,4 @@
-﻿namespace Pathfinder.Abstraction
+﻿namespace PathFinder.GeneticAlgorithm.Abstraction
 {
     public interface IMutate
     {

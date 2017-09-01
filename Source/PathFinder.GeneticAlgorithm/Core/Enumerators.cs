@@ -1,4 +1,4 @@
-﻿namespace Pathfinder
+﻿namespace PathFinder
 {
     public enum CrossoverEnum
     {

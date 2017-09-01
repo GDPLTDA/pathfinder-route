@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Pathfinder.Abstraction
+namespace PathFinder.GeneticAlgorithm.Abstraction
 {
     public interface ISelection
     {

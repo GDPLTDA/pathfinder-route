@@ -3,11 +3,13 @@ using Newtonsoft.Json;
 using PathFinder.Routes.GoogleMapas;
 using System.Net;
 using System.IO;
+using System.Collections.Generic;
 
 namespace PathFinder.Routes
 {
     public class SearchRoute
     {
+        Dictionary<string, Route> RouteCache = new Dictionary<string, Route>();
         string Url = "http://maps.googleapis.com/maps/api/directions/json?";
 
         public Route[] GetRoutes(params string[] destinations)
@@ -23,9 +25,14 @@ namespace PathFinder.Routes
 
         public Route GetRoute(string origin, string destination)
 		{
-			var route = new Route();
+            var route = new Route();
             route.Origin = origin;
             route.Destination = destination;
+
+            var key = $"{origin}|{destination}";
+
+            if (RouteCache.ContainsKey(key))
+                return RouteCache[key];
 
 			var request = GetRequest(origin, destination);
 			var response = request.GetResponse();
@@ -41,13 +48,14 @@ namespace PathFinder.Routes
 
 					if (!distanciaRetornada.Equals(0))
 					{
-						route.Sucess = true;
+                        route.Sucess = true;
 						route.Meters = distanciaRetornada;
 						route.Seconds = duracaoRetornada;
 					}
 				}
 			}
-			return route;
+            RouteCache.Add(key, route);
+            return route;
 		}
 
         WebRequest GetRequest(string origem, string destino){

@@ -1,7 +1,7 @@
-﻿
-using Pathfinder.Abstraction;
+﻿using PathFinder.GeneticAlgorithm.Abstraction;
 using System;
-namespace Pathfinder
+
+namespace PathFinder
 {
     public class GARandom : IRandom
     {

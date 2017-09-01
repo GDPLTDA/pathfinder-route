@@ -1,8 +1,8 @@
-﻿
-using Pathfinder.Abstraction;
-using Pathfinder.Crossover;
+﻿using PathFinder.Crossover;
+using PathFinder.GeneticAlgorithm.Abstraction;
 using System;
-namespace Pathfinder.Factories
+
+namespace PathFinder.GeneticAlgorithm.Factories
 {
     public class CrossoverFactory : IFactory<ICrossover, CrossoverEnum>
     {

@@ -1,4 +1,4 @@
-﻿namespace Pathfinder.Abstraction
+﻿namespace PathFinder.GeneticAlgorithm.Abstraction
 {
     public class CrossoverOperation
     {
@@ -26,7 +26,7 @@
     {
         protected AbstractCrossover()
         {
-            CrossoverRate = Constants.CROSSOVER_RATE;
+            CrossoverRate = GASettings.CrossoverRate;
         }
         protected double CrossoverRate { get; set; }
         CrossoverOperation Operation { get; set; }

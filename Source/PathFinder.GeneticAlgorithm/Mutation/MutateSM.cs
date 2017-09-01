@@ -1,6 +1,7 @@
-﻿using Pathfinder.Abstraction;
-using Pathfinder.Factories;
-namespace Pathfinder.Mutation
+﻿using PathFinder.GeneticAlgorithm.Factories;
+using PathFinder.GeneticAlgorithm.Abstraction;
+
+namespace PathFinder.GeneticAlgorithm
 {
     public class MutateSM : AbstractMutate
     {

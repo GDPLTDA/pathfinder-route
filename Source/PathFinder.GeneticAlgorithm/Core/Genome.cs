@@ -1,6 +1,4 @@
-﻿using Pathfinder.Abstraction;
-using Pathfinder.Factories;
-using PathFinder.GeneticAlgorithm.Abstraction;
+﻿using PathFinder.GeneticAlgorithm.Abstraction;
 using System.Collections.Generic;
 
 namespace PathFinder.GeneticAlgorithm
@@ -10,6 +8,9 @@ namespace PathFinder.GeneticAlgorithm
         public List<Node> ListNodes { get; set; }
         public double Fitness { get; set; }
         public Genome()
+        {
+        }
+        public Genome(IGenome genome)
         {
         }
         public bool IsEqual(IGenome genome)

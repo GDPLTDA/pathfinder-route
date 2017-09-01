@@ -1,10 +1,8 @@
-﻿using Pathfinder.Abstraction;
-using Pathfinder.Factories;
-using System;
-using System.Collections.Generic;
+﻿using PathFinder.GeneticAlgorithm.Factories;
+using PathFinder.GeneticAlgorithm.Abstraction;
 using System.Linq;
-using System.Threading.Tasks;
-namespace Pathfinder.Mutation
+
+namespace PathFinder.GeneticAlgorithm
 {
     public class MutateEM : AbstractMutate
     {

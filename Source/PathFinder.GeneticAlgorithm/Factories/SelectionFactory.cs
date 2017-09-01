@@ -1,7 +1,7 @@
-﻿using Pathfinder.Abstraction;
-using Pathfinder.Selection;
+﻿using PathFinder.GeneticAlgorithm;
+using PathFinder.GeneticAlgorithm.Abstraction;
 using System;
-namespace Pathfinder.Factories
+namespace PathFinder.GeneticAlgorithm.Factories
 {
     public class SelectionFactory : IFactory<ISelection, SelectionEnum>
     {

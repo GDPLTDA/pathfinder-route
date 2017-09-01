@@ -1,6 +1,6 @@
 ﻿using PathFinder.GeneticAlgorithm.Abstraction;
 
-namespace Pathfinder.Abstraction
+namespace PathFinder.GeneticAlgorithm.Abstraction
 {
     public interface IFitness
     {
