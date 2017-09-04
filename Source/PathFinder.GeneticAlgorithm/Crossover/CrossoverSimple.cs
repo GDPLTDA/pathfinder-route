@@ -2,7 +2,7 @@
 using PathFinder.GeneticAlgorithm.Abstraction;
 using System;
 
-namespace PathFinder.Crossover
+namespace PathFinder.GeneticAlgorithm.Crossover
 {
     public class CrossoverSimple : AbstractCrossover
     {

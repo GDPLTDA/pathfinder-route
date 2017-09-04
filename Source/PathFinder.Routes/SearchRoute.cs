@@ -4,12 +4,13 @@ using PathFinder.Routes.GoogleMapas;
 using System.Net;
 using System.IO;
 using System.Collections.Generic;
+using System;
 
 namespace PathFinder.Routes
 {
     public class SearchRoute
     {
-        Dictionary<string, Route> RouteCache = new Dictionary<string, Route>();
+        static Dictionary<string, Route> RouteCache = new Dictionary<string, Route>();
         string Url = "http://maps.googleapis.com/maps/api/directions/json?";
 
         public Route[] GetRoutes(params string[] destinations)
@@ -23,18 +24,23 @@ namespace PathFinder.Routes
             return routes;
         }
 
+        public Route GetRoute(MapPoint origin, MapPoint destination)
+        {
+            return GetRoute(origin.Name, destination.Name);
+        }
         public Route GetRoute(string origin, string destination)
 		{
             var route = new Route();
-            route.Origin = origin;
-            route.Destination = destination;
+            route.Origin = new MapPoint(origin);
+            route.Destination = new MapPoint(destination);
 
             var key = $"{origin}|{destination}";
 
             if (RouteCache.ContainsKey(key))
                 return RouteCache[key];
 
-			var request = GetRequest(origin, destination);
+            Console.WriteLine($"Buscando... {origin}->{destination}");
+            var request = GetRequest(origin, destination);
 			var response = request.GetResponse();
 
 			using (var reader = new StreamReader(response.GetResponseStream()))
@@ -52,7 +58,9 @@ namespace PathFinder.Routes
 						route.Meters = distanciaRetornada;
 						route.Seconds = duracaoRetornada;
 					}
-				}
+                    else
+                        throw new System.Exception($"{origin} -> {destination} error!");
+                }
 			}
             RouteCache.Add(key, route);
             return route;

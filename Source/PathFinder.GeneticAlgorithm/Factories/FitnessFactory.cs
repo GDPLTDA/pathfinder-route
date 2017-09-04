@@ -6,7 +6,7 @@ namespace PathFinder.GeneticAlgorithm.Factories
     public class FitnessFactory : IFactory<IFitness, FitnessEnum>
     {
         public static IFitness GetHeuristicImplementation()
-            => new FitnessHeuristic();
+            => new FitnessSmallPath();
         public IFitness GetImplementation(FitnessEnum option)
             => Decide(option);
 

@@ -1,19 +1,19 @@
 ﻿using PathFinder.GeneticAlgorithm.Abstraction;
+using System.Linq;
 
 namespace PathFinder.GeneticAlgorithm
 {
-    public class FitnessHeuristic : IFitness
+    public class FitnessSmallPath : IFitness
     {
-        public double Penalty { get; set; }
-
-        public FitnessHeuristic()
+        public FitnessSmallPath()
         {
 
         }
 
         public double Calc(IGenome genome)
         {
-            return 0;
+            genome.CalcRoutes();
+            return genome.ListRoutes.Sum(o=>o.Meters);
         }
     }
 }

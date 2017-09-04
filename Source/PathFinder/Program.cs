@@ -1,4 +1,8 @@
-﻿using System;
+﻿using PathFinder.GeneticAlgorithm;
+using PathFinder.Routes;
+using System;
+using System.IO;
+using System.Text;
 
 namespace PathFinder
 {
@@ -6,7 +10,20 @@ namespace PathFinder
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var map = new RouteMap("São Paulo");
+
+            var capitais = File.ReadAllText("Capitais.txt", Encoding.GetEncoding("iso-8859-1")).Split("\r\n");
+
+            foreach (var item in capitais)
+                map.AddDestination(item);
+
+            var finder = new GeneticAlgorithmFinder();
+            var best = finder.FindPath(map);
+
+            foreach (var item in best.ListRoutes)
+                Console.WriteLine($"{item.Origin.Name}->{item.Destination.Name}");
+
+            Console.ReadKey();
         }
     }
 }

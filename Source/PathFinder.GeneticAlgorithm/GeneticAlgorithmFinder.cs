@@ -2,16 +2,18 @@
 using PathFinder.GeneticAlgorithm.Abstraction;
 using System.Collections.Generic;
 using System.Linq;
+using PathFinder.Routes;
+using PathFinder.GeneticAlgorithm.Crossover;
 
 namespace PathFinder.GeneticAlgorithm
 {
     public class GeneticAlgorithmFinder
     {
         List<IGenome> Populations { get; set; } = new List<IGenome>();
-        public IFitness Fitness { get; set; }
-        public IMutate Mutate { get; set; }
-        public ICrossover Crossover { get; set; }
-        public ISelection Selection { get; set; }
+        public IFitness Fitness { get; set; } = new FitnessSmallPath();
+        public IMutate Mutate { get; set; } = new MutateIVM();
+        public ICrossover Crossover { get; set; } = new CrossoverPBX();
+        public ISelection Selection { get; set; } = new SelectionRouletteWheel();
         public int PopulationSize { get; set; }
         public int GenerationLimit { get; set; }
         public int BestSolutionToPick { get; set; }
@@ -23,14 +25,13 @@ namespace PathFinder.GeneticAlgorithm
             GenerationLimit = GASettings.GenerationLimit;
             BestSolutionToPick = GASettings.BestSolutionToPick;
         }
-        public override bool Find(IMap map)
+        public IGenome FindPath(RouteMap map)
         {
             if (Mutate == null || Crossover == null || Fitness == null || Selection == null)
                 throw new System.Exception("GA cant run without all operators");
 
             var rand = RandomFactory.Rand;
-            var startNode = map.StartNode;
-            var endNode = map.EndNode;
+            var startNode = map.Storage;
 
             for (int i = 0; i < PopulationSize; i++)
                 Populations.Add(new Genome(map));
@@ -56,7 +57,7 @@ namespace PathFinder.GeneticAlgorithm
                     // CrossOver
                     var cross = Crossover.Calc(new CrossoverOperation(nodemom, nodedad));
 
-                    // Mutation
+                    //// Mutation
                     nodemom = Mutate.Calc(cross.Mom);
                     nodedad = Mutate.Calc(cross.Dad);
 
@@ -72,7 +73,9 @@ namespace PathFinder.GeneticAlgorithm
             }
             Generations = GenerationLimit;
 
-            return false;
+            var bestGenome = Populations.OrderBy(o => o.Fitness).First();
+
+            return bestGenome;
         }
         public void Configure(IFitness fItness, IMutate mutate, ICrossover crossover, ISelection selection)
         {

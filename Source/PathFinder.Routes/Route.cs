@@ -4,8 +4,8 @@ namespace PathFinder.Routes
     public class Route
     {
 		public bool Sucess { get; set; }
-		public string Origin { get; set; }
-		public string Destination { get; set; }
+		public MapPoint Origin { get; set; }
+		public MapPoint Destination { get; set; }
 
 		public double Meters { get; set; }
         public double Km { get { return Meters / 1000; } }

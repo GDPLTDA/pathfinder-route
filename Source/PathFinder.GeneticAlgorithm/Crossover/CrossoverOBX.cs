@@ -4,7 +4,7 @@ using PathFinder.GeneticAlgorithm.Abstraction;
 using System;
 using System.Collections.Generic;
 
-namespace PathFinder.Crossover
+namespace PathFinder.GeneticAlgorithm.Crossover
 {
     public class CrossoverOBX : AbstractCrossover
     {
