@@ -5,13 +5,15 @@ using System.Net;
 using System.IO;
 using System.Collections.Generic;
 using System;
+using System.Text;
+using System.Globalization;
 
 namespace PathFinder.Routes
 {
     public class SearchRoute
     {
         static Dictionary<string, Route> RouteCache = new Dictionary<string, Route>();
-        string Url = "http://maps.googleapis.com/maps/api/directions/json?";
+        string Url = "http://maps.googleapis.com/maps/api/";
 
         public Route[] GetRoutes(params string[] destinations)
         {
@@ -30,47 +32,82 @@ namespace PathFinder.Routes
         }
         public Route GetRoute(string origin, string destination)
 		{
-            var route = new Route();
-            route.Origin = new MapPoint(origin);
-            route.Destination = new MapPoint(destination);
-
             var key = $"{origin}|{destination}";
 
             if (RouteCache.ContainsKey(key))
                 return RouteCache[key];
 
             Console.WriteLine($"Buscando... {origin}->{destination}");
-            var request = GetRequest(origin, destination);
+            var request = GetRequestRoute(origin, destination);
 			var response = request.GetResponse();
 
-			using (var reader = new StreamReader(response.GetResponseStream()))
+            var route = new Route();
+
+            using (var reader = new StreamReader(response.GetResponseStream()))
 			{
 				var data = JsonConvert.DeserializeObject<RouteRoot>(reader.ReadToEnd());
 
-				if (data != null)
+                if (data != null)
 				{
-					var distanciaRetornada = data.routes.Sum(r => r.legs.Sum(l => l.distance.value));
-					var duracaoRetornada = data.routes.Sum(r => r.legs.Sum(l => l.duration.value));
-
-					if (!distanciaRetornada.Equals(0))
-					{
-                        route.Sucess = true;
-						route.Meters = distanciaRetornada;
-						route.Seconds = duracaoRetornada;
-					}
-                    else
+                    if(!data.routes.Any())
                         throw new System.Exception($"{origin} -> {destination} error!");
+
+                    foreach (var r in data.routes)
+                    {
+                        foreach (var l in r.legs)
+                        {
+                            route.Origin = new MapPoint(origin,l.start_location);
+                            route.Destination = new MapPoint(destination, l.end_location);
+                            route.Meters = l.distance.value;
+                            route.Seconds = l.duration.value;
+                        }
+                    }
                 }
 			}
             RouteCache.Add(key, route);
             return route;
 		}
+        public void SaveRouteImage(List<Route> listRoutes)
+        {
+            var request = GetRequestStaticMap(listRoutes);
 
-        WebRequest GetRequest(string origem, string destino){
-			var url = string.Format(
-				"{0}origin={1}&destination={2}&sensor=false", Url, origem, destino);
+            var lsResponse = string.Empty;
+            using (var lxResponse = (HttpWebResponse)request.GetResponse())
+            {
+                using (var reader = new BinaryReader(lxResponse.GetResponseStream()))
+                {
+                    var lnByte = reader.ReadBytes(1 * 1024 * 1024 * 10);
+                    using (var lxFS = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "\\34891.jpg", FileMode.Create))
+                    {
+                        lxFS.Write(lnByte, 0, lnByte.Length);
+                    }
+                }
+            }
+        }
+        WebRequest GetRequestRoute(string origem, string destino)
+        {
+		    var url = string.Format(
+                "{0}directions/json?origin={1}&destination={2}&sensor=false", Url, origem, destino);
 
             return WebRequest.Create(url);
+        }
+        WebRequest GetRequestStaticMap(List<Route> listRoutes)
+        {
+            var strbuild = new StringBuilder();
+
+            foreach (var route in listRoutes)
+            {
+                strbuild.Append($"|{ConvNumber(route.Origin.Latitude)},{ConvNumber(route.Origin.Longitude)}|" +
+                                $"{ConvNumber(route.Destination.Latitude)},{ConvNumber(route.Destination.Longitude)}");
+            }
+            var url = string.Format(
+                "{0}staticmap?path={1}&markers={1}&size=512x512", Url, strbuild.ToString().Substring(1));
+
+            return WebRequest.Create(url);
+        }
+        public string ConvNumber(double num)
+        {
+            return Math.Round(num,6).ToString().Replace(',', '.');
         }
     }
 }

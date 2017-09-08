@@ -41,18 +41,11 @@ namespace PathFinder.Routes.GoogleMapas
 		public int value { get; set; }
 	}
 
-	public class EndLocation
+	public class Location
 	{
 		public double lat { get; set; }
 		public double lng { get; set; }
 	}
-
-	public class StartLocation
-	{
-		public double lat { get; set; }
-		public double lng { get; set; }
-	}
-
 	public class Distance2
 	{
 		public string text { get; set; }
@@ -99,9 +92,9 @@ namespace PathFinder.Routes.GoogleMapas
 		public Distance distance { get; set; }
 		public Duration duration { get; set; }
 		public string end_address { get; set; }
-		public EndLocation end_location { get; set; }
+		public Location end_location { get; set; }
 		public string start_address { get; set; }
-		public StartLocation start_location { get; set; }
+		public Location start_location { get; set; }
 		public List<Step> steps { get; set; }
 		public List<object> via_waypoint { get; set; }
 	}

@@ -9,7 +9,7 @@ namespace PathFinder.Routes
 
         public RouteMap(string name)
         {
-            Storage = new MapPoint(name);
+            Storage = new MapPoint(name, new GoogleMapas.Location());
         }
         public void AddDestinations(params string[] param)
         {
@@ -19,7 +19,7 @@ namespace PathFinder.Routes
 
         public void AddDestination(string destination)
         {
-            Destinations.Add(new MapPoint(destination));
+            Destinations.Add(new MapPoint(destination, new GoogleMapas.Location()));
         }
         public void AddDestination(MapPoint destination)
         {

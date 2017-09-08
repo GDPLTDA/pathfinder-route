@@ -31,7 +31,7 @@ namespace Maps.ConsoleTest
 
         static void ShowRoute(Route route)
         {
-            if (route.Sucess)
+            if (route.Meters > 0)
             {
                 var disformat = string.Format("{0:n2} km", route.Km);
                 var durformat = string.Format("{0:n2} horas)", route.Hours);

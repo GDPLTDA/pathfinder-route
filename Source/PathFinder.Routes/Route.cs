@@ -3,7 +3,6 @@ namespace PathFinder.Routes
 {
     public class Route
     {
-		public bool Sucess { get; set; }
 		public MapPoint Origin { get; set; }
 		public MapPoint Destination { get; set; }
 

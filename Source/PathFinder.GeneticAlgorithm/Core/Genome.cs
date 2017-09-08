@@ -60,6 +60,11 @@ namespace PathFinder.GeneticAlgorithm
             //ListRoutes.Add(route);
         }
 
+        public void Save()
+        {
+            Search.SaveRouteImage(ListRoutes);
+        }
+
         public bool IsEqual(IGenome genome)
         {
             if (ListNodes.Count != genome.ListNodes.Count)
