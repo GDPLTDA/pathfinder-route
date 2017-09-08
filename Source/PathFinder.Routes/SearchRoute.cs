@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System;
 using System.Text;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace PathFinder.Routes
 {
@@ -39,55 +40,87 @@ namespace PathFinder.Routes
 
             Console.WriteLine($"Buscando... {origin}->{destination}");
             var request = GetRequestRoute(origin, destination);
-			var response = request.GetResponse();
+
+            return ReadRequest(key, request);
+		}
+        public Route GetRoute(double origin, double destination)
+        {
+            var key = $"{origin}|{destination}";
+
+            if (RouteCache.ContainsKey(key))
+                return RouteCache[key];
+
+            Console.WriteLine($"Buscando... {origin}->{destination}");
+            var request = GetRequestRoute(origin, destination);
+
+            return ReadRequest(key, request);
+        }
+        public Route ReadRequest(string key, WebRequest request)
+        {
+            var response = request.GetResponse();
 
             var route = new Route();
 
             using (var reader = new StreamReader(response.GetResponseStream()))
-			{
-				var data = JsonConvert.DeserializeObject<RouteRoot>(reader.ReadToEnd());
+            {
+                var data = JsonConvert.DeserializeObject<RouteRoot>(reader.ReadToEnd());
 
                 if (data != null)
-				{
-                    if(!data.routes.Any())
-                        throw new System.Exception($"{origin} -> {destination} error!");
-
+                {
                     foreach (var r in data.routes)
                     {
+                        if (!data.routes.Any())
+                            throw new System.Exception($"{key} error!");
                         foreach (var l in r.legs)
                         {
-                            route.Origin = new MapPoint(origin,l.start_location);
-                            route.Destination = new MapPoint(destination, l.end_location);
+                            route.Origin = new MapPoint(l.start_address, l.start_location);
+                            route.Destination = new MapPoint(l.end_address, l.end_location);
                             route.Meters = l.distance.value;
                             route.Seconds = l.duration.value;
+
+                            RouteCache.Add(key, route);
+                            var xx = GetRequestRoute(route.Origin.Latitude, route.Origin.Longitude);
                         }
                     }
                 }
-			}
-            RouteCache.Add(key, route);
+            }
             return route;
-		}
+        }
+
         public void SaveRouteImage(List<Route> listRoutes)
         {
             var request = GetRequestStaticMap(listRoutes);
 
             var lsResponse = string.Empty;
+
+            var arq = AppDomain.CurrentDomain.BaseDirectory + "\\MAPA.jpg";
+
             using (var lxResponse = (HttpWebResponse)request.GetResponse())
             {
                 using (var reader = new BinaryReader(lxResponse.GetResponseStream()))
                 {
                     var lnByte = reader.ReadBytes(1 * 1024 * 1024 * 10);
-                    using (var lxFS = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "\\34891.jpg", FileMode.Create))
+                    using (var lxFS = new FileStream(arq, FileMode.Create))
                     {
                         lxFS.Write(lnByte, 0, lnByte.Length);
                     }
                 }
             }
+            var psi = new ProcessStartInfo(arq);
+            psi.UseShellExecute = true;
+            Process.Start(psi);
         }
         WebRequest GetRequestRoute(string origem, string destino)
         {
 		    var url = string.Format(
                 "{0}directions/json?origin={1}&destination={2}&sensor=false", Url, origem, destino);
+
+            return WebRequest.Create(url);
+        }
+        WebRequest GetRequestRoute(double latitude, double longitude)
+        {
+            var url = string.Format(
+                "{0}geocode/json?latlng={1},{2}&sensor=false", Url, ConvNumber(latitude), ConvNumber(longitude));
 
             return WebRequest.Create(url);
         }
