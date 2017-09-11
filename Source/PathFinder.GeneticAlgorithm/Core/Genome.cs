@@ -11,7 +11,7 @@ namespace PathFinder.GeneticAlgorithm
         public RouteMap Map { get; set; }
         public List<Node> ListNodes { get; set; }
         public List<Route> ListRoutes { get; set; }
-        public double Fitness { get; set; }
+        public double Fitness { get; private set; }
         readonly SearchRoute Search = new SearchRoute();
         public Genome(RouteMap map)
         {
@@ -88,6 +88,17 @@ namespace PathFinder.GeneticAlgorithm
         public override string ToString()
         {
             return $"F={Fitness}";
+        }
+
+        public static IEnumerable<IGenome> Generator(RouteMap map)
+        {
+            while (true)
+                yield return new Genome(map);
+        }
+
+        public void CalcFitness(IFitness fitness)
+        {
+            Fitness = fitness.Calc(this);
         }
     }
 }

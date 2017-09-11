@@ -21,6 +21,13 @@
         {
             return new Genome(genome);
         }
+
+        public void Deconstruct(out IGenome mon, out IGenome dad)
+        {
+            mon = Mom;
+            dad = Dad;
+        }
+
     }
     public abstract class AbstractCrossover : ICrossover
     {
@@ -30,6 +37,9 @@
         }
         protected double CrossoverRate { get; set; }
         CrossoverOperation Operation { get; set; }
-        public abstract CrossoverOperation Calc(CrossoverOperation Operation);
+        public abstract CrossoverOperation Make(CrossoverOperation Operation);
+
+        public CrossoverOperation Make(IGenome mon, IGenome dad) =>
+           Make(new CrossoverOperation(mon, dad));
     }
 }

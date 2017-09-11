@@ -9,9 +9,12 @@ namespace PathFinder.GeneticAlgorithm.Abstraction
         RouteMap Map { get; set; }
         List<Node> ListNodes { get; set; }
         List<Route> ListRoutes { get; set; }
-        double Fitness { get; set; }
+        double Fitness { get; }
         void Save();
         bool IsEqual(IGenome genome);
+
+        void CalcFitness(IFitness fitness);
+
         Task CalcRoutesAsync();
     }
 }

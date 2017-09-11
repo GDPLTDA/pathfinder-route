@@ -6,7 +6,7 @@ namespace PathFinder.GeneticAlgorithm
 {
     public class MutateDIVM : AbstractMutate
     {
-        public override IGenome Calc(IGenome baby)
+        public override IGenome Apply(IGenome baby)
         {
             var rand = RandomFactory.Rand;
             if (rand.NextDouble() > MutationRate || baby.ListNodes.Count < 3)

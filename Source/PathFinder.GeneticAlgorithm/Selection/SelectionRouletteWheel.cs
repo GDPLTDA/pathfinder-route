@@ -36,5 +36,14 @@ namespace PathFinder.GeneticAlgorithm
                 index = weight.Length - 1;
             return listnode[index];
         }
+
+
+        public (IGenome mon, IGenome dad) SelectCouple(List<IGenome> population)
+        {
+            var mon = Select(population);
+            var dad = Select(population);
+
+            return (mon, dad);
+        }
     }
 }

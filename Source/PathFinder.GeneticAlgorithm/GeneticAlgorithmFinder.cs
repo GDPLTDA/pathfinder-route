@@ -38,52 +38,55 @@ namespace PathFinder.GeneticAlgorithm
             var rand = RandomFactory.Rand;
             var startNode = map.Storage;
 
-            for (int i = 0; i < PopulationSize; i++)
-                Populations.Add(new Genome(map));
+            Populations.AddRange(Genome.Generator(map)
+                                    .Take(PopulationSize));
 
-            await CalcGenomeRoutesAsync();
-
-            foreach (var item in Populations)
-                item.Fitness = Fitness.Calc(item);
+            await CalcFitness();
 
             for (int i = 0; i < GenerationLimit; i++)
             {
                 var newpopulations = new List<IGenome>();
                 Populations = Populations.OrderBy(o => o.Fitness).ToList();
+
                 for (int j = 0; j < BestSolutionToPick; j++)
                 {
-                    Populations[j].Fitness = Fitness.Calc(Populations[j]);
+                    Populations[j].CalcFitness(Fitness);
                     newpopulations.Add(Populations[j]);
                 }
 
                 while (newpopulations.Count < Populations.Count)
                 {
                     // Selection
-                    var nodemom = Selection.Select(Populations);
-                    var nodedad = Selection.Select(Populations);
+                    var (nodemom, nodedad) = Selection.SelectCouple(Populations);
+
                     // CrossOver
-                    var cross = Crossover.Calc(new CrossoverOperation(nodemom, nodedad));
+                    var (crossMom, crossDad) = Crossover.Make(nodemom, nodedad);
 
                     // Mutation
-                    nodemom = Mutate.Calc(cross.Mom);
-                    nodedad = Mutate.Calc(cross.Dad);
+                    nodemom = Mutate.Apply(crossMom);
+                    nodedad = Mutate.Apply(crossDad);
 
-                    // Fitness
-                    nodemom.Fitness = Fitness.Calc(nodemom);
-                    nodedad.Fitness = Fitness.Calc(nodedad);
 
                     // Add in new population
-                    newpopulations.Add(nodemom);
-                    newpopulations.Add(nodedad);
+                    newpopulations.AddRange(new IGenome[] { nodemom, nodedad });
                 }
                 Populations = newpopulations.ToList();
+                await CalcFitness();
             }
+
             Generations = GenerationLimit;
 
             var bestGenome = Populations.OrderBy(o => o.Fitness).First();
 
             return bestGenome;
         }
+
+        private async Task CalcFitness()
+        {
+            await CalcGenomeRoutesAsync();
+            Populations.ForEach(e => e.CalcFitness(Fitness));
+        }
+
         public void Configure(IFitness fItness, IMutate mutate, ICrossover crossover, ISelection selection)
         {
             Mutate = mutate;
@@ -101,11 +104,13 @@ namespace PathFinder.GeneticAlgorithm
 
 
             await Observable
-                     .Range(0, throttleList.Count() - 1)
+                     .Range(0, throttleList.Count() )
                      .Select(n => Observable.FromAsync(() => throttleList[n]()))
                      .Merge(THROTTLE);
 
         }
+
+
 
     }
 }

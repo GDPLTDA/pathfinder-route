@@ -1,12 +1,15 @@
 ﻿using PathFinder.GeneticAlgorithm.Abstraction;
 using System;
+using System.Security.Cryptography;
 
 namespace PathFinder
 {
-    public class GARandom : IRandom
+    public class RandomAdapter : IRandom
     {
-        private readonly Random me;
-        public  GARandom()
+        readonly Random me;
+        readonly RandomNumberGenerator trueRandom;
+
+        public  RandomAdapter()
         {
             me = new Random();
         }

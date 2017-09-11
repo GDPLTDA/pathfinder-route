@@ -4,10 +4,10 @@ namespace PathFinder.GeneticAlgorithm.Factories
 {
     public class RandomFactory : IFactory<IRandom>
     {
-        public static GARandom Rand;
+        public static RandomAdapter Rand;
         static RandomFactory()
         {
-            Rand = new GARandom();
+            Rand = new RandomAdapter();
         }
 
         public IRandom GetImplementation(int option = 0)

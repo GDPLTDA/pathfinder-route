@@ -6,7 +6,7 @@ namespace PathFinder.GeneticAlgorithm.Crossover
 {
     public class CrossoverSimple : AbstractCrossover
     {
-        public override CrossoverOperation Calc(CrossoverOperation Operation)
+        public override CrossoverOperation Make(CrossoverOperation Operation)
         {
             var rand = RandomFactory.Rand;
             if (rand.NextDouble() > CrossoverRate || Operation.IsEqual())

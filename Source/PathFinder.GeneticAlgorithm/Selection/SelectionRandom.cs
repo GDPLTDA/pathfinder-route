@@ -12,5 +12,13 @@ namespace PathFinder.GeneticAlgorithm
             var ind = rand.Next(0, listnode.Count);
             return listnode[ind];
         }
+
+        public (IGenome mon, IGenome dad) SelectCouple(List<IGenome> population)
+        {
+           var mon = Select(population);
+           var dad = Select(population);
+
+           return (mon, dad);
+        }
     }
 }

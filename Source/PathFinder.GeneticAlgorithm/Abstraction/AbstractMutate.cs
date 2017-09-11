@@ -7,6 +7,6 @@
             MutationRate = GASettings.MutationRate;
         }
         public double MutationRate { get; set; }
-        public abstract IGenome Calc(IGenome baby);
+        public abstract IGenome Apply(IGenome baby);
     }
 }

@@ -3,6 +3,6 @@
     public interface IMutate
     {
         double MutationRate { get; set; }
-        IGenome Calc(IGenome baby);
+        IGenome Apply(IGenome baby);
     }
 }

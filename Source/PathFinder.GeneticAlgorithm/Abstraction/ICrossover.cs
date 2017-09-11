@@ -2,6 +2,8 @@
 {
     public interface ICrossover
     {
-        CrossoverOperation Calc(CrossoverOperation Operation);
+        CrossoverOperation Make(CrossoverOperation Operation);
+
+        CrossoverOperation Make(IGenome mon, IGenome dad);
     }
 }
