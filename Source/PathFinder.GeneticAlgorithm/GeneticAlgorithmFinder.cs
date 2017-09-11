@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using PathFinder.Routes;
 using PathFinder.GeneticAlgorithm.Crossover;
+using System;
+using System.Threading.Tasks;
+using System.Reactive.Linq;
 
 namespace PathFinder.GeneticAlgorithm
 {
@@ -19,13 +22,15 @@ namespace PathFinder.GeneticAlgorithm
         public int BestSolutionToPick { get; set; }
         public int Generations { get; set; }
 
+        const int THROTTLE = 20; // quantidade de requests simultaneos
+
         public GeneticAlgorithmFinder()
         {
             PopulationSize = GASettings.PopulationSize;
             GenerationLimit = GASettings.GenerationLimit;
             BestSolutionToPick = GASettings.BestSolutionToPick;
         }
-        public IGenome FindPath(RouteMap map)
+        public async Task<IGenome> FindPathAsync(RouteMap map)
         {
             if (Mutate == null || Crossover == null || Fitness == null || Selection == null)
                 throw new System.Exception("GA cant run without all operators");
@@ -35,6 +40,8 @@ namespace PathFinder.GeneticAlgorithm
 
             for (int i = 0; i < PopulationSize; i++)
                 Populations.Add(new Genome(map));
+
+            await CalcGenomeRoutesAsync();
 
             foreach (var item in Populations)
                 item.Fitness = Fitness.Calc(item);
@@ -57,7 +64,7 @@ namespace PathFinder.GeneticAlgorithm
                     // CrossOver
                     var cross = Crossover.Calc(new CrossoverOperation(nodemom, nodedad));
 
-                    //// Mutation
+                    // Mutation
                     nodemom = Mutate.Calc(cross.Mom);
                     nodedad = Mutate.Calc(cross.Dad);
 
@@ -84,5 +91,21 @@ namespace PathFinder.GeneticAlgorithm
             Fitness = fItness;
             Selection = selection;
         }
+
+        async Task CalcGenomeRoutesAsync()
+        {
+            var throttleList = new List<Func<Task>>();
+
+            foreach (var item in Populations)
+                throttleList.Add(() => item.CalcRoutesAsync());
+
+
+            await Observable
+                     .Range(0, throttleList.Count() - 1)
+                     .Select(n => Observable.FromAsync(() => throttleList[n]()))
+                     .Merge(THROTTLE);
+
+        }
+
     }
 }

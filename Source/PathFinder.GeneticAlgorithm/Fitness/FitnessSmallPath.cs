@@ -12,7 +12,6 @@ namespace PathFinder.GeneticAlgorithm
 
         public double Calc(IGenome genome)
         {
-            genome.CalcRoutes();
             return genome.ListRoutes.Sum(o=>o.Meters);
         }
     }

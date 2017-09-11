@@ -1,5 +1,6 @@
 ﻿using PathFinder.Routes;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PathFinder.GeneticAlgorithm.Abstraction
 {
@@ -11,6 +12,6 @@ namespace PathFinder.GeneticAlgorithm.Abstraction
         double Fitness { get; set; }
         void Save();
         bool IsEqual(IGenome genome);
-        void CalcRoutes();
+        Task CalcRoutesAsync();
     }
 }

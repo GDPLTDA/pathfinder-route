@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Newtonsoft.Json;
 using PathFinder.Routes.GoogleMapas;
+using PathFinder;
 using System.Net;
 using System.IO;
 using System.Collections.Generic;
@@ -8,31 +9,52 @@ using System;
 using System.Text;
 using System.Globalization;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace PathFinder.Routes
 {
     public class SearchRoute
     {
-        static Dictionary<string, Route> RouteCache = new Dictionary<string, Route>();
-        string Url = "http://maps.googleapis.com/maps/api/";
+        static readonly ConcurrentDictionary<string, Route> RouteCache = new ConcurrentDictionary<string, Route>();
+        readonly string Url = "http://maps.googleapis.com/maps/api/";
 
-        public Route[] GetRoutes(params string[] destinations)
+        public async Task<Route[]> GetRoutesAsync(params string[] destinations)
         {
             var routes = new Route[destinations.Length - 1];
 
             for (int i = 1; i < destinations.Length; i++)
             {
-                routes[i - 1] = GetRoute(destinations[i - 1], destinations[i]);
+                routes[i - 1] = await GetRouteAsync(destinations[i - 1], destinations[i]);
             }
             return routes;
         }
 
-        public Route GetRoute(MapPoint origin, MapPoint destination)
+        public async Task<Route> GetRouteAsync(MapPoint origin, MapPoint destination)
         {
-            return GetRoute(origin.Name, destination.Name);
+            return await GetRouteAsync(origin.Name, destination.Name);
         }
-        public Route GetRoute(string origin, string destination)
-		{
+        public async Task<Route> GetRouteAsync(string origin, string destination)
+        {
+            var key = $"{origin}|{destination}";
+
+            if (RouteCache.ContainsKey(key))
+                return RouteCache[key];
+
+            using (var c1 = new ConsoleFont(ConsoleColor.White))
+            {
+                Console.WriteLine($"Buscando : {origin}->{destination}");
+                var request = GetRequestRoute(origin, destination);
+                var ret = await ReadRequestAsync(key, request);
+
+                using (var color = new ConsoleFont(ConsoleColor.Green))
+                    Console.WriteLine($"Terminado : {origin}->{destination}");
+
+                return ret;
+            }
+        }
+        public async Task<Route> GetRouteAsync(double origin, double destination)
+        {
             var key = $"{origin}|{destination}";
 
             if (RouteCache.ContainsKey(key))
@@ -41,21 +63,9 @@ namespace PathFinder.Routes
             Console.WriteLine($"Buscando... {origin}->{destination}");
             var request = GetRequestRoute(origin, destination);
 
-            return ReadRequest(key, request);
-		}
-        public Route GetRoute(double origin, double destination)
-        {
-            var key = $"{origin}|{destination}";
-
-            if (RouteCache.ContainsKey(key))
-                return RouteCache[key];
-
-            Console.WriteLine($"Buscando... {origin}->{destination}");
-            var request = GetRequestRoute(origin, destination);
-
-            return ReadRequest(key, request);
+            return await ReadRequestAsync(key, request);
         }
-        public Route ReadRequest(string key, WebRequest request)
+        public async Task<Route> ReadRequestAsync(string key, WebRequest request)
         {
             var response = request.GetResponse();
 
@@ -63,7 +73,8 @@ namespace PathFinder.Routes
 
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
-                var data = JsonConvert.DeserializeObject<RouteRoot>(reader.ReadToEnd());
+                var json = await reader.ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<RouteRoot>(json);
 
                 if (data != null)
                 {
@@ -78,7 +89,10 @@ namespace PathFinder.Routes
                             route.Meters = l.distance.value;
                             route.Seconds = l.duration.value;
 
-                            RouteCache.Add(key, route);
+                            if (!RouteCache.TryAdd(key, route))
+                                using (var c = new ConsoleFont(ConsoleColor.Red))
+                                    Console.WriteLine($"CONFLICT AT {key}");
+
                             var xx = GetRequestRoute(route.Origin.Latitude, route.Origin.Longitude);
                         }
                     }
@@ -106,21 +120,21 @@ namespace PathFinder.Routes
                     }
                 }
             }
-            var psi = new ProcessStartInfo(arq);
-            psi.UseShellExecute = true;
+            var psi = new ProcessStartInfo(arq)
+            {
+                UseShellExecute = true
+            };
             Process.Start(psi);
         }
         WebRequest GetRequestRoute(string origem, string destino)
         {
-		    var url = string.Format(
-                "{0}directions/json?origin={1}&destination={2}&sensor=false", Url, origem, destino);
+            var url = $"{Url}directions/json?origin={origem}&destination={destino}&sensor=false";
 
             return WebRequest.Create(url);
         }
         WebRequest GetRequestRoute(double latitude, double longitude)
         {
-            var url = string.Format(
-                "{0}geocode/json?latlng={1},{2}&sensor=false", Url, ConvNumber(latitude), ConvNumber(longitude));
+            var url = $"{Url}geocode/json?latlng={ConvNumber(latitude)},{ConvNumber(longitude)}&sensor=false";
 
             return WebRequest.Create(url);
         }
@@ -133,14 +147,11 @@ namespace PathFinder.Routes
                 strbuild.Append($"|{ConvNumber(route.Origin.Latitude)},{ConvNumber(route.Origin.Longitude)}|" +
                                 $"{ConvNumber(route.Destination.Latitude)},{ConvNumber(route.Destination.Longitude)}");
             }
-            var url = string.Format(
-                "{0}staticmap?path={1}&markers={1}&size=512x512", Url, strbuild.ToString().Substring(1));
+            var url = $"{Url}staticmap?path={strbuild.ToString().Substring(1)}&markers={strbuild.ToString().Substring(1)}&size=512x512";
 
             return WebRequest.Create(url);
         }
-        public string ConvNumber(double num)
-        {
-            return Math.Round(num,6).ToString().Replace(',', '.');
-        }
+        public static string ConvNumber(double num)
+            => Math.Round(num,6).ToString().Replace(',', '.');
     }
 }

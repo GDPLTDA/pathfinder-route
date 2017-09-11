@@ -2,6 +2,7 @@
 using PathFinder.GeneticAlgorithm.Factories;
 using PathFinder.Routes;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PathFinder.GeneticAlgorithm
 {
@@ -11,7 +12,7 @@ namespace PathFinder.GeneticAlgorithm
         public List<Node> ListNodes { get; set; }
         public List<Route> ListRoutes { get; set; }
         public double Fitness { get; set; }
-        SearchRoute Search = new SearchRoute();
+        readonly SearchRoute Search = new SearchRoute();
         public Genome(RouteMap map)
         {
             Map = map;
@@ -41,7 +42,7 @@ namespace PathFinder.GeneticAlgorithm
                 count--;
             }
         }
-        public void CalcRoutes()
+        public async Task CalcRoutesAsync()
         {
             var point = Map.Storage;
             ListRoutes = new List<Route>();
@@ -49,12 +50,13 @@ namespace PathFinder.GeneticAlgorithm
             Route route;
             foreach (var item in ListNodes)
             {
-                route = Search.GetRoute(point, item.MapPoint);
+                route = await Search.GetRouteAsync(point, item.MapPoint);
 
                 ListRoutes.Add(route);
 
                 point = item.MapPoint;
             }
+
             //route = Search.GetRoute(point, Map.Storage);
 
             //ListRoutes.Add(route);

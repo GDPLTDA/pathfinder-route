@@ -3,12 +3,15 @@ using PathFinder.Routes;
 using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PathFinder
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args) => MainAsync(args).GetAwaiter().GetResult();
+
+        static async Task MainAsync(string[] args)
         {
             var map = new RouteMap("São Paulo SP");
 
@@ -18,7 +21,7 @@ namespace PathFinder
                 map.AddDestination(item);
 
             var finder = new GeneticAlgorithmFinder();
-            var best = finder.FindPath(map);
+            var best = await finder.FindPathAsync(map);
             best.Save(); // Save uma imagem com a rota na pasta dos binarios
 
             foreach (var item in best.ListRoutes)

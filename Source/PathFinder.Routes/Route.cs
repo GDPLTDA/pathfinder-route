@@ -15,7 +15,7 @@ namespace PathFinder.Routes
 
         public Route()
         {
-            
+
         }
     }
 }
