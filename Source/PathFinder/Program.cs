@@ -2,6 +2,7 @@
 using PathFinder.Routes;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,8 +25,9 @@ namespace PathFinder
             var best = await finder.FindPathAsync(map);
             best.Save(); // Save uma imagem com a rota na pasta dos binarios
 
+            Console.WriteLine($"{best.Map.Storage.Name}");
             foreach (var item in best.ListRoutes)
-                Console.WriteLine($"{item.Origin.Name}->{item.Destination.Name}");
+                Console.WriteLine($"{item.Destination.Name}");
 
             Console.ReadKey();
         }

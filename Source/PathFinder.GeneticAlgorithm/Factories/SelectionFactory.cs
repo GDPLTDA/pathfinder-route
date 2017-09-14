@@ -9,7 +9,7 @@ namespace PathFinder.GeneticAlgorithm.Factories
             => new SelectionRandom();
         public static ISelection GetRouletteWheelSelectionImplementation()
             => new SelectionRouletteWheel();
-        public ISelection GetImplementation(SelectionEnum option)
+        public static ISelection GetImplementation(SelectionEnum option)
             => Decide(option);
         private static ISelection Decide(SelectionEnum option)
         {

@@ -5,17 +5,26 @@ namespace PathFinder.GeneticAlgorithm.Factories
 {
     public class FitnessFactory : IFactory<IFitness, FitnessEnum>
     {
-        public static IFitness GetHeuristicImplementation()
+        public static IFitness GetSmallPathcImplementation()
             => new FitnessSmallPath();
-        public IFitness GetImplementation(FitnessEnum option)
+        public static IFitness GetMultPathImplementation()
+            => new FitnessMultPath();
+        public static IFitness GetTimePathImplementation()
+            => new FitnessTimePath();
+
+        public static IFitness GetImplementation(FitnessEnum option)
             => Decide(option);
 
         private static IFitness Decide(FitnessEnum option)
         {
             switch (option)
             {
-                case FitnessEnum.Heuristic:
-                    return GetHeuristicImplementation();
+                case FitnessEnum.SmallPath:
+                    return GetSmallPathcImplementation();
+                case FitnessEnum.MultPath:
+                    return GetMultPathImplementation();
+                case FitnessEnum.TimePath:
+                    return GetTimePathImplementation();
             }
             throw new Exception("No finder selected");
         }

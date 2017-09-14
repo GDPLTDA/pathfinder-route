@@ -13,10 +13,10 @@ namespace PathFinder.GeneticAlgorithm
     public class GeneticAlgorithmFinder
     {
         List<IGenome> Populations { get; set; } = new List<IGenome>();
-        public IFitness Fitness { get; set; } = new FitnessSmallPath();
-        public IMutate Mutate { get; set; } = new MutateIVM();
-        public ICrossover Crossover { get; set; } = new CrossoverPBX();
-        public ISelection Selection { get; set; } = new SelectionRouletteWheel();
+        public IFitness Fitness { get; set; } = FitnessFactory.GetImplementation(FitnessEnum.TimePath);
+        public IMutate Mutate { get; set; } = MutateFactory.GetImplementation(MutateEnum.IVM);
+        public ICrossover Crossover { get; set; } = CrossoverFactory.GetImplementation(CrossoverEnum.PBX);
+        public ISelection Selection { get; set; } = SelectionFactory.GetImplementation(SelectionEnum.RouletteWheel);
         public int PopulationSize { get; set; }
         public int GenerationLimit { get; set; }
         public int BestSolutionToPick { get; set; }

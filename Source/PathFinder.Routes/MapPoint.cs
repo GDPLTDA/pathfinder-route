@@ -10,6 +10,7 @@ namespace PathFinder.Routes
         public string Name { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public Period Period { get; set; }
 
         public MapPoint(string name, Location loc)
         {

@@ -13,7 +13,7 @@ namespace PathFinder.GeneticAlgorithm.Factories
         //public static ICrossover GetPBXImplementation()
         //    => new CrossoverPBX();
 
-        public ICrossover GetImplementation(CrossoverEnum option)
+        public static ICrossover GetImplementation(CrossoverEnum option)
             => Decide(option);
 
         private static ICrossover Decide(CrossoverEnum option)

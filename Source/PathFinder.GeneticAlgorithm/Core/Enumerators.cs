@@ -23,9 +23,8 @@
     }
     public enum FitnessEnum
     {
-        Heuristic,
-        CollisionDetection,
-        CirclicValidation,
-        CollisionDetectionAndCirclicValidation
+        SmallPath,
+        MultPath,
+        TimePath
     }
 }

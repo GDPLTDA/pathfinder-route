@@ -18,7 +18,7 @@ namespace PathFinder.GeneticAlgorithm.Factories
             => new MutateIVM();
         public static IMutate GetSMImplementation()
             => new MutateSM();
-        public IMutate GetImplementation(MutateEnum option)
+        public static IMutate GetImplementation(MutateEnum option)
             => Decide(option);
 
         private static IMutate Decide(MutateEnum option)

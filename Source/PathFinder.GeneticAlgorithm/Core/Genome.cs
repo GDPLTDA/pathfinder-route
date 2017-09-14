@@ -13,6 +13,7 @@ namespace PathFinder.GeneticAlgorithm
         public List<Route> ListRoutes { get; set; }
         public double Fitness { get; private set; }
         readonly SearchRoute Search = new SearchRoute();
+
         public Genome(RouteMap map)
         {
             Map = map;
@@ -56,10 +57,8 @@ namespace PathFinder.GeneticAlgorithm
 
                 point = item.MapPoint;
             }
-
-            //route = Search.GetRoute(point, Map.Storage);
-
-            //ListRoutes.Add(route);
+            route = await Search.GetRouteAsync(point, Map.Storage);
+            ListRoutes.Add(route);
         }
 
         public void Save()
