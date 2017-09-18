@@ -3,6 +3,7 @@ using PathFinder.GeneticAlgorithm.Factories;
 using PathFinder.Routes;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace PathFinder.GeneticAlgorithm
 {
@@ -12,6 +13,8 @@ namespace PathFinder.GeneticAlgorithm
         public List<Node> ListNodes { get; set; }
         public List<Route> ListRoutes { get; set; }
         public double Fitness { get; private set; }
+        public DateTime Finish { get; set; }
+
         readonly SearchRoute Search = new SearchRoute();
 
         public Genome(RouteMap map)

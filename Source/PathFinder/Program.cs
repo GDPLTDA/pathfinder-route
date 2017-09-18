@@ -29,6 +29,10 @@ namespace PathFinder
             foreach (var item in best.ListRoutes)
                 Console.WriteLine($"{item.Destination.Name}");
 
+            Console.WriteLine($"");
+            Console.WriteLine($"Saindo: {best.Map.Storage.Date.ToString("dd/MM/yyy hh:mm")}");
+            Console.WriteLine($"Voltando: {best.Finish.ToString("dd/MM/yyy hh:mm")}");
+
             Console.ReadKey();
         }
     }

@@ -9,13 +9,13 @@ namespace PathFinder.GeneticAlgorithm
         public double Calc(IGenome genome)
         {
             var start = genome.Map.Storage.Date;
-            var finish = start;
+            genome.Finish = start;
 
             foreach (var item in genome.ListRoutes)
             {
-
+                genome.Finish = genome.Finish.AddMinutes(item.Minutes);
             }
-            var totaltime = new TimeSpan(finish.Ticks - start.Ticks);
+            var totaltime = new TimeSpan(genome.Finish.Ticks - start.Ticks);
 
             return genome.ListRoutes.Sum(o=>o.Meters) + totaltime.Minutes;
         }
