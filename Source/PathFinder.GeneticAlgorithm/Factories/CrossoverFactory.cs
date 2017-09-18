@@ -4,14 +4,14 @@ using System;
 
 namespace PathFinder.GeneticAlgorithm.Factories
 {
-    public class CrossoverFactory : IFactory<ICrossover, CrossoverEnum>
+    public class CrossoverFactory
     {
         public static ICrossover GetSimpleImplementation()
             => new CrossoverSimple();
         public static ICrossover GetOBXImplementation()
             => new CrossoverOBX();
-        //public static ICrossover GetPBXImplementation()
-        //    => new CrossoverPBX();
+        public static ICrossover GetPBXImplementation()
+            => new CrossoverPBX();
 
         public static ICrossover GetImplementation(CrossoverEnum option)
             => Decide(option);
@@ -24,8 +24,8 @@ namespace PathFinder.GeneticAlgorithm.Factories
                     return GetSimpleImplementation();
                 case CrossoverEnum.OBX:
                     return GetOBXImplementation();
-                //case CrossoverEnum.PBX:
-                //    return GetPBXImplementation();
+                case CrossoverEnum.PBX:
+                    return GetPBXImplementation();
             }
             throw new Exception("No crossover selected");
         }

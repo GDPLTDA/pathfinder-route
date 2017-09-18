@@ -3,7 +3,7 @@ using System;
 
 namespace PathFinder.GeneticAlgorithm.Factories
 {
-    public class FitnessFactory : IFactory<IFitness, FitnessEnum>
+    public class FitnessFactory
     {
         public static IFitness GetSmallPathcImplementation()
             => new FitnessSmallPath();

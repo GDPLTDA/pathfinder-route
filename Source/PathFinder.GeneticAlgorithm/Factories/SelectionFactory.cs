@@ -3,7 +3,7 @@ using PathFinder.GeneticAlgorithm.Abstraction;
 using System;
 namespace PathFinder.GeneticAlgorithm.Factories
 {
-    public class SelectionFactory : IFactory<ISelection, SelectionEnum>
+    public class SelectionFactory
     {
         public static ISelection GetRandomImplementation()
             => new SelectionRandom();

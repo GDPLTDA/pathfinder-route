@@ -4,7 +4,7 @@ using System;
 
 namespace PathFinder.GeneticAlgorithm.Factories
 {
-    public class MutateFactory : IFactory<IMutate, MutateEnum>
+    public class MutateFactory
     {
         public static IMutate GetEMImplementation()
             => new MutateEM();

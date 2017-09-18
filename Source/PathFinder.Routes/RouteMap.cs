@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PathFinder.Routes
 {
@@ -10,6 +11,7 @@ namespace PathFinder.Routes
         public RouteMap(string name)
         {
             Storage = new MapPoint(name, new GoogleMapas.Location());
+            Storage.Date = DateTime.Now;
         }
         public void AddDestinations(params string[] param)
         {
