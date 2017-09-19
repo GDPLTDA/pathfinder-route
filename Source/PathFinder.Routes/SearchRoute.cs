@@ -78,10 +78,12 @@ namespace PathFinder.Routes
 
                 if (data != null)
                 {
+                    if (!data.routes.Any())
+                        using (var c = new ConsoleFont(ConsoleColor.Red))
+                            Console.WriteLine($"{data.status}: {key}");
+
                     foreach (var r in data.routes)
                     {
-                        if (!data.routes.Any())
-                            throw new System.Exception($"{key} error!");
                         foreach (var l in r.legs)
                         {
                             route.Origin = new MapPoint(l.start_address, l.start_location);
