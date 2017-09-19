@@ -17,7 +17,9 @@ namespace PathFinder.Routes
     public class SearchRoute
     {
         static readonly ConcurrentDictionary<string, Route> RouteCache = new ConcurrentDictionary<string, Route>();
-        readonly string Url = "http://maps.googleapis.com/maps/api/";
+        const string Url = "https://maps.googleapis.com/maps/api/";
+        const string key = "AIzaSyBFP8cY4DSZM_7Z9k2svtu-Ktdjhq23UNI";
+
 
         public async Task<Route[]> GetRoutesAsync(params string[] destinations)
         {
@@ -31,9 +33,8 @@ namespace PathFinder.Routes
         }
 
         public async Task<Route> GetRouteAsync(MapPoint origin, MapPoint destination)
-        {
-            return await GetRouteAsync(origin.Name, destination.Name);
-        }
+            => await GetRouteAsync(origin.Name, destination.Name);
+
         public async Task<Route> GetRouteAsync(string origin, string destination)
         {
             var key = $"{origin}|{destination}";
@@ -128,27 +129,23 @@ namespace PathFinder.Routes
             };
             Process.Start(psi);
         }
+
         WebRequest GetRequestRoute(string origem, string destino)
-        {
-            var url = $"{Url}directions/json?origin={origem}&destination={destino}&sensor=false";
+            => WebRequest.Create(
+                $"{Url}directions/json?origin={origem}&destination={destino}&sensor=false&key={key}");
 
-            return WebRequest.Create(url);
-        }
-        WebRequest GetRequestRoute(double latitude, double longitude)
-        {
-            var url = $"{Url}geocode/json?latlng={ConvNumber(latitude)},{ConvNumber(longitude)}&sensor=false";
+        WebRequest GetRequestRoute(double latitude, double longitude) 
+            => WebRequest.Create(
+                $"{Url}geocode/json?latlng={ConvNumber(latitude)},{ConvNumber(longitude)}&sensor=false&key={key}");
 
-            return WebRequest.Create(url);
-        }
+
         WebRequest GetRequestStaticMap(List<Route> listRoutes)
         {
             var strbuild = new StringBuilder();
-
             foreach (var route in listRoutes)
-            {
                 strbuild.Append($"|{ConvNumber(route.Origin.Latitude)},{ConvNumber(route.Origin.Longitude)}|" +
                                 $"{ConvNumber(route.Destination.Latitude)},{ConvNumber(route.Destination.Longitude)}");
-            }
+            
             var url = $"{Url}staticmap?path={strbuild.ToString().Substring(1)}&markers={strbuild.ToString().Substring(1)}&size=512x512";
 
             return WebRequest.Create(url);

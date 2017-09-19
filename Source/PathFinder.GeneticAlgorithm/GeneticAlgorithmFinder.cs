@@ -22,7 +22,7 @@ namespace PathFinder.GeneticAlgorithm
         public int BestSolutionToPick { get; set; }
         public int Generations { get; set; }
 
-        const int THROTTLE = 20; // quantidade de requests simultaneos
+        const int THROTTLE = 1; // quantidade de requests simultaneos
 
         public GeneticAlgorithmFinder()
         {
@@ -99,16 +99,16 @@ namespace PathFinder.GeneticAlgorithm
         {
             var throttleList = new List<Func<Task>>();
 
-            foreach (var item in Populations)
-                await  item.CalcRoutesAsync();
             //foreach (var item in Populations)
-            //    throttleList.Add(() => item.CalcRoutesAsync());
+            //    await  item.CalcRoutesAsync();
+            foreach (var item in Populations)
+                throttleList.Add(() => item.CalcRoutesAsync());
 
 
-            //await Observable
-            //         .Range(0, 1)//throttleList.Count() )
-            //         .Select(n => Observable.FromAsync(() => throttleList[n]()))
-            //         .Merge(THROTTLE);
+            await Observable
+                     .Range(0,throttleList.Count() )
+                     .Select(n => Observable.FromAsync(() => throttleList[n]()))
+                     .Merge(THROTTLE);
 
         }
 
