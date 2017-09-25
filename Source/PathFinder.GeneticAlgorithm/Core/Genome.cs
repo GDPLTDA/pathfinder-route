@@ -4,6 +4,7 @@ using PathFinder.Routes;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using System.Linq;
 
 namespace PathFinder.GeneticAlgorithm
 {
@@ -14,8 +15,6 @@ namespace PathFinder.GeneticAlgorithm
         public List<Route> ListRoutes { get; set; }
         public double Fitness { get; private set; }
         public DateTime Finish { get; set; }
-
-        readonly SearchRoute Search = new SearchRoute();
 
         public Genome(RouteMap map)
         {
@@ -38,7 +37,7 @@ namespace PathFinder.GeneticAlgorithm
             {
                 var i = rand.Next(Map.Destinations.Count);
 
-                if (ListNodes.Exists(o=>o.MapPoint.Name == Map.Destinations[i].Name))
+                if (ListNodes.Exists(o=>o.MapPoint.Equals(Map.Destinations[i])))
                     continue;
 
                 ListNodes.Add(new Node(Map.Destinations[i]));
@@ -54,31 +53,29 @@ namespace PathFinder.GeneticAlgorithm
             Route route;
             foreach (var item in ListNodes)
             {
-                route = await Search.GetRouteAsync(point, item.MapPoint);
+                route = await SearchRoute.GetRouteAsync(point, item.MapPoint);
 
                 ListRoutes.Add(route);
 
                 point = item.MapPoint;
             }
-            route = await Search.GetRouteAsync(point, Map.Storage);
+            route = await SearchRoute.GetRouteAsync(point, Map.Storage);
             ListRoutes.Add(route);
         }
 
         public void Save()
         {
-            Search.SaveRouteImage(ListRoutes);
+            SearchRoute.SaveRouteImage(ListRoutes);
         }
 
         public bool IsEqual(IGenome genome)
         {
-            if (ListNodes.Count != genome.ListNodes.Count)
-                return false;
-            for (int i = 0; i < ListNodes.Count; i++)
-            {
-                if (ListNodes[i] != genome.ListNodes[i])
-                    return false;
-            }
-            return true;
+            if(genome!=null)
+                if(ListRoutes.Sum(o=>o.Meters) == genome.ListRoutes.Sum(o => o.Meters))
+                    if (ListRoutes.Sum(o => o.Minutes) == genome.ListRoutes.Sum(o => o.Minutes))
+                        return true;
+
+            return false;
         }
         private static List<Node> Copy(List<Node> listnode)
         {

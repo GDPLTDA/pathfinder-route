@@ -46,43 +46,20 @@ namespace PathFinder.Routes.GoogleMapas
 		public double lat { get; set; }
 		public double lng { get; set; }
 	}
-	public class Distance2
-	{
-		public string text { get; set; }
-		public int value { get; set; }
-	}
-
-	public class Duration2
-	{
-		public string text { get; set; }
-		public int value { get; set; }
-	}
-
-	public class EndLocation2
-	{
-		public double lat { get; set; }
-		public double lng { get; set; }
-	}
 
 	public class Polyline
 	{
 		public string points { get; set; }
 	}
 
-	public class StartLocation2
-	{
-		public double lat { get; set; }
-		public double lng { get; set; }
-	}
-
 	public class Step
 	{
-		public Distance2 distance { get; set; }
-		public Duration2 duration { get; set; }
-		public EndLocation2 end_location { get; set; }
+		public Distance distance { get; set; }
+		public Duration duration { get; set; }
+		public Location end_location { get; set; }
 		public string html_instructions { get; set; }
 		public Polyline polyline { get; set; }
-		public StartLocation2 start_location { get; set; }
+		public Location start_location { get; set; }
 		public string travel_mode { get; set; }
 		public string maneuver { get; set; }
 	}
@@ -104,14 +81,44 @@ namespace PathFinder.Routes.GoogleMapas
 		public string points { get; set; }
 	}
 
-	public class MapRoute
-	{
-		public Bounds bounds { get; set; }
-		public string copyrights { get; set; }
-		public List<Leg> legs { get; set; }
-		public OverviewPolyline overview_polyline { get; set; }
-		public string summary { get; set; }
-		public List<object> warnings { get; set; }
-		public List<object> waypoint_order { get; set; }
-	}
+    public class AddressComponent
+    {
+        public string long_name { get; set; }
+        public string short_name { get; set; }
+        public List<string> types { get; set; }
+    }
+
+    public class Viewport
+    {
+        public Northeast northeast { get; set; }
+        public Southwest southwest { get; set; }
+    }
+
+    public class Geometry
+    {
+        public Bounds bounds { get; set; }
+        public Location location { get; set; }
+        public string location_type { get; set; }
+        public Viewport viewport { get; set; }
+    }
+
+    public class Result
+    {
+        public List<AddressComponent> address_components { get; set; }
+        public string formatted_address { get; set; }
+        public Geometry geometry { get; set; }
+        public string place_id { get; set; }
+        public List<string> types { get; set; }
+    }
+
+    public class MapRoute
+    {
+        public Bounds bounds { get; set; }
+        public string copyrights { get; set; }
+        public List<Leg> legs { get; set; }
+        public OverviewPolyline overview_polyline { get; set; }
+        public string summary { get; set; }
+        public List<object> warnings { get; set; }
+        public List<object> waypoint_order { get; set; }
+    }
 }

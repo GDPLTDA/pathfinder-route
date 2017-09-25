@@ -13,16 +13,24 @@ namespace PathFinder.Routes
         public Period Period { get; set; } = new Period();
         public DateTime Date { get; set; }
 
+        public MapPoint(string name)
+        {
+            Name = name;
+        }
         public MapPoint(string name, Location loc)
         {
             Name = name;
             Latitude = loc.lat;
             Longitude = loc.lng;
         }
-
         public override string ToString()
         {
             return $"({Latitude},{Longitude}) {Name}";
+        }
+
+        public bool Equals(MapPoint obj)
+        {
+            return Name == obj.Name;
         }
     }
 }

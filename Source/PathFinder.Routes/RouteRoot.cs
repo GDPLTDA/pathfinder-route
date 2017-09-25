@@ -8,4 +8,10 @@ namespace PathFinder.Routes.GoogleMapas
         public List<MapRoute> routes { get; set; }
         public string status { get; set; }
     }
+
+    public class PointRoot
+    {
+        public List<Result> results { get; set; }
+        public string status { get; set; }
+    }
 }

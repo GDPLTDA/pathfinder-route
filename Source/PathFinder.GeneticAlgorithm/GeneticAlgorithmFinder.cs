@@ -20,7 +20,8 @@ namespace PathFinder.GeneticAlgorithm
         public int PopulationSize { get; set; }
         public int GenerationLimit { get; set; }
         public int BestSolutionToPick { get; set; }
-        public int Generations { get; set; }
+
+        IGenome Best { get; set; }
 
         const int THROTTLE = 1; // quantidade de requests simultaneos
 
@@ -66,19 +67,21 @@ namespace PathFinder.GeneticAlgorithm
                     nodemom = Mutate.Apply(crossMom);
                     nodedad = Mutate.Apply(crossDad);
 
-
                     // Add in new population
                     newpopulations.AddRange(new IGenome[] { nodemom, nodedad });
                 }
                 Populations = newpopulations.ToList();
+
                 await CalcFitness();
+
+                Best = Populations.OrderBy(o => o.Fitness).First();
+
+                using (var color = new ConsoleFont(ConsoleColor.Yellow))
+                    Console.WriteLine($"Geração:{i} Distancia: {Best.ListRoutes.Sum(o => o.Meters)}" +
+                                        $" Tempo: {Best.ListRoutes.Sum(o => o.Minutes)}" +
+                                        $" Fitness: {Best.Fitness}");
             }
-
-            Generations = GenerationLimit;
-
-            var bestGenome = Populations.OrderBy(o => o.Fitness).First();
-
-            return bestGenome;
+            return Best;
         }
 
         private async Task CalcFitness()
@@ -99,16 +102,16 @@ namespace PathFinder.GeneticAlgorithm
         {
             var throttleList = new List<Func<Task>>();
 
-            //foreach (var item in Populations)
-            //    await  item.CalcRoutesAsync();
             foreach (var item in Populations)
-                throttleList.Add(() => item.CalcRoutesAsync());
+                await item.CalcRoutesAsync();
+            //foreach (var item in Populations)
+            //    throttleList.Add(() => item.CalcRoutesAsync());
 
 
-            await Observable
-                     .Range(0,throttleList.Count() )
-                     .Select(n => Observable.FromAsync(() => throttleList[n]()))
-                     .Merge(THROTTLE);
+            //await Observable
+            //         .Range(0, throttleList.Count())
+            //         .Select(n => Observable.FromAsync(() => throttleList[n]()))
+            //         .Merge(THROTTLE);
 
         }
 

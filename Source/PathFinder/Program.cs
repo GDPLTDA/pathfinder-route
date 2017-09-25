@@ -14,6 +14,9 @@ namespace PathFinder
 
         static async Task MainAsync(string[] args)
         {
+            using (var color = new ConsoleFont(ConsoleColor.White))
+                Console.WriteLine($"Buscando Endereços...");
+
             var map = new RouteMap("São Paulo SP");
 
             var capitais = File.ReadAllText("Capitais.txt", Encoding.GetEncoding("iso-8859-1")).Split("\r\n");
@@ -22,6 +25,9 @@ namespace PathFinder
                 map.AddDestination(item);
 
             var finder = new GeneticAlgorithmFinder();
+            using (var color = new ConsoleFont(ConsoleColor.White))
+                Console.WriteLine($"Calculando Melhor Rota...");
+
             var best = await finder.FindPathAsync(map);
             best.Save(); // Save uma imagem com a rota na pasta dos binarios
 

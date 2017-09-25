@@ -8,9 +8,12 @@ namespace PathFinder.GeneticAlgorithm
 
         public Node(Node node)
         {
-            var type = node.GetType();
-            foreach (var item in type.GetProperties())
-                item.SetValue(this, item.GetValue(node));
+            MapPoint = new MapPoint(node.MapPoint.Name);
+
+            MapPoint.Date = node.MapPoint.Date;
+            MapPoint.Period = node.MapPoint.Period;
+            MapPoint.Latitude = node.MapPoint.Latitude;
+            MapPoint.Longitude = node.MapPoint.Longitude;
         }
         public Node(MapPoint mapPoint)
         {

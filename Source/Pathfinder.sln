@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26823.1
+VisualStudioVersion = 15.0.26906.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder", "PathFinder\PathFinder.csproj", "{7C5084E0-79E9-419D-B3F8-59A7186190F6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder.Routes", "PathFinder.Routes\PathFinder.Routes.csproj", "{A4041902-9E61-478B-A654-49BF17A1B685}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maps.ConsoleTest", "Maps.ConsoleTest\Maps.ConsoleTest.csproj", "{44CA5941-B81C-4286-8B75-85DAE55E3965}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathFinder.GeneticAlgorithm", "PathFinder.GeneticAlgorithm\PathFinder.GeneticAlgorithm.csproj", "{BD082D95-1AC1-4B25-AEA3-EC9AB9F1B7F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder.GeneticAlgorithm", "PathFinder.GeneticAlgorithm\PathFinder.GeneticAlgorithm.csproj", "{BD082D95-1AC1-4B25-AEA3-EC9AB9F1B7F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{A4041902-9E61-478B-A654-49BF17A1B685}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4041902-9E61-478B-A654-49BF17A1B685}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4041902-9E61-478B-A654-49BF17A1B685}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44CA5941-B81C-4286-8B75-85DAE55E3965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44CA5941-B81C-4286-8B75-85DAE55E3965}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44CA5941-B81C-4286-8B75-85DAE55E3965}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44CA5941-B81C-4286-8B75-85DAE55E3965}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BD082D95-1AC1-4B25-AEA3-EC9AB9F1B7F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BD082D95-1AC1-4B25-AEA3-EC9AB9F1B7F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD082D95-1AC1-4B25-AEA3-EC9AB9F1B7F8}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -7,7 +7,6 @@ namespace PathFinder
     public class RandomAdapter : IRandom
     {
         readonly Random me;
-        readonly RandomNumberGenerator trueRandom;
 
         public  RandomAdapter()
         {
