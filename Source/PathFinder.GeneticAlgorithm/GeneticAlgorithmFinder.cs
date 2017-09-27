@@ -50,10 +50,7 @@ namespace PathFinder.GeneticAlgorithm
                 Populations = Populations.OrderBy(o => o.Fitness).ToList();
 
                 for (int j = 0; j < BestSolutionToPick; j++)
-                {
-                    Populations[j].CalcFitness(Fitness);
                     newpopulations.Add(Populations[j]);
-                }
 
                 while (newpopulations.Count < Populations.Count)
                 {
@@ -102,16 +99,14 @@ namespace PathFinder.GeneticAlgorithm
         {
             var throttleList = new List<Func<Task>>();
 
-            foreach (var item in Populations)
-                await item.CalcRoutesAsync();
             //foreach (var item in Populations)
-            //    throttleList.Add(() => item.CalcRoutesAsync());
-
-
-            //await Observable
-            //         .Range(0, throttleList.Count())
-            //         .Select(n => Observable.FromAsync(() => throttleList[n]()))
-            //         .Merge(THROTTLE);
+            //    await item.CalcRoutesAsync();
+            foreach (var item in Populations)
+                throttleList.Add(() => item.CalcRoutesAsync());
+            await Observable
+                     .Range(0, throttleList.Count())
+                     .Select(n => Observable.FromAsync(() => throttleList[n]()))
+                     .Merge(THROTTLE);
 
         }
 
