@@ -14,7 +14,7 @@ namespace PathFinder.GeneticAlgorithm
     {
         List<IGenome> Populations { get; set; } = new List<IGenome>();
         public IFitness Fitness { get; set; } = FitnessFactory.GetImplementation(FitnessEnum.TimePath);
-        public IMutate Mutate { get; set; } = MutateFactory.GetImplementation(MutateEnum.IVM);
+        public IMutate Mutate { get; set; } = MutateFactory.GetImplementation(MutateEnum.DIVM);
         public ICrossover Crossover { get; set; } = CrossoverFactory.GetImplementation(CrossoverEnum.PBX);
         public ISelection Selection { get; set; } = SelectionFactory.GetImplementation(SelectionEnum.RouletteWheel);
         public int PopulationSize { get; set; }
@@ -52,6 +52,8 @@ namespace PathFinder.GeneticAlgorithm
                 for (int j = 0; j < BestSolutionToPick; j++)
                     newpopulations.Add(Populations[j]);
 
+                var obj = new object();
+
                 while (newpopulations.Count < Populations.Count)
                 {
                     // Selection
@@ -65,7 +67,10 @@ namespace PathFinder.GeneticAlgorithm
                     nodedad = Mutate.Apply(crossDad);
 
                     // Add in new population
-                    newpopulations.AddRange(new IGenome[] { nodemom, nodedad });
+                    lock (obj)
+                    {
+                        newpopulations.AddRange(new IGenome[] { nodemom, nodedad });
+                    }
                 }
                 Populations = newpopulations.ToList();
 
@@ -73,10 +78,10 @@ namespace PathFinder.GeneticAlgorithm
 
                 Best = Populations.OrderBy(o => o.Fitness).First();
 
-                using (var color = new ConsoleFont(ConsoleColor.Yellow))
-                    Console.WriteLine($"Geração:{i} Distancia: {Best.ListRoutes.Sum(o => o.Meters)}" +
-                                        $" Tempo: {Best.ListRoutes.Sum(o => o.Minutes)}" +
-                                        $" Fitness: {Best.Fitness}");
+                //using (var color = new ConsoleFont(ConsoleColor.Yellow))
+                //    Console.WriteLine($"Geração:{i} Distancia: {Best.ListRoutes.Sum(o => o.Meters)}" +
+                //                        $" Tempo: {Best.ListRoutes.Sum(o => o.Minutes)}" +
+                //                        $" Fitness: {Best.Fitness}");
             }
             return Best;
         }

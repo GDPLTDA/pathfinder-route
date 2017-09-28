@@ -24,7 +24,9 @@ namespace PathFinder.GeneticAlgorithm
         public Genome(IGenome genome)
         {
             Map = genome.Map;
-            ListNodes = Copy(genome.ListNodes);
+            ListNodes = genome.ListNodes.Select(o=>o).ToList();
+            ListRoutes = genome.ListRoutes.Select(o => o).ToList();
+            Finish = genome.Finish;
         }
         void Initialize()
         {
@@ -59,8 +61,6 @@ namespace PathFinder.GeneticAlgorithm
 
                 point = item.MapPoint;
             }
-            route = await SearchRoute.GetRouteAsync(point, Map.Storage);
-            ListRoutes.Add(route);
         }
 
         public void Save()

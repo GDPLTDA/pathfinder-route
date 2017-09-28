@@ -37,8 +37,7 @@ namespace PathFinder
             while (map.Destinations.Any())
             {
                 sw.Start();
-                using (var color = new ConsoleFont(ConsoleColor.White))
-                    Console.WriteLine($"Saindo de ({map.Storage.Name})...");
+                
 
                 var finder = new GeneticAlgorithmFinder();
                 using (var color = new ConsoleFont(ConsoleColor.White))
@@ -46,16 +45,19 @@ namespace PathFinder
 
                 var best = await finder.FindPathAsync(map);
                 //best.Save(); // Save uma imagem com a rota na pasta dos binarios
-
-                Console.WriteLine($"Proximo Destino ({best.ListRoutes.First().Destination.Name})");
-
                 Console.WriteLine($"Caminho Completo!");
                 foreach (var item in best.ListRoutes)
                     Console.WriteLine($"{item.Destination.Name}");
 
                 Console.WriteLine($"");
-                Console.WriteLine($"Saindo: {best.Map.Storage.Date.ToString("dd/MM/yyy hh:mm")}");
-                Console.WriteLine($"Voltando: {best.Finish.ToString("dd/MM/yyy hh:mm")}");
+                using (var color = new ConsoleFont(ConsoleColor.White))
+                {
+                    Console.WriteLine($"Saindo de ({map.Storage.Name})...");
+                    Console.WriteLine($"Proximo Destino ({best.ListRoutes.First().Destination.Name})");
+                }
+                Console.WriteLine($"");
+                //Console.WriteLine($"Saindo: {best.Map.Storage.Date.ToString("dd/MM/yyy hh:mm")}");
+                //Console.WriteLine($"Voltando: {best.Finish.ToString("dd/MM/yyy hh:mm")}");
 
                 sw.Stop();
                 using (var color = new ConsoleFont(ConsoleColor.Red))
@@ -63,6 +65,7 @@ namespace PathFinder
 
                 sw.Reset();
 
+                SearchRoute.SaveCache();
                 Console.ReadKey();
 
                 map.Next(best.ListRoutes);

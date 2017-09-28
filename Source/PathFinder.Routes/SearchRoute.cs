@@ -16,14 +16,31 @@ namespace PathFinder.Routes
 {
     public static class SearchRoute
     {
-        static readonly ConcurrentDictionary<string, Route> RouteCache = new ConcurrentDictionary<string, Route>();
-        static readonly ConcurrentDictionary<string, MapPoint> PointCache = new ConcurrentDictionary<string, MapPoint>();
+        static ConcurrentDictionary<string, Route> RouteCache = new ConcurrentDictionary<string, Route>();
+        static ConcurrentDictionary<string, MapPoint> PointCache = new ConcurrentDictionary<string, MapPoint>();
         const string Url = "https://maps.googleapis.com/maps/api/";
         const string Key = "AIzaSyBFP8cY4DSZM_7Z9k2svtu-Ktdjhq23UNI";
 
+        static SearchRoute()
+        {
+            if (File.Exists("RouteCache.txt"))
+                RouteCache = JsonConvert.DeserializeObject<ConcurrentDictionary<string, Route>>
+                    (File.ReadAllText("RouteCache.txt"));
+
+            if(File.Exists("PointCache.txt"))
+                PointCache = JsonConvert.DeserializeObject<ConcurrentDictionary<string, MapPoint>>
+                    (File.ReadAllText("PointCache.txt"));
+        }
+
+        public static void SaveCache()
+        {
+            File.WriteAllText("RouteCache.Txt", JsonConvert.SerializeObject(RouteCache));
+            File.WriteAllText("PointCache.Txt", JsonConvert.SerializeObject(PointCache));
+        }
+
         public async static Task<Route> GetRouteAsync(MapPoint origin, MapPoint destination)
         {
-            var key = $"{origin}|{destination}";
+            var key = $"{origin.Name}|{destination.Name}";
 
             if (RouteCache.ContainsKey(key))
                 return RouteCache[key];
@@ -34,7 +51,7 @@ namespace PathFinder.Routes
                 var ret = await ReadRequestRouteAsync(origin, destination, key, request);
 
                 using (var color = new ConsoleFont(ConsoleColor.Green))
-                    Console.WriteLine($"Rota Encontrada: {origin}->{destination}");
+                    Console.WriteLine($"Rota Encontrada: : {origin.Name} {destination.Name}");
 
                 return ret;
             }

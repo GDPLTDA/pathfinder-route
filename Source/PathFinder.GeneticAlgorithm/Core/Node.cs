@@ -2,7 +2,7 @@
 
 namespace PathFinder.GeneticAlgorithm
 {
-    public class Node
+    public struct Node
     {
         public MapPoint MapPoint { get; set; }
 

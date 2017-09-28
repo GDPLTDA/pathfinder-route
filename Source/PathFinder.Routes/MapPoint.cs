@@ -13,6 +13,9 @@ namespace PathFinder.Routes
         public Period Period { get; set; } = new Period();
         public DateTime Date { get; set; }
 
+        public MapPoint()
+        {
+        }
         public MapPoint(string name)
         {
             Name = name;

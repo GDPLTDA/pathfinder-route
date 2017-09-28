@@ -9,7 +9,7 @@ namespace PathFinder.GeneticAlgorithm
     {
         public IGenome Select(List<IGenome> listnode)
         {
-            var maxFitness = listnode.Max(e => e.Fitness);
+            var maxFitness = listnode.Min(e => e.Fitness);
             var weight = new double[listnode.Count()];
             // calculate the weights
             for (int i = 0; i < listnode.Count(); i++)
@@ -34,10 +34,8 @@ namespace PathFinder.GeneticAlgorithm
             // when rounding errors occur, we return the last item's index
             if (index == -1)
                 index = weight.Length - 1;
-            return listnode[index];
+            return new Genome(listnode[index]);
         }
-
-
         public (IGenome mon, IGenome dad) SelectCouple(List<IGenome> population)
         {
             var mon = Select(population);
