@@ -26,6 +26,7 @@ namespace PathFinder.GeneticAlgorithm
                 if (date < from)
                     date = date.Add(from - date);
 
+                item.DtChegada = date;
                 genome.Finish = date;
             }
             var totaltime = new TimeSpan(genome.Finish.Ticks - start.Ticks);

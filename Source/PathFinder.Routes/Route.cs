@@ -13,6 +13,8 @@ namespace PathFinder.Routes
         public double Minutes { get { return Seconds / 60; } }
 		public double Hours { get { return Minutes / 60; } }
 
+        public DateTime DtChegada { get; set; }
+
         public Route()
         {
 

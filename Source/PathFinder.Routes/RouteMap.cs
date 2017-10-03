@@ -13,6 +13,14 @@ namespace PathFinder.Routes
         {
             Load(name, now);
         }
+        public RouteMap(MapPoint storage, DateTime? now = null)
+        {
+            Storage = storage;
+
+            if (now == null)
+                now = DateTime.Now;
+            Storage.Date = (DateTime)now;
+        }
         async void Load(string name, DateTime? now)
         {
             Storage = await SearchRoute.GetPointAsync(new MapPoint(name));
@@ -22,6 +30,7 @@ namespace PathFinder.Routes
 
             Storage.Date = (DateTime)now;
         }
+
         public void AddDestinations(params string[] param)
         {
             foreach (var item in param)
@@ -30,6 +39,10 @@ namespace PathFinder.Routes
         public async void AddDestination(string destination)
         {
             var point = await SearchRoute.GetPointAsync(new MapPoint(destination));
+            Destinations.Add(point);
+        }
+        public async void AddDestination(MapPoint point)
+        {
             Destinations.Add(point);
         }
         /// <summary>
