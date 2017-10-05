@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PathFinder
 {
-public class ConsoleFont : IDisposable
-{
-    readonly System.ConsoleColor originalForeground;
- 
-    public ConsoleFont(System.ConsoleColor foreground)
+    public class ConsoleFont : IDisposable
     {
-        originalForeground = Console.ForegroundColor;
- 
-        // change the console color
-        Console.ForegroundColor = foreground;
-    }
+        readonly System.ConsoleColor originalForeground;
+
+        public ConsoleFont(System.ConsoleColor foreground)
+        {
+            originalForeground = Console.ForegroundColor;
+
+            // change the console color
+            Console.ForegroundColor = foreground;
+        }
 
         public void Dispose()
         {
