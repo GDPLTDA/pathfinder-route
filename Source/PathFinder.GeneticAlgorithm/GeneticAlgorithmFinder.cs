@@ -31,7 +31,7 @@ namespace PathFinder.GeneticAlgorithm
             GenerationLimit = GASettings.GenerationLimit;
             BestSolutionToPick = GASettings.BestSolutionToPick;
         }
-        public async Task<IGenome> FindPathAsync(RouteMap map)
+        public async Task<IGenome> FindPathAsync(RouteMap map, IGenome seed = null)
         {
             if (Mutate == null || Crossover == null || Fitness == null || Selection == null)
                 throw new System.Exception("GA cant run without all operators");
@@ -39,8 +39,18 @@ namespace PathFinder.GeneticAlgorithm
             var rand = RandomFactory.Rand;
             var startNode = map.Storage;
 
+            Populations.Clear();
+
+            var popusize = PopulationSize;
+
+            if (seed != null)
+            {
+                Populations.Add(seed);
+                popusize--; ;
+            }
+
             Populations.AddRange(Genome.Generator(map)
-                                    .Take(PopulationSize));
+                                    .Take(popusize));
 
             await CalcFitness();
 

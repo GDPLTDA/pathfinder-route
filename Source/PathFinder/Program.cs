@@ -19,6 +19,7 @@ namespace PathFinder
 
         static async Task Main()
         {
+            var finder = new GeneticAlgorithmFinder();
             RouteMap map = null;
 
             using (TimeMeasure.Init())
@@ -39,7 +40,6 @@ namespace PathFinder
 
                 while (map.Destinations.Any())
                 {
-                    var finder = new GeneticAlgorithmFinder();
                     var best = await finder.FindPathAsync(map);
 
                     var routesInTime = best.ListRoutes.TakeWhile(e => e.DtChegada <= DtEntrega).ToList();
@@ -80,8 +80,7 @@ namespace PathFinder
                         if (!map.Destinations.Any())
                             continue;
 
-                        var finder = new GeneticAlgorithmFinder();
-                        var best = await finder.FindPathAsync(map);
+                        var best = await finder.FindPathAsync(map, Entregador.Genome);
 
                         Print($"Entregador ({Entregadores.IndexOf(Entregador) + 1})");
                         Print($"Saindo: {best.Map.Storage.Date:dd/MM/yyy hh:mm}");
@@ -92,6 +91,7 @@ namespace PathFinder
 
                         map.Next(best.ListRoutes);
 
+                        Entregador.Genome = new Genome(best);
                         Entregador.Saida = map.Storage;
                         Entregador.Pontos = map.Destinations;
                     }
