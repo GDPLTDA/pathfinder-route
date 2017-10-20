@@ -1,12 +1,11 @@
-﻿using PathFinder.GeneticAlgorithm.Factories;
-using PathFinder.GeneticAlgorithm.Abstraction;
+﻿using PathFinder.GeneticAlgorithm.Abstraction;
+using PathFinder.GeneticAlgorithm.Factories;
+using PathFinder.Routes;
 using System.Collections.Generic;
 using System.Linq;
-using PathFinder.Routes;
-using PathFinder.GeneticAlgorithm.Crossover;
-using System;
-using System.Threading.Tasks;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 
 namespace PathFinder.GeneticAlgorithm
 {
@@ -110,20 +109,12 @@ namespace PathFinder.GeneticAlgorithm
             Selection = selection;
         }
 
-        async Task CalcGenomeRoutesAsync()
-        {
-            var throttleList = new List<Func<Task>>();
-
-            //foreach (var item in Populations)
-            //    await item.CalcRoutesAsync();
-            foreach (var item in Populations)
-                throttleList.Add(() => item.CalcRoutesAsync());
-            await Observable
-                     .Range(0, throttleList.Count())
-                     .Select(n => Observable.FromAsync(() => throttleList[n]()))
+        async Task CalcGenomeRoutesAsync() =>
+            await Populations
+                     .ToObservable(NewThreadScheduler.Default)
+                     .Select(n => Observable.FromAsync(n.CalcRoutesAsync))
                      .Merge(THROTTLE);
 
-        }
 
 
 

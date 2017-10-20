@@ -1,10 +1,10 @@
 ﻿using PathFinder.GeneticAlgorithm.Abstraction;
 using PathFinder.GeneticAlgorithm.Factories;
 using PathFinder.Routes;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PathFinder.GeneticAlgorithm
 {
@@ -24,7 +24,7 @@ namespace PathFinder.GeneticAlgorithm
         public Genome(IGenome genome)
         {
             Map = genome.Map;
-            ListNodes = genome.ListNodes.Select(o=>o).ToList();
+            ListNodes = genome.ListNodes.Select(o => o).ToList();
             ListRoutes = genome.ListRoutes.Select(o => o).ToList();
             Finish = genome.Finish;
         }
@@ -39,7 +39,7 @@ namespace PathFinder.GeneticAlgorithm
             {
                 var i = rand.Next(Map.Destinations.Count);
 
-                if (ListNodes.Exists(o=>o.MapPoint.Equals(Map.Destinations[i])))
+                if (ListNodes.Exists(o => o.MapPoint.Equals(Map.Destinations[i])))
                     continue;
 
                 ListNodes.Add(new Node(Map.Destinations[i]));
@@ -56,22 +56,19 @@ namespace PathFinder.GeneticAlgorithm
             foreach (var item in ListNodes)
             {
                 route = await SearchRoute.GetRouteAsync(point, item.MapPoint);
-
                 ListRoutes.Add(route);
 
                 point = item.MapPoint;
             }
         }
 
-        public void Save()
-        {
+        public void Save() =>
             SearchRoute.SaveRouteImage(ListRoutes);
-        }
 
         public bool IsEqual(IGenome genome)
         {
-            if(genome!=null)
-                if(ListRoutes.Sum(o=>o.Meters) == genome.ListRoutes.Sum(o => o.Meters))
+            if (genome != null)
+                if (ListRoutes.Sum(o => o.Meters) == genome.ListRoutes.Sum(o => o.Meters))
                     if (ListRoutes.Sum(o => o.Minutes) == genome.ListRoutes.Sum(o => o.Minutes))
                         return true;
 
@@ -84,10 +81,7 @@ namespace PathFinder.GeneticAlgorithm
                 returnnode.Add(new Node(item));
             return returnnode;
         }
-        public override string ToString()
-        {
-            return $"F={Fitness}";
-        }
+        public override string ToString() => $"F={Fitness}";
 
         public static IEnumerable<IGenome> Generator(RouteMap map)
         {
