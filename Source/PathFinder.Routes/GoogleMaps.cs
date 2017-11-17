@@ -3,6 +3,18 @@ using System.Collections.Generic;
 
 namespace PathFinder.Routes.GoogleMapas
 {
+    public class GoogleMapsRouteRoot
+    {
+        public List<GeocodedWaypoint> geocoded_waypoints { get; set; }
+        public List<MapRoute> routes { get; set; }
+        public string status { get; set; }
+    }
+
+    public class GoogleMapsPointRoot
+    {
+        public List<Result> results { get; set; }
+        public string status { get; set; }
+    }
     public class GeocodedWaypoint
 	{
 		public string geocoder_status { get; set; }

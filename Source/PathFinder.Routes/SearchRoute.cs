@@ -1,13 +1,11 @@
 ﻿using System.Linq;
 using Newtonsoft.Json;
 using PathFinder.Routes.GoogleMapas;
-using PathFinder;
 using System.Net;
 using System.IO;
 using System.Collections.Generic;
 using System;
 using System.Text;
-using System.Globalization;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
@@ -65,7 +63,7 @@ namespace PathFinder.Routes
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
                 var json = await reader.ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<RouteRoot>(json);
+                var data = JsonConvert.DeserializeObject<GoogleMapsRouteRoot>(json);
 
                 if (data != null)
                 {
@@ -119,7 +117,7 @@ namespace PathFinder.Routes
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
                 var json = await reader.ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<PointRoot>(json);
+                var data = JsonConvert.DeserializeObject<GoogleMapsPointRoot>(json);
 
                 if (data != null)
                 {
