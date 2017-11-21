@@ -7,6 +7,8 @@ namespace PathFinder.Routes
     public class RouteMap
     {
         public MapPoint Storage { get; set; }
+
+        public DateTime DataSaida => Storage.Date;
         public List<MapPoint> Destinations { get; set; } = new List<MapPoint>();
 
         public RouteMap(string name, DateTime? now = null)
@@ -41,7 +43,7 @@ namespace PathFinder.Routes
             var point = await SearchRoute.GetPointAsync(new MapPoint(destination));
             Destinations.Add(point);
         }
-        public async void AddDestination(MapPoint point)
+        public void AddDestination(MapPoint point)
         {
             Destinations.Add(point);
         }

@@ -14,6 +14,7 @@ namespace PathFinder.Routes
 {
     public static class SearchRoute
     {
+        static bool CacheActive { get; set; } = true;
         static ConcurrentDictionary<string, Route> RouteCache = new ConcurrentDictionary<string, Route>();
         static ConcurrentDictionary<string, MapPoint> PointCache = new ConcurrentDictionary<string, MapPoint>();
         const string Url = "https://maps.googleapis.com/maps/api/";
@@ -21,13 +22,16 @@ namespace PathFinder.Routes
 
         static SearchRoute()
         {
-            if (File.Exists("RouteCache.txt"))
-                RouteCache = JsonConvert.DeserializeObject<ConcurrentDictionary<string, Route>>
-                    (File.ReadAllText("RouteCache.txt"));
+            if (CacheActive)
+            {
+                if (File.Exists("RouteCache.txt"))
+                    RouteCache = JsonConvert.DeserializeObject<ConcurrentDictionary<string, Route>>
+                        (File.ReadAllText("RouteCache.txt"));
 
-            if(File.Exists("PointCache.txt"))
-                PointCache = JsonConvert.DeserializeObject<ConcurrentDictionary<string, MapPoint>>
-                    (File.ReadAllText("PointCache.txt"));
+                if (File.Exists("PointCache.txt"))
+                    PointCache = JsonConvert.DeserializeObject<ConcurrentDictionary<string, MapPoint>>
+                        (File.ReadAllText("PointCache.txt"));
+            }
         }
 
         public static void SaveCache()
@@ -85,7 +89,7 @@ namespace PathFinder.Routes
                             route.Meters = l.distance.value;
                             route.Seconds = l.duration.value;
 
-                            if (!RouteCache.TryAdd(key, route))
+                            if (CacheActive && !RouteCache.TryAdd(key, route))
                                 using (var c = new ConsoleFont(ConsoleColor.Red))
                                     Console.WriteLine($"CONFLICT AT {key}");
                         }

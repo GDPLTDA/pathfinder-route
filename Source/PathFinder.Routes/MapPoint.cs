@@ -1,7 +1,5 @@
 ﻿using PathFinder.Routes.GoogleMapas;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PathFinder.Routes
 {
@@ -31,9 +29,9 @@ namespace PathFinder.Routes
             return $"({Latitude},{Longitude}) {Name}";
         }
 
-        public bool Equals(MapPoint obj)
+        public bool Equals(MapPoint o)
         {
-            return Name == obj.Name;
+            return Latitude == o.Latitude && Longitude == o.Longitude;
         }
     }
 }

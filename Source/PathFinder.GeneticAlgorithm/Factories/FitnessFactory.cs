@@ -7,8 +7,6 @@ namespace PathFinder.GeneticAlgorithm.Factories
     {
         public static IFitness GetSmallPathcImplementation()
             => new FitnessSmallPath();
-        public static IFitness GetMultPathImplementation()
-            => new FitnessMultPath();
         public static IFitness GetTimePathImplementation()
             => new FitnessTimePath();
 
@@ -21,8 +19,6 @@ namespace PathFinder.GeneticAlgorithm.Factories
             {
                 case FitnessEnum.SmallPath:
                     return GetSmallPathcImplementation();
-                case FitnessEnum.MultPath:
-                    return GetMultPathImplementation();
                 case FitnessEnum.TimePath:
                     return GetTimePathImplementation();
             }

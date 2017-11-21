@@ -7,8 +7,10 @@ namespace PathFinder
 {
     public class Entregador
     {
+        public int Numero { get; set; }
         public MapPoint Saida { get; set; }
         public List<MapPoint> Pontos { get; set; }
+        public Route NextRoute { get; set; }
         IGenome _Genome;
         public IGenome Genome { get { return _Genome; } set { _Genome = value; AddGenome(value); } }
 
