@@ -1,23 +1,23 @@
 ﻿using PathFinder.GeneticAlgorithm;
 using PathFinder.Routes;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static System.Console;
 
 namespace PathFinder
 {
-    public class PRVJTFinder : IDisposable
+    public class PRVJTFinder
     {
-        GeneticAlgorithmFinder GaFinder = new GeneticAlgorithmFinder();
+        readonly GeneticAlgorithmFinder GaFinder;
+        readonly PRVJTConfig Config;
 
-        PRVJTConfig Config;
         public PRVJTFinder(PRVJTConfig config)
         {
             Config = config;
+            GaFinder = new GeneticAlgorithmFinder();
         }
-        
+
         public async Task<FinderResult> Run()
         {
             var result = new FinderResult();
@@ -46,7 +46,7 @@ namespace PathFinder
                     if (result.ListEntregadores.Count > Config.NumEntregadores)
                         return result.Register("Limite de entregadores excedido!");
 
-                    map.Destinations.RemoveAll(o => remainingPoints.Exists(a=> a.Equals(o)));
+                    map.Destinations.RemoveAll(o => remainingPoints.Exists(a => a.Equals(o)));
                 }
             }
 
@@ -71,7 +71,7 @@ namespace PathFinder
                 if (!map.Destinations.Any())
                     return result;
 
-                if (entregador.NextRoute.DtChegada >  Config.DtLimite)
+                if (entregador.NextRoute.DtChegada > Config.DtLimite)
                     return result.Register("Tempo limite para a entrega foi excedido!");
 
                 Print($"Saindo: {map.DataSaida: dd/MM/yyy hh:mm}");
@@ -108,9 +108,5 @@ namespace PathFinder
                 WriteLine(string.IsNullOrEmpty(message) ? "\n" : message);
         }
 
-        public void Dispose()
-        {
-            
-        }
     }
 }

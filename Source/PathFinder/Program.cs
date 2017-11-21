@@ -22,32 +22,31 @@ namespace PathFinder
                     .ForEach(e => map.AddDestination(e));
             }
 
-            var config = new PRVJTConfig { Map = map, DtInicio = DateTime.Now, NumEntregadores = 7 };
+            var config = new PRVJTConfig { Map = map, DtInicio = DateTime.Now, NumEntregadores = 10 };
 
-            using (var finder = new PRVJTFinder(config))
+            var finder = new PRVJTFinder(config);
+            var result = await finder.Run();
+
+            if (result.Erro)
             {
-                var result = await finder.Run();
-
-                if (result.Erro)
-                {
-                    PRVJTFinder.PrintErro(result.Messagem);
-                    Console.ReadKey();
-                    return;
-                }
-
-                while (!result.Concluido)
-                {
-                    foreach (var item in result.ListEntregadores)
-                    {
-                        var entreresult = await finder.Step(item);
-
-                        if (!entreresult.Erro)
-                            PRVJTFinder.PrintErro(entreresult.Messagem);
-                    }
-                    Console.WriteLine("Proxima rota de todos os entregadores?");
-                    Console.ReadKey();
-                }
+                PRVJTFinder.PrintErro(result.Messagem);
+                Console.ReadKey();
+                return;
             }
-        }        
+
+            while (!result.Concluido)
+            {
+                foreach (var item in result.ListEntregadores)
+                {
+                    var entreresult = await finder.Step(item);
+
+                    if (!entreresult.Erro)
+                        PRVJTFinder.PrintErro(entreresult.Messagem);
+                }
+                Console.WriteLine("Proxima rota de todos os entregadores?");
+                Console.ReadKey();
+            }
+
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using PathFinder.Routes.GoogleMapas;
-using System;
+﻿using System;
 
 namespace PathFinder.Routes
 {
@@ -14,24 +13,14 @@ namespace PathFinder.Routes
         public MapPoint()
         {
         }
+
         public MapPoint(string name)
         {
             Name = name;
         }
-        public MapPoint(string name, Location loc)
-        {
-            Name = name;
-            Latitude = loc.lat;
-            Longitude = loc.lng;
-        }
-        public override string ToString()
-        {
-            return $"({Latitude},{Longitude}) {Name}";
-        }
 
-        public bool Equals(MapPoint o)
-        {
-            return Latitude == o.Latitude && Longitude == o.Longitude;
-        }
+        public override string ToString() => $"({Latitude},{Longitude}) {Name}";
+
+        public bool Equals(MapPoint o) => Latitude == o.Latitude && Longitude == o.Longitude;
     }
 }
