@@ -114,9 +114,5 @@ namespace PathFinder.GeneticAlgorithm
                      .ToObservable(NewThreadScheduler.Default)
                      .Select(n => Observable.FromAsync(n.CalcRoutesAsync))
                      .Merge(THROTTLE);
-
-
-
-
     }
 }
