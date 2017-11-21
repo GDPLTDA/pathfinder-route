@@ -79,6 +79,10 @@ namespace PathFinder
                 Print($"Vá para {entregador.NextRoute.Destination.Name}");
                 Print($"Horario de Chegada: {entregador.NextRoute.DtChegada:dd/MM/yyy hh:mm)}");
 
+                // Se existe só um ponto, esse ponto vira o estoque na proximo, então não é preciso
+                if (entregador.Pontos.Count == 1)
+                    return result;
+
                 var best = await GaFinder.FindPathAsync(map, entregador.Genome);
 
                 map.Next(best.ListRoutes);

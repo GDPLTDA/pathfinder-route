@@ -44,6 +44,7 @@ namespace PathFinder
                         if (!entreresult.Erro)
                             PRVJTFinder.PrintErro(entreresult.Messagem);
                     }
+                    Console.WriteLine("Proxima rota de todos os entregadores?");
                     Console.ReadKey();
                 }
             }
