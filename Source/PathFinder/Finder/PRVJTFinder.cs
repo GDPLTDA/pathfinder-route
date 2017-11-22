@@ -7,6 +7,20 @@ using static System.Console;
 
 namespace PathFinder
 {
+    public class DescricaoAttribute : Attribute
+    {
+        public string Descricao { get; set; }
+    }
+    public enum TipoErro
+    {
+        [Descricao(Descricao = "Não é possível entregar a tempo!")]
+        EstourouTempo,
+        [Descricao(Descricao = "Limite de entregadores excedido!")]
+        LimiteEntregadores,
+        [Descricao(Descricao = "Tempo limite para a entrega foi excedido!")]
+        EstourouTempoEntrega
+
+    }
     public class PRVJTFinder
     {
         readonly GeneticAlgorithmFinder GaFinder;
@@ -25,8 +39,6 @@ namespace PathFinder
 
             using (TimeMeasure.Init())
             {
-                Print($"Dividindo Rotas...");
-
                 while (map.Destinations.Any())
                 {
                     var best = await GaFinder.FindPathAsync(map);
@@ -34,7 +46,7 @@ namespace PathFinder
                     var routesInTime = best.ListRoutes.TakeWhile(e => e.DtChegada <= Config.DtLimite).ToList();
 
                     if (!routesInTime.Any())
-                        return result.Register("Não é possível entregar a tempo!");
+                        return result.Register(TipoErro.EstourouTempo);
 
                     var remainingPoints = routesInTime.Select(o => o.Destination).ToList();
 
@@ -44,14 +56,13 @@ namespace PathFinder
                     result.ListEntregadores.Add(new Entregador { Saida = map.Storage, Pontos = destinosEntrega.ToList(), NextRoute = routesInTime.First() });
 
                     if (result.ListEntregadores.Count > Config.NumEntregadores)
-                        return result.Register("Limite de entregadores excedido!");
+                        return result.Register(TipoErro.LimiteEntregadores);
 
                     map.Destinations.RemoveAll(o => remainingPoints.Exists(a => a.Equals(o)));
                 }
             }
-            Print($"Numero de Entregadores {result.ListEntregadores.Count}...");
 
-            SearchRoute.SaveCache();
+            //SearchRoute.SaveCache();
             return result;
         }
 
@@ -60,9 +71,6 @@ namespace PathFinder
             using (TimeMeasure.Init())
             {
                 var result = new EntregadorResult(entregador);
-
-                Print($"Calculando Rota do Entregador {entregador.Numero}...");
-
                 var map = new RouteMap(entregador.Saida);
 
                 entregador
@@ -73,12 +81,7 @@ namespace PathFinder
                     return result;
 
                 if (entregador.NextRoute.DtChegada > Config.DtLimite)
-                    return result.Register("Tempo limite para a entrega foi excedido!");
-
-                Print($"Saindo: {map.DataSaida: dd/MM/yyy hh:mm}");
-                Print($"Saia de {map.Storage.Name}");
-                Print($"Vá para {entregador.NextRoute.Destination.Name}");
-                Print($"Horario de Chegada: {entregador.NextRoute.DtChegada:dd/MM/yyy hh:mm)}");
+                    return result.Register(TipoErro.EstourouTempoEntrega);
 
                 // Se existe só um ponto, esse ponto vira o estoque na proximo, então não é preciso
                 if (entregador.Pontos.Count == 1)
@@ -95,19 +98,6 @@ namespace PathFinder
 
                 return result;
             }
-        }
-
-        public static void Print(string message = null, ConsoleColor color = ConsoleColor.White)
-        {
-            using (new ConsoleFont(color))
-                WriteLine(string.IsNullOrEmpty(message) ? "\n" : message);
-        }
-
-        public static void PrintErro(string message = null, ConsoleColor color = ConsoleColor.Red)
-        {
-            using (new ConsoleFont(color))
-                WriteLine(string.IsNullOrEmpty(message) ? "\n" : message);
-        }
-
+        }      
     }
 }

@@ -10,7 +10,7 @@ namespace PathFinder.GeneticAlgorithm
         public static double MutationRate { get; set; } = 0.001;
 
         public static int PopulationSize { get; set; } = 1000;
-        public static int GenerationLimit { get; set; } = 100;
-        public static int BestSolutionToPick { get; set; } = 5;
+        public static int GenerationLimit { get; set; } = 200;
+        public static int BestSolutionToPick { get; set; } = 20;
     }
 }

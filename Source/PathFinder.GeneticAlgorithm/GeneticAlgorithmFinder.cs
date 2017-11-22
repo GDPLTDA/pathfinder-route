@@ -50,18 +50,19 @@ namespace PathFinder.GeneticAlgorithm
 
             Populations.AddRange(Genome.Generator(map)
                                     .Take(popusize));
-
             await CalcFitness();
+
+            double bestfitness = 0;
+            double countfitness = 0;
 
             for (int i = 0; i < GenerationLimit; i++)
             {
                 var newpopulations = new List<IGenome>();
-                Populations = Populations.OrderBy(o => o.Fitness).ToList();
-
+                
                 for (int j = 0; j < BestSolutionToPick; j++)
                     newpopulations.Add(Populations[j]);
 
-                var obj = new object();
+                 //var obj = new object();
 
                 while (newpopulations.Count < Populations.Count)
                 {
@@ -75,23 +76,41 @@ namespace PathFinder.GeneticAlgorithm
                     nodemom = Mutate.Apply(crossMom);
                     nodedad = Mutate.Apply(crossDad);
 
+                    //await nodemom.CalcRoutesAsync();
+                    //nodemom.CalcFitness(Fitness);
+
+                    //await nodedad.CalcRoutesAsync();
+                    //nodedad.CalcFitness(Fitness);
+
                     // Add in new population
-                    lock (obj)
-                    {
+                    //lock (obj)
+                    //{
                         newpopulations.AddRange(new IGenome[] { nodemom, nodedad });
-                    }
+                    //}
                 }
                 Populations = newpopulations.ToList();
 
                 await CalcFitness();
+                
+                Best = Populations.First();
 
-                Best = Populations.OrderBy(o => o.Fitness).First();
+                if (Best.Fitness != bestfitness)
+                {
+                    bestfitness = Best.Fitness;
+                    countfitness = 0;
+                }
+                else
+                    countfitness++;
+
+                if (countfitness == (0.1 * GenerationLimit))
+                    break;
 
                 //using (var color = new ConsoleFont(ConsoleColor.Yellow))
                 //    Console.WriteLine($"Geração:{i} Distancia: {Best.ListRoutes.Sum(o => o.Meters)}" +
                 //                        $" Tempo: {Best.ListRoutes.Sum(o => o.Minutes)}" +
                 //                        $" Fitness: {Best.Fitness}");
             }
+
             return Best;
         }
 
@@ -99,6 +118,7 @@ namespace PathFinder.GeneticAlgorithm
         {
             await CalcGenomeRoutesAsync();
             Populations.ForEach(e => e.CalcFitness(Fitness));
+            Populations = Populations.OrderBy(o => o.Fitness).ToList();
         }
 
         public void Configure(IFitness fItness, IMutate mutate, ICrossover crossover, ISelection selection)

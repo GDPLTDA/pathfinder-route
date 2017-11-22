@@ -15,6 +15,13 @@ namespace PathFinder
 
             return this;
         }
+        public PRVJTResult Register(TipoErro erro)
+        {
+            Erro = true;
+            Messagem = erro.GetDescricao();
+
+            return this;
+        }
     }
     public class FinderResult : PRVJTResult
     {
@@ -30,6 +37,12 @@ namespace PathFinder
 
             return this;
         }
+        public new FinderResult Register(TipoErro erro)
+        {
+            base.Register(erro);
+
+            return this;
+        }
     }
     public class EntregadorResult : PRVJTResult
     {
@@ -42,6 +55,12 @@ namespace PathFinder
         public new EntregadorResult Register(string msg)
         {
             base.Register(msg);
+
+            return this;
+        }
+        public new EntregadorResult Register(TipoErro erro)
+        {
+            base.Register(erro);
 
             return this;
         }
