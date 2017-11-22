@@ -20,8 +20,6 @@ namespace PathFinder
             _stopwatch.Stop();
             using (var color = new ConsoleFont(ConsoleColor.Green))
                 Console.WriteLine($"Tempo [{_stopwatch.Elapsed.Minutes:00}:{_stopwatch.Elapsed.Seconds:00}]");
-
-            Console.WriteLine("");
         }
     }
 }

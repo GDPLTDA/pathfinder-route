@@ -49,6 +49,7 @@ namespace PathFinder
                     map.Destinations.RemoveAll(o => remainingPoints.Exists(a=> a.Equals(o)));
                 }
             }
+            Print($"Numero de Entregadores {result.ListEntregadores.Count}...");
 
             SearchRoute.SaveCache();
             return result;
