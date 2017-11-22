@@ -1,14 +1,13 @@
-﻿using System.Linq;
-using Newtonsoft.Json;
-using PathFinder.Routes.GoogleMapas;
-using System.Net;
-using System.IO;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 using System;
-using System.Text;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PathFinder.Routes
 {
@@ -67,7 +66,7 @@ namespace PathFinder.Routes
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
                 var json = await reader.ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<GoogleMapsRouteRoot>(json);
+                dynamic data = JsonConvert.DeserializeObject(json);
 
                 if (data != null)
                 {
@@ -121,7 +120,7 @@ namespace PathFinder.Routes
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
                 var json = await reader.ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<GoogleMapsPointRoot>(json);
+                dynamic data = JsonConvert.DeserializeObject(json);
 
                 if (data != null)
                 {
@@ -191,7 +190,7 @@ namespace PathFinder.Routes
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        static WebRequest GetRequestAddress(string address) 
+        static WebRequest GetRequestAddress(string address)
             => WebRequest.Create(
                 $"{Url}geocode/json?address={address}&sensor=false&key={Key}");
         /// <summary>
@@ -205,7 +204,7 @@ namespace PathFinder.Routes
             foreach (var route in listRoutes)
                 strbuild.Append($"|{ConvNumber(route.Origin.Latitude)},{ConvNumber(route.Origin.Longitude)}|" +
                                 $"{ConvNumber(route.Destination.Latitude)},{ConvNumber(route.Destination.Longitude)}");
-            
+
             var url = $"{Url}staticmap?path={strbuild.ToString().Substring(1)}&markers={strbuild.ToString().Substring(1)}&size=512x512";
 
             return WebRequest.Create(url);
@@ -216,6 +215,6 @@ namespace PathFinder.Routes
         /// <param name="num"></param>
         /// <returns></returns>
         public static string ConvNumber(double num)
-            => Math.Round(num,6).ToString().Replace(',', '.');
+            => Math.Round(num, 6).ToString().Replace(',', '.');
     }
 }
