@@ -1,24 +1,21 @@
 ﻿using PathFinder.GeneticAlgorithm;
 using PathFinder.Routes;
-using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using static System.Console;
 
 namespace PathFinder
 {
-    public class DescricaoAttribute : Attribute
-    {
-        public string Descricao { get; set; }
-    }
+
     public enum TipoErro
     {
-        [Descricao(Descricao = "Não é possível entregar a tempo!")]
+        [Description("Não é possível entregar a tempo!")]
         EstourouTempo,
-        [Descricao(Descricao = "Limite de entregadores excedido!")]
+        [Description("Limite de entregadores excedido!")]
         LimiteEntregadores,
-        [Descricao(Descricao = "Tempo limite para a entrega foi excedido!")]
-        EstourouTempoEntrega
+        [Description("Tempo limite para a entrega foi excedido!")]
+        EstourouTempoEntrega,
+        Teste
 
     }
     public class PRVJTFinder
@@ -98,6 +95,6 @@ namespace PathFinder
 
                 return result;
             }
-        }      
+        }
     }
 }

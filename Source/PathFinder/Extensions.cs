@@ -1,22 +1,17 @@
-﻿using System.Linq;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
 
 namespace PathFinder
 {
     public static class Extensions
     {
-        public static string GetDescricao(this TipoErro erro)
-        {
-            var memberInfo = typeof(TipoErro).GetMember(erro.ToString())
-                                              .FirstOrDefault();
+        public static string GetDescription(this Enum @enum) =>
+             @enum.GetType().GetMember(@enum.ToString())
+                    .First()
+                    .GetCustomAttributes(typeof(DescriptionAttribute), false)
+                    .FirstOrDefault() is DescriptionAttribute atributoDescricao ?
+                                atributoDescricao.Description : @enum.ToString();
 
-            if (memberInfo != null)
-            {
-                DescricaoAttribute attribute = (DescricaoAttribute)
-                             memberInfo.GetCustomAttributes(typeof(DescricaoAttribute), false)
-                                       .FirstOrDefault();
-                return attribute.Descricao;
-            }
-            return "";
-        }
     }
 }

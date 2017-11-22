@@ -1,5 +1,5 @@
-﻿using PathFinder.GeneticAlgorithm.Factories;
-using PathFinder.GeneticAlgorithm.Abstraction;
+﻿using PathFinder.GeneticAlgorithm.Abstraction;
+using PathFinder.GeneticAlgorithm.Factories;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,13 +16,12 @@ namespace PathFinder.GeneticAlgorithm
                 weight.Add(100 - ((item.Fitness * 100) / maxFitness));
 
             var index = -1;
-            var weight_sum = weight.Sum(o=>o);
+            var weight_sum = weight.Sum();
 
-            //for (int i = 0; i < weight.Length; i++)
-            //    weight_sum += weight[i];
             // get a random value
             var value = RandomFactory.Rand
                             .NextDouble() * weight_sum;
+
             // locate the random value based on the weights
             for (int i = 0; i < weight.Count; i++)
             {

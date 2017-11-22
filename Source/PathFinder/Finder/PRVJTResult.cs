@@ -18,8 +18,7 @@ namespace PathFinder
         public PRVJTResult Register(TipoErro erro)
         {
             Erro = true;
-            Messagem = erro.GetDescricao();
-
+            Messagem = erro.GetDescription();
             return this;
         }
     }
@@ -28,7 +27,7 @@ namespace PathFinder
         public List<Entregador> ListEntregadores { get; set; } = new List<Entregador>();
 
         public bool Concluido => !ListEntregadores.Exists(o => o.Pontos.Any());
-        
+
         public string JpgMap { get; set; }
 
         public new FinderResult Register(string msg)
