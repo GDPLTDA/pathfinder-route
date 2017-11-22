@@ -13,28 +13,24 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\PathFinder.GeneticAlgorithm\PathFinder.GeneticAlgorithm.csproj" />
     <ProjectReference Include="..\PathFinder.Routes\PathFinder.Routes.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Tests\Teste 1.txt">
+    <None Update="Tests\Extras 2.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Tests\Teste 2.txt">
+    <None Update="Tests\Senacs 2.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Tests\Teste 3.txt">
+    <None Update="Tests\Senacs 1.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Tests\Teste 4.txt">
+    <None Update="Tests\MacDonalts.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Tests\Teste 5.txt">
+    <None Update="Tests\Extras 1.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
