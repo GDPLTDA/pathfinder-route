@@ -9,7 +9,6 @@ namespace PathFinder
     {
         public RouteMap Map { get; set; }
         public int NumEntregadores { get; set; }
-        public DateTime DtInicio { get; set; }
         public DateTime DtLimite { get; set; } = DateTime.Now.AddDays(4);
     }
 }

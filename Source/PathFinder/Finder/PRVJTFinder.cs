@@ -1,7 +1,11 @@
 ﻿using PathFinder.GeneticAlgorithm;
 using PathFinder.Routes;
+using System;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PathFinder
@@ -50,7 +54,10 @@ namespace PathFinder
                     var destinosEntrega = map.Destinations
                                         .Where(o => remainingPoints.Exists(a => a.Equals(o)));
 
-                    result.ListEntregadores.Add(new Entregador { Saida = map.Storage, Pontos = destinosEntrega.ToList(), NextRoute = routesInTime.First() });
+                    result.ListEntregadores.Add(new Entregador {
+                            Saida = map.Storage,
+                            Pontos = destinosEntrega.ToList(),
+                            NextRoute = routesInTime.First() });
 
                     if (result.ListEntregadores.Count > Config.NumEntregadores)
                         return result.Register(TipoErro.LimiteEntregadores);
@@ -95,6 +102,43 @@ namespace PathFinder
 
                 return result;
             }
+        }
+        public static PRVJTConfig GetConfigByFile(string fileName)
+        {
+            using (TimeMeasure.Init())
+            {
+                var config = new PRVJTConfig();
+                using (StreamReader sr = new StreamReader(fileName, Encoding.GetEncoding("ISO-8859-1")))
+                {
+                    var name = ReadConfig("Estoque", sr);
+                    var endereco = ReadConfig("Endereco", sr);
+                    var saida = DateTime.Parse(ReadConfig("Saida", sr));
+                    var volta = DateTime.Parse(ReadConfig("Volta", sr));
+                    var entregadores = Convert.ToInt32(ReadConfig("Entregadores", sr));
+                    var descarga = ReadConfig("Descarga", sr);
+
+                    config.Map = new RouteMap(new MapPoint(name, endereco), saida);
+                    config.DtLimite = volta;
+                    config.NumEntregadores = entregadores;
+                    //Linha de titulo
+                    sr.ReadLine();
+
+                    while (sr.Peek() >= 0)
+                    {
+                        var line = sr.ReadLine().Split("|").Select(o=>o.Replace("\t","")).ToList();
+
+                        var map = new MapPoint(line[0], line[1]);
+                        map.Period = new Period(line[2], line[3]);
+                        config.Map.AddDestination(map);
+                    }
+                }
+                return config;
+            }
+        }
+        public static string ReadConfig(string configname, StreamReader st)
+        {
+            var line = st.ReadLine();
+            return Regex.Match(line, $"{configname}=([\\w\\s\\.\\/\\:]+)").Groups.Last().Value;
         }
     }
 }

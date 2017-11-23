@@ -13,4 +13,10 @@
     <ProjectReference Include="..\PathFinder.GeneticAlgorithm\PathFinder.GeneticAlgorithm.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Senacs 1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

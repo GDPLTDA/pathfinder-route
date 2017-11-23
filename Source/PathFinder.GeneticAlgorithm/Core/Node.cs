@@ -8,7 +8,7 @@ namespace PathFinder.GeneticAlgorithm
 
         public Node(Node node)
         {
-            MapPoint = new MapPoint(node.MapPoint.Name);
+            MapPoint = new MapPoint(node.MapPoint.Endereco);
 
             MapPoint.Date = node.MapPoint.Date;
             MapPoint.Period = node.MapPoint.Period;

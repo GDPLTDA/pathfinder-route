@@ -11,6 +11,7 @@ namespace PathFinder
         public MapPoint Saida { get; set; }
         public List<MapPoint> Pontos { get; set; }
         public Route NextRoute { get; set; }
+        public RouteMap Map { get; set; }
         IGenome _Genome;
         public IGenome Genome { get { return _Genome; } set { _Genome = value; AddGenome(value); } }
 

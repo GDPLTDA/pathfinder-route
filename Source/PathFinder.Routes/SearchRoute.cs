@@ -41,7 +41,7 @@ namespace PathFinder.Routes
 
         public async static Task<Route> GetRouteAsync(MapPoint origin, MapPoint destination)
         {
-            var key = $"{origin.Name}|{destination.Name}";
+            var key = $"{origin.Endereco}|{destination.Endereco}";
 
             if (RouteCache.ContainsKey(key))
                 return RouteCache[key];
@@ -52,7 +52,7 @@ namespace PathFinder.Routes
                 var ret = await ReadRequestRouteAsync(origin, destination, key, request);
 
                 using (var color = new ConsoleFont(ConsoleColor.Green))
-                    Console.WriteLine($"Rota Encontrada: : {origin.Name} {destination.Name}");
+                    Console.WriteLine($"Rota Encontrada: : {origin.Endereco} {destination.Endereco}");
 
                 return ret;
             }
@@ -66,7 +66,7 @@ namespace PathFinder.Routes
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
                 var json = await reader.ReadToEndAsync();
-                dynamic data = JsonConvert.DeserializeObject(json);
+                var data = JsonConvert.DeserializeObject<GoogleMapsRouteRoot>(json);
 
                 if (data != null)
                 {
@@ -99,16 +99,16 @@ namespace PathFinder.Routes
         }
         public async static Task<MapPoint> GetPointAsync(MapPoint mappoint)
         {
-            if (PointCache.ContainsKey(mappoint.Name))
-                return PointCache[mappoint.Name];
+            if (PointCache.ContainsKey(mappoint.Endereco))
+                return PointCache[mappoint.Endereco];
 
             using (var c1 = new ConsoleFont(ConsoleColor.White))
             {
-                var request = GetRequestAddress(mappoint.Name);
+                var request = GetRequestAddress(mappoint.Endereco);
                 var ret = await ReadRequestPointAsync(mappoint, request);
 
                 using (var color = new ConsoleFont(ConsoleColor.Green))
-                    Console.WriteLine($"Endereço Encontrado: {mappoint.Name} ({ret.Latitude},{ret.Longitude})");
+                    Console.WriteLine($"Endereço Encontrado: {mappoint.Endereco} ({ret.Latitude},{ret.Longitude})");
 
                 return ret;
             }
@@ -120,13 +120,13 @@ namespace PathFinder.Routes
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
                 var json = await reader.ReadToEndAsync();
-                dynamic data = JsonConvert.DeserializeObject(json);
+                var data = JsonConvert.DeserializeObject<GoogleMapsPointRoot>(json);
 
                 if (data != null)
                 {
                     if (!data.results.Any())
                         using (var c = new ConsoleFont(ConsoleColor.Red))
-                            Console.WriteLine($"{data.status}: {mappoint.Name}");
+                            Console.WriteLine($"{data.status}: {mappoint.Endereco}");
 
                     foreach (var r in data.results)
                     {
@@ -134,9 +134,9 @@ namespace PathFinder.Routes
                         mappoint.Latitude = r.geometry.location.lat;
                         mappoint.Longitude = r.geometry.location.lng;
 
-                        if (!PointCache.TryAdd(mappoint.Name, mappoint))
+                        if (!PointCache.TryAdd(mappoint.Endereco, mappoint))
                             using (var c = new ConsoleFont(ConsoleColor.Red))
-                                Console.WriteLine($"CONFLICT AT {mappoint.Name}");
+                                Console.WriteLine($"CONFLICT AT {mappoint.Endereco}");
                     }
                 }
             }
@@ -176,7 +176,7 @@ namespace PathFinder.Routes
         /// <returns></returns>
         static WebRequest GetRequestNameRoute(MapPoint ori, MapPoint des)
             => WebRequest.Create(
-                $"{Url}directions/json?origin={ori.Name}&destination={des.Name}&sensor=false&key={Key}");
+                $"{Url}directions/json?origin={ori.Endereco}&destination={des.Endereco}&sensor=false&key={Key}");
         /// <summary>
         /// Busca o tempo,distancia entre dois pontos usando o Latitude e Longitude
         /// </summary>

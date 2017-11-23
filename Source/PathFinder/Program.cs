@@ -12,17 +12,17 @@ namespace PathFinder
         static async Task Main()
         {
             Print("Carregando rotas de teste...");
-            var map = new RouteMap("São Paulo SP", DateTime.Now);
+            //var map = new RouteMap("São Paulo SP", DateTime.Now);
 
-            using (TimeMeasure.Init())
-            {
-                File.ReadAllText("Capitais.txt", Encoding.GetEncoding("iso-8859-1"))
-                    .Replace("\r", string.Empty).Split("\n")
-                    .ToList()
-                    .ForEach(e => map.AddDestination(e));
-            }
+            //using (TimeMeasure.Init())
+            //{
+            //    File.ReadAllText("Capitais.txt", Encoding.GetEncoding("iso-8859-1"))
+            //        .Replace("\r", string.Empty).Split("\n")
+            //        .ToList()
+            //        .ForEach(e => map.AddDestination(e));
+            //}
 
-            var config = new PRVJTConfig { Map = map, DtInicio = DateTime.Now, NumEntregadores = 7 };
+            var config = PRVJTFinder.GetConfigByFile("Senacs 1.txt"); //new PRVJTConfig { Map = map, NumEntregadores = 7 };
 
             var finder = new PRVJTFinder(config);
 
@@ -41,11 +41,14 @@ namespace PathFinder
             {
                 foreach (var item in result.ListEntregadores)
                 {
+                    if (!item.Pontos.Any())
+                        continue;
+
                     Print($"Calculando Rota do Entregador {item.Numero}...");
 
-                    Print($"Saindo: {map.DataSaida: dd/MM/yyy hh:mm}");
-                    Print($"Saia de {map.Storage.Name}");
-                    Print($"Vá para {item.NextRoute.Destination.Name}");
+                    Print($"Saindo: {item.Saida.Date: dd/MM/yyy hh:mm}");
+                    Print($"Saia de ({item.Saida.Name}){item.Saida.Endereco}");
+                    Print($"Vá para ({item.NextRoute.Destination.Name}){item.NextRoute.Destination.Endereco}");
                     Print($"Horario de Chegada: {item.NextRoute.DtChegada:dd/MM/yyy hh:mm)}");
 
                     var entreresult = await finder.Step(item);
