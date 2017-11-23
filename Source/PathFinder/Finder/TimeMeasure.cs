@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ColoredConsole;
+using System;
 using System.Diagnostics;
 
 namespace PathFinder
@@ -18,8 +19,7 @@ namespace PathFinder
         public void Dispose()
         {
             _stopwatch.Stop();
-            using (var color = new ConsoleFont(ConsoleColor.Green))
-                Console.WriteLine($"Tempo [{_stopwatch.Elapsed.Minutes:00}:{_stopwatch.Elapsed.Seconds:00}]");
+            ColorConsole.WriteLine($"Tempo [{_stopwatch.Elapsed.Minutes:00}:{_stopwatch.Elapsed.Seconds:00}]".Yellow());
         }
     }
 }

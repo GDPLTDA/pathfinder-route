@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ColoredConsole;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -58,16 +59,14 @@ namespace PathFinder
                 Console.ReadKey();
             }
         }
-        public static void Print(string message = null, ConsoleColor color = ConsoleColor.White)
-        {
-            using (new ConsoleFont(color))
-                Console.WriteLine(string.IsNullOrEmpty(message) ? "\n" : message);
-        }
+        public static void Print(string message = null) =>
+               ColorConsole.WriteLine(
+                   (string.IsNullOrEmpty(message) ? "\n" : message).White()
+                   );
 
-        public static void PrintErro(string message = null, ConsoleColor color = ConsoleColor.Red)
-        {
-            using (new ConsoleFont(color))
-                Console.WriteLine(string.IsNullOrEmpty(message) ? "\n" : message);
-        }
+        public static void PrintErro(string message) =>
+                ColorConsole.WriteLine(
+                   (string.IsNullOrEmpty(message) ? "\n" : message).Red().OnDarkRed()
+                   );
     }
 }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ColoredConsole;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -46,16 +47,12 @@ namespace PathFinder.Routes
             if (RouteCache.ContainsKey(key))
                 return RouteCache[key];
 
-            using (var c1 = new ConsoleFont(ConsoleColor.White))
-            {
-                var request = GetRequestPointRoute(origin, destination);
-                var ret = await ReadRequestRouteAsync(origin, destination, key, request);
+            var request = GetRequestPointRoute(origin, destination);
+            var ret = await ReadRequestRouteAsync(origin, destination, key, request);
 
-                using (var color = new ConsoleFont(ConsoleColor.Green))
-                    Console.WriteLine($"Rota Encontrada: : {origin.Endereco} {destination.Endereco}");
+            ColorConsole.WriteLine($"Rota Encontrada: : {origin.Endereco} {destination.Endereco}".White());
 
-                return ret;
-            }
+            return ret;
         }
         public static async Task<Route> ReadRequestRouteAsync(MapPoint origin, MapPoint destination, string key, WebRequest request)
         {
@@ -76,8 +73,7 @@ namespace PathFinder.Routes
                         if (data.status == "OVER_QUERY_LIMIT")
                             throw new Exception("Estourou o limite diario!");
 
-                        using (var c = new ConsoleFont(ConsoleColor.Red))
-                            Console.WriteLine($"{data.status}: {key}");
+                        ColorConsole.WriteLine($"{data.status}: {key}".Red());
                     }
 
                     foreach (var r in routes)
@@ -90,8 +86,7 @@ namespace PathFinder.Routes
                             route.Seconds = l.duration.value;
 
                             if (CacheActive && !RouteCache.TryAdd(key, route))
-                                using (var c = new ConsoleFont(ConsoleColor.Red))
-                                    Console.WriteLine($"CONFLICT AT {key}");
+                                ColorConsole.WriteLine($"CONFLICT AT {key}".Red());
                         }
                     }
                 }
@@ -103,16 +98,12 @@ namespace PathFinder.Routes
             if (PointCache.ContainsKey(mappoint.Endereco))
                 return PointCache[mappoint.Endereco];
 
-            using (var c1 = new ConsoleFont(ConsoleColor.White))
-            {
-                var request = GetRequestAddress(mappoint.Endereco);
-                var ret = await ReadRequestPointAsync(mappoint, request);
+            var request = GetRequestAddress(mappoint.Endereco);
+            var ret = await ReadRequestPointAsync(mappoint, request);
 
-                using (var color = new ConsoleFont(ConsoleColor.Green))
-                    Console.WriteLine($"Endereço Encontrado: {mappoint.Endereco} ({ret.Latitude},{ret.Longitude})");
+            ColorConsole.WriteLine($"Endereço Encontrado: {mappoint.Endereco} ({ret.Latitude},{ret.Longitude})".Green());
 
-                return ret;
-            }
+            return ret;
         }
         public async static Task<MapPoint> ReadRequestPointAsync(MapPoint mappoint, WebRequest request)
         {
@@ -128,8 +119,7 @@ namespace PathFinder.Routes
                     var results = data.results as IEnumerable<dynamic>;
 
                     if (!results.Any())
-                        using (var c = new ConsoleFont(ConsoleColor.Red))
-                            Console.WriteLine($"{data.status}: {mappoint.Endereco}");
+                        ColorConsole.WriteLine($"{data.status}: {mappoint.Endereco}".Red());
 
                     foreach (var r in results)
                     {
@@ -138,8 +128,7 @@ namespace PathFinder.Routes
                         mappoint.Longitude = r.geometry.location.lng;
 
                         if (!PointCache.TryAdd(mappoint.Endereco, mappoint))
-                            using (var c = new ConsoleFont(ConsoleColor.Red))
-                                Console.WriteLine($"CONFLICT AT {mappoint.Endereco}");
+                            ColorConsole.WriteLine($"CONFLICT AT {mappoint.Endereco}".Red());
                     }
                 }
             }
