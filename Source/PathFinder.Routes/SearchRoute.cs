@@ -13,7 +13,7 @@ namespace PathFinder.Routes
 {
     public static class SearchRoute
     {
-        static bool CacheActive { get; set; } = true;
+        static bool CacheActive { get; set; } = false;
         static ConcurrentDictionary<string, Route> RouteCache = new ConcurrentDictionary<string, Route>();
         static ConcurrentDictionary<string, MapPoint> PointCache = new ConcurrentDictionary<string, MapPoint>();
         const string Url = "https://maps.googleapis.com/maps/api/";
@@ -39,7 +39,7 @@ namespace PathFinder.Routes
             File.WriteAllText("PointCache.Txt", JsonConvert.SerializeObject(PointCache));
         }
 
-        public async static Task<Route> GetRouteAsync(MapPoint origin, MapPoint destination)
+        public static async Task<Route> GetRouteAsync(MapPoint origin, MapPoint destination)
         {
             var key = $"{origin.Endereco}|{destination.Endereco}";
 
@@ -57,7 +57,7 @@ namespace PathFinder.Routes
                 return ret;
             }
         }
-        public async static Task<Route> ReadRequestRouteAsync(MapPoint origin, MapPoint destination, string key, WebRequest request)
+        public static async Task<Route> ReadRequestRouteAsync(MapPoint origin, MapPoint destination, string key, WebRequest request)
         {
             var response = request.GetResponse();
 
@@ -66,11 +66,12 @@ namespace PathFinder.Routes
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
                 var json = await reader.ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<GoogleMapsRouteRoot>(json);
+                dynamic data = JsonConvert.DeserializeObject(json);
 
                 if (data != null)
                 {
-                    if (!data.routes.Any())
+                    var routes = data.routes as IEnumerable<dynamic>;
+                    if (!routes.Any())
                     {
                         if (data.status == "OVER_QUERY_LIMIT")
                             throw new Exception("Estourou o limite diario!");
@@ -79,7 +80,7 @@ namespace PathFinder.Routes
                             Console.WriteLine($"{data.status}: {key}");
                     }
 
-                    foreach (var r in data.routes)
+                    foreach (var r in routes)
                     {
                         foreach (var l in r.legs)
                         {
@@ -120,15 +121,17 @@ namespace PathFinder.Routes
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
                 var json = await reader.ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<GoogleMapsPointRoot>(json);
+                dynamic data = JsonConvert.DeserializeObject(json);
 
                 if (data != null)
                 {
-                    if (!data.results.Any())
+                    var results = data.results as IEnumerable<dynamic>;
+
+                    if (!results.Any())
                         using (var c = new ConsoleFont(ConsoleColor.Red))
                             Console.WriteLine($"{data.status}: {mappoint.Endereco}");
 
-                    foreach (var r in data.results)
+                    foreach (var r in results)
                     {
                         //mappoint.Name = r.formatted_address;
                         mappoint.Latitude = r.geometry.location.lat;

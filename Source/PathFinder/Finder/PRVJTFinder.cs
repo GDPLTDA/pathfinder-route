@@ -54,10 +54,12 @@ namespace PathFinder
                     var destinosEntrega = map.Destinations
                                         .Where(o => remainingPoints.Exists(a => a.Equals(o)));
 
-                    result.ListEntregadores.Add(new Entregador {
-                            Saida = map.Storage,
-                            Pontos = destinosEntrega.ToList(),
-                            NextRoute = routesInTime.First() });
+                    result.ListEntregadores.Add(new Entregador
+                    {
+                        Saida = map.Storage,
+                        Pontos = destinosEntrega.ToList(),
+                        NextRoute = routesInTime.First()
+                    });
 
                     if (result.ListEntregadores.Count > Config.NumEntregadores)
                         return result.Register(TipoErro.LimiteEntregadores);
@@ -75,11 +77,12 @@ namespace PathFinder
             using (TimeMeasure.Init())
             {
                 var result = new EntregadorResult(entregador);
-                var map = new RouteMap(entregador.Saida);
+                var map = new RouteMap();
+                await map.Start(entregador.Saida);
 
                 entregador
                     .Pontos
-                    .ForEach(e => map.AddDestination(e));
+                    .ForEach(async e => await map.AddDestination(e));
 
                 if (!map.Destinations.Any())
                     return result;
@@ -103,12 +106,13 @@ namespace PathFinder
                 return result;
             }
         }
-        public static PRVJTConfig GetConfigByFile(string fileName)
+        public static async Task<PRVJTConfig> GetConfigByFile(string fileName)
         {
+
             using (TimeMeasure.Init())
             {
                 var config = new PRVJTConfig();
-                using (StreamReader sr = new StreamReader(fileName, Encoding.GetEncoding("ISO-8859-1")))
+                using (var sr = new StreamReader(fileName, Encoding.GetEncoding("ISO-8859-1")))
                 {
                     var name = ReadConfig("Estoque", sr);
                     var endereco = ReadConfig("Endereco", sr);
@@ -117,7 +121,9 @@ namespace PathFinder
                     var entregadores = Convert.ToInt32(ReadConfig("Entregadores", sr));
                     var descarga = ReadConfig("Descarga", sr);
 
-                    config.Map = new RouteMap(new MapPoint(name, endereco), saida);
+                    config.Map = new RouteMap();
+                    await config.Map.Start(new MapPoint(name, endereco), saida);
+
                     config.DtLimite = volta;
                     config.NumEntregadores = entregadores;
                     //Linha de titulo
@@ -125,11 +131,14 @@ namespace PathFinder
 
                     while (sr.Peek() >= 0)
                     {
-                        var line = sr.ReadLine().Split("|").Select(o=>o.Replace("\t","")).ToList();
+                        var line = sr.ReadLine().Split("|").Select(o => o.Replace("\t", "")).ToList();
 
-                        var map = new MapPoint(line[0], line[1]);
-                        map.Period = new Period(line[2], line[3]);
-                        config.Map.AddDestination(map);
+                        var map = new MapPoint(line[0], line[1])
+                        {
+                            Period = new Period(line[2], line[3])
+                        };
+
+                        await config.Map.AddDestination(map);
                     }
                 }
                 return config;

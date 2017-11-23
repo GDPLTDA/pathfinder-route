@@ -1,8 +1,5 @@
-﻿using PathFinder.Routes;
-using System;
-using System.IO;
+﻿using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PathFinder
@@ -11,6 +8,7 @@ namespace PathFinder
     {
         static async Task Main()
         {
+            throw new Exception("fsfds");
             Print("Carregando rotas de teste...");
             //var map = new RouteMap("São Paulo SP", DateTime.Now);
 
@@ -22,7 +20,7 @@ namespace PathFinder
             //        .ForEach(e => map.AddDestination(e));
             //}
 
-            var config = PRVJTFinder.GetConfigByFile("Senacs 1.txt"); //new PRVJTConfig { Map = map, NumEntregadores = 7 };
+            var config = await PRVJTFinder.GetConfigByFile("Senacs 1.txt"); //new PRVJTConfig { Map = map, NumEntregadores = 7 };
 
             var finder = new PRVJTFinder(config);
 

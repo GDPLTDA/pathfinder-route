@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PathFinder.Routes
 {
@@ -11,19 +12,16 @@ namespace PathFinder.Routes
         public DateTime DataSaida => Storage.Date;
         public List<MapPoint> Destinations { get; set; } = new List<MapPoint>();
 
-        public RouteMap(string name, DateTime? now = null)
-        {
-            Load(name, now);
-        }
-        public RouteMap(MapPoint storage, DateTime? now = null)
-        {
-            Load(storage, now);
-        }
-        async void Load(string name, DateTime? now)
-        {
-            Load(new MapPoint(name), now);
-        }
-        async void Load(MapPoint point, DateTime? now)
+
+        public async Task Start(string name, DateTime? now = null) => await Load(name, now);
+
+        public async Task Start(MapPoint storage, DateTime? now = null) => await Load(storage, now);
+
+
+        async Task Load(string name, DateTime? now) =>
+            await Load(new MapPoint(name), now);
+
+        async Task Load(MapPoint point, DateTime? now)
         {
             Storage = await SearchRoute.GetPointAsync(point);
 
@@ -33,21 +31,22 @@ namespace PathFinder.Routes
             Storage.Date = (DateTime)now;
         }
 
-        public void AddDestinations(params string[] param)
+        public async Task AddDestinations(params string[] param)
         {
             foreach (var item in param)
-                AddDestination(item);
+                await AddDestination(item);
         }
-        public async void AddDestination(string destination)
+        public async Task AddDestination(string destination)
         {
             var point = await SearchRoute.GetPointAsync(new MapPoint(destination));
             Destinations.Add(point);
         }
-        public async void AddDestination(MapPoint mappoint)
+        public async Task AddDestination(MapPoint mappoint)
         {
             var point = await SearchRoute.GetPointAsync(mappoint);
             Destinations.Add(point);
         }
+
         /// <summary>
         /// Remove o primeiro ponto, coloca o segundo ponto como primeiro
         /// </summary>
