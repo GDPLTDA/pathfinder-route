@@ -8,7 +8,6 @@ namespace PathFinder
     {
         static async Task Main()
         {
-            throw new Exception("fsfds");
             Print("Carregando rotas de teste...");
             //var map = new RouteMap("São Paulo SP", DateTime.Now);
 
