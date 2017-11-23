@@ -19,8 +19,6 @@ namespace PathFinder
         LimiteEntregadores,
         [Description("Tempo limite para a entrega foi excedido!")]
         EstourouTempoEntrega,
-        Teste
-
     }
     public class PRVJTFinder
     {
