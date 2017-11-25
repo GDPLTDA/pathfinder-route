@@ -54,8 +54,8 @@ namespace PathFinder.GeneticAlgorithm
                                     .Take(popusize));
             await CalcFitness();
 
-            double bestfitness = 0;
-            double countfitness = 0;
+            //double bestfitness = 0;
+            //double countfitness = 0;
 
             for (int i = 0; i < GenerationLimit; i++)
             {

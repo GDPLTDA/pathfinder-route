@@ -15,6 +15,7 @@ namespace PathFinder.Routes
     public static class SearchRoute
     {
         static bool CacheActive { get; set; } = true;
+        static bool Traffic { get; set; } = true;
         static ConcurrentDictionary<string, Route> RouteCache = new ConcurrentDictionary<string, Route>();
         static ConcurrentDictionary<string, MapPoint> PointCache = new ConcurrentDictionary<string, MapPoint>();
         const string Url = "https://maps.googleapis.com/maps/api/";
@@ -24,13 +25,21 @@ namespace PathFinder.Routes
         {
             if (CacheActive)
             {
-                if (File.Exists("RouteCache.txt"))
+                if (File.Exists("RouteCache.txt")) {
                     RouteCache = JsonConvert.DeserializeObject<ConcurrentDictionary<string, Route>>
                         (File.ReadAllText("RouteCache.txt"));
 
+                    if(RouteCache == null)
+                        RouteCache = new ConcurrentDictionary<string, Route>();
+                }
                 if (File.Exists("PointCache.txt"))
+                {
                     PointCache = JsonConvert.DeserializeObject<ConcurrentDictionary<string, MapPoint>>
                         (File.ReadAllText("PointCache.txt"));
+
+                    if (PointCache == null)
+                        PointCache = new ConcurrentDictionary<string, MapPoint>();
+                }
             }
         }
 
@@ -96,11 +105,15 @@ namespace PathFinder.Routes
         public async static Task<MapPoint> GetPointAsync(MapPoint mappoint)
         {
             if (PointCache.ContainsKey(mappoint.Endereco))
-                return PointCache[mappoint.Endereco];
+            {
+                var retorno = PointCache[mappoint.Endereco];
+                retorno.Period = mappoint.Period;
+                return retorno;
+            }
 
             var request = GetRequestAddress(mappoint.Endereco);
             var ret = await ReadRequestPointAsync(mappoint, request);
-
+            ret.Period = mappoint.Period;
             ColorConsole.WriteLine($"Endereço Encontrado: {mappoint.Endereco} ({ret.Latitude},{ret.Longitude})".Green());
 
             return ret;
@@ -176,7 +189,10 @@ namespace PathFinder.Routes
         /// <returns></returns>
         static WebRequest GetRequestPointRoute(MapPoint ori, MapPoint des)
             => WebRequest.Create(
-                $"{Url}directions/json?origin={ConvNumber(ori.Latitude)},{ConvNumber(ori.Longitude)}&destination={ConvNumber(des.Latitude)},{ConvNumber(des.Longitude)}&sensor=false&key={Key}");
+                $"{Url}directions/json?" +
+                $"origin={ConvNumber(ori.Latitude)},{ConvNumber(ori.Longitude)}&" +
+                $"destination={ConvNumber(des.Latitude)},{ConvNumber(des.Longitude)}&" +
+                $"sensor=false&key={Key}");
         /// <summary>
         /// Busca os dados do ponto usando o endereço
         /// </summary>

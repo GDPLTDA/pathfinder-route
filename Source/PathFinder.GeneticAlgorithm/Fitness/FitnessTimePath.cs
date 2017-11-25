@@ -27,7 +27,7 @@ namespace PathFinder.GeneticAlgorithm
                     date = date.Add(from - date);
 
                 item.DtChegada = date;
-                finish = date;
+                finish = date.AddMinutes(item.Destination.Period.Descarga);
             }
             var totaltime = new TimeSpan(finish.Ticks - start.Ticks);
 

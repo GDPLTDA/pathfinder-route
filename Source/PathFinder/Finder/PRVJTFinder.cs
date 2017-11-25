@@ -122,7 +122,7 @@ namespace PathFinder
                     var saida = DateTime.Parse(ReadConfig("Saida", sr));
                     var volta = DateTime.Parse(ReadConfig("Volta", sr));
                     var entregadores = Convert.ToInt32(ReadConfig("Entregadores", sr));
-                    var descarga = ReadConfig("Descarga", sr);
+                    var descarga = Convert.ToInt32(ReadConfig("Descarga", sr));
 
                     config.Map = new RouteMap(name, endereco, saida);
                     config.Map.DataSaida = saida;
@@ -138,7 +138,7 @@ namespace PathFinder
 
                         var map = new MapPoint(line[0], line[1])
                         {
-                            Period = new Period(line[2], line[3])
+                            Period = new Period(line[2], line[3], descarga)
                         };
 
                         await config.Map.AddDestination(map);
