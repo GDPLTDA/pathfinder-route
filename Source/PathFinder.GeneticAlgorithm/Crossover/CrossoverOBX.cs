@@ -3,6 +3,7 @@ using PathFinder.GeneticAlgorithm;
 using PathFinder.GeneticAlgorithm.Abstraction;
 using System;
 using System.Collections.Generic;
+using PathFinder.Routes;
 
 namespace PathFinder.GeneticAlgorithm.Crossover
 {
@@ -15,10 +16,10 @@ namespace PathFinder.GeneticAlgorithm.Crossover
                 return Operation;
             var babymom = CrossoverOperation.Copy(Operation.Mom);
             var babydad = CrossoverOperation.Copy(Operation.Dad);
-            var lstTempCities = new List<Node>();
+            var lstTempCities = new List<MapPoint>();
             var lstPositions = new List<int>();
-            var listmom = Operation.Mom.ListNodes;
-            var listdad = Operation.Dad.ListNodes;
+            var listmom = Operation.Mom.ListPoints;
+            var listdad = Operation.Dad.ListPoints;
             var minindex = Math.Min(listmom.Count, listdad.Count);
             var pos = rand.Next(0, minindex - 1);
             while (pos < minindex)
@@ -32,10 +33,10 @@ namespace PathFinder.GeneticAlgorithm.Crossover
             {
                 for (int i = 0; i < lstTempCities.Count; ++i)
                 {
-                    if (babydad.ListNodes[cit].Equals(lstTempCities[i]))
+                    if (babydad.ListPoints[cit].Equals(lstTempCities[i]))
                     {
                         if (lstTempCities.Count < cPos)
-                            babydad.ListNodes[cit] = lstTempCities[cPos];
+                            babydad.ListPoints[cit] = lstTempCities[cPos];
                         ++cPos;
                         break;
                     }
@@ -52,10 +53,10 @@ namespace PathFinder.GeneticAlgorithm.Crossover
             {
                 for (int i = 0; i < lstTempCities.Count; ++i)
                 {
-                    if (babymom.ListNodes[cit].Equals(lstTempCities[i]))
+                    if (babymom.ListPoints[cit].Equals(lstTempCities[i]))
                     {
                         if(lstTempCities.Count < cPos)
-                            babymom.ListNodes[cit] = lstTempCities[cPos];
+                            babymom.ListPoints[cit] = lstTempCities[cPos];
                         ++cPos;
                         break;
                     }

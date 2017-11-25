@@ -18,13 +18,10 @@
     }
     public enum SelectionEnum
     {
-        Random,
         RouletteWheel
     }
     public enum FitnessEnum
     {
-        SmallPath,
-        MultPath,
         TimePath
     }
 }

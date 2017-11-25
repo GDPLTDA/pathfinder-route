@@ -13,8 +13,8 @@ namespace PathFinder.GeneticAlgorithm
     {
         List<IGenome> Populations { get; set; } = new List<IGenome>();
         public IFitness Fitness { get; set; } = FitnessFactory.GetImplementation(FitnessEnum.TimePath);
-        public IMutate Mutate { get; set; } = MutateFactory.GetImplementation(MutateEnum.DIVM);
-        public ICrossover Crossover { get; set; } = CrossoverFactory.GetImplementation(CrossoverEnum.PBX);
+        public IMutate Mutate { get; set; }
+        public ICrossover Crossover { get; set; }
         public ISelection Selection { get; set; } = SelectionFactory.GetImplementation(SelectionEnum.RouletteWheel);
         public int PopulationSize { get; set; }
         public int GenerationLimit { get; set; }
@@ -26,6 +26,8 @@ namespace PathFinder.GeneticAlgorithm
 
         public GeneticAlgorithmFinder()
         {
+            Mutate = MutateFactory.GetImplementation(GASettings.Mutation);
+            Crossover = CrossoverFactory.GetImplementation(GASettings.Crossover);
             PopulationSize = GASettings.PopulationSize;
             GenerationLimit = GASettings.GenerationLimit;
             BestSolutionToPick = GASettings.BestSolutionToPick;
@@ -45,7 +47,7 @@ namespace PathFinder.GeneticAlgorithm
             if (seed != null)
             {
                 Populations.Add(seed);
-                popusize--; ;
+                popusize--;
             }
 
             Populations.AddRange(Genome.Generator(map)
@@ -76,17 +78,7 @@ namespace PathFinder.GeneticAlgorithm
                     nodemom = Mutate.Apply(crossMom);
                     nodedad = Mutate.Apply(crossDad);
 
-                    //await nodemom.CalcRoutesAsync();
-                    //nodemom.CalcFitness(Fitness);
-
-                    //await nodedad.CalcRoutesAsync();
-                    //nodedad.CalcFitness(Fitness);
-
-                    // Add in new population
-                    //lock (obj)
-                    //{
-                        newpopulations.AddRange(new IGenome[] { nodemom, nodedad });
-                    //}
+                    newpopulations.AddRange(new IGenome[] { nodemom, nodedad });
                 }
                 Populations = newpopulations.ToList();
 
@@ -94,16 +86,16 @@ namespace PathFinder.GeneticAlgorithm
                 
                 Best = Populations.First();
 
-                if (Best.Fitness != bestfitness)
-                {
-                    bestfitness = Best.Fitness;
-                    countfitness = 0;
-                }
-                else
-                    countfitness++;
+                //if (Best.Fitness != bestfitness)
+                //{
+                //    bestfitness = Best.Fitness;
+                //    countfitness = 0;
+                //}
+                //else
+                //    countfitness++;
 
-                if (countfitness == (0.1 * GenerationLimit))
-                    break;
+                //if (countfitness == (0.1 * GenerationLimit))
+                //    break;
 
                 //using (var color = new ConsoleFont(ConsoleColor.Yellow))
                 //    Console.WriteLine($"Geração:{i} Distancia: {Best.ListRoutes.Sum(o => o.Meters)}" +

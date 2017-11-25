@@ -13,12 +13,12 @@ namespace PathFinder.GeneticAlgorithm.Crossover
                 return Operation;
             var babymom = CrossoverOperation.Copy(Operation.Mom);
             var babydad = CrossoverOperation.Copy(Operation.Dad);
-            var listmom = Operation.Mom.ListNodes;
-            var listdad = Operation.Dad.ListNodes;
-            var listbabymom = babymom.ListNodes;
-            var listbabydad = babydad.ListNodes;
+            var listmom = Operation.Mom.ListPoints;
+            var listdad = Operation.Dad.ListPoints;
+            var listbabymom = babymom.ListPoints;
+            var listbabydad = babydad.ListPoints;
             var minindex = Math.Min(listmom.Count, listdad.Count);
-            var beg = rand.Next(0, minindex - 1);
+            var beg = rand.Next(0, minindex);
             var end = beg;
             while (end < beg)
                 end = rand.Next(0, minindex);

@@ -6,6 +6,9 @@ namespace PathFinder.GeneticAlgorithm
 {
     public static class GASettings
     {
+        public static MutateEnum Mutation { get; set; } = MutateEnum.DM;
+        public static CrossoverEnum Crossover { get; set; } = CrossoverEnum.OBX;
+
         public static double CrossoverRate { get; set; } = 0.5;
         public static double MutationRate { get; set; } = 0.001;
 

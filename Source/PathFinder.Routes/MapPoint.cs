@@ -9,7 +9,6 @@ namespace PathFinder.Routes
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public Period Period { get; set; }
-        public DateTime Date { get; set; }
 
         public MapPoint()
         {

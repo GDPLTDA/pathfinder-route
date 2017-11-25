@@ -11,11 +11,14 @@ namespace PathFinder.GeneticAlgorithm
     public class Genome : IGenome
     {
         public RouteMap Map { get; set; }
-        public List<Node> ListNodes { get; set; }
+        public List<MapPoint> ListPoints { get; set; }
         public List<Route> ListRoutes { get; set; }
         public double Fitness { get; private set; }
-        public DateTime Finish { get; set; }
 
+        public Genome()
+        {
+
+        }
         public Genome(RouteMap map)
         {
             Map = map;
@@ -24,13 +27,12 @@ namespace PathFinder.GeneticAlgorithm
         public Genome(IGenome genome)
         {
             Map = genome.Map;
-            ListNodes = genome.ListNodes.Select(o => o).ToList();
+            ListPoints = genome.ListPoints.Select(o => o).ToList();
             ListRoutes = genome.ListRoutes.Select(o => o).ToList();
-            Finish = genome.Finish;
         }
         void Initialize()
         {
-            ListNodes = new List<Node>();
+            ListPoints = new List<MapPoint>();
             var rand = RandomFactory.Rand;
 
             var count = Map.Destinations.Count;
@@ -39,10 +41,10 @@ namespace PathFinder.GeneticAlgorithm
             {
                 var i = rand.Next(Map.Destinations.Count);
 
-                if (ListNodes.Exists(o => o.MapPoint.Equals(Map.Destinations[i])))
+                if (ListPoints.Exists(o => o.Equals(Map.Destinations[i])))
                     continue;
 
-                ListNodes.Add(new Node(Map.Destinations[i]));
+                ListPoints.Add(Map.Destinations[i]);
 
                 count--;
             }
@@ -53,12 +55,12 @@ namespace PathFinder.GeneticAlgorithm
             ListRoutes = new List<Route>();
 
             Route route;
-            foreach (var item in ListNodes)
+            foreach (var item in ListPoints)
             {
-                route = await SearchRoute.GetRouteAsync(point, item.MapPoint);
+                route = await SearchRoute.GetRouteAsync(point, item);
                 ListRoutes.Add(route);
 
-                point = item.MapPoint;
+                point = item;
             }
         }
 
@@ -73,13 +75,6 @@ namespace PathFinder.GeneticAlgorithm
                         return true;
 
             return false;
-        }
-        private static List<Node> Copy(List<Node> listnode)
-        {
-            var returnnode = new List<Node>();
-            foreach (var item in listnode)
-                returnnode.Add(new Node(item));
-            return returnnode;
         }
         public override string ToString() => $"F={Fitness}";
 

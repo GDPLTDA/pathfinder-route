@@ -8,28 +8,28 @@ namespace PathFinder.GeneticAlgorithm
     {
         public double Calc(IGenome genome)
         {
-            var start = genome.Map.Storage.Date;
-            genome.Finish = start;
+            var start = genome.Map.DataSaida;
+            var finish = start;
 
             foreach (var item in genome.ListRoutes)
             {
-                var date = genome.Finish.AddMinutes(item.Minutes);
+                var date = finish.AddMinutes(item.Minutes);
                 var from = CreateDateTime(date, item.Destination.Period.From);
                 var to = CreateDateTime(date, item.Destination.Period.To);
                 
                 if (date > to)
                 {
                     date = date.AddDays(1);
-                    date = new DateTime(date.Year, date.Month, date.Day,0,0,0);
+                    date = new DateTime(date.Year, date.Month, date.Day, from.Hour, from.Minute, from.Second);
                 }
 
                 if (date < from)
                     date = date.Add(from - date);
 
                 item.DtChegada = date;
-                genome.Finish = date;
+                finish = date;
             }
-            var totaltime = new TimeSpan(genome.Finish.Ticks - start.Ticks);
+            var totaltime = new TimeSpan(finish.Ticks - start.Ticks);
 
             return genome.ListRoutes.Sum(o=>o.Meters) + totaltime.Minutes;
         }

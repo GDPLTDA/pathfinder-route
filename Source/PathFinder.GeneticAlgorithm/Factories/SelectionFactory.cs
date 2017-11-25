@@ -5,8 +5,6 @@ namespace PathFinder.GeneticAlgorithm.Factories
 {
     public class SelectionFactory
     {
-        public static ISelection GetRandomImplementation()
-            => new SelectionRandom();
         public static ISelection GetRouletteWheelSelectionImplementation()
             => new SelectionRouletteWheel();
         public static ISelection GetImplementation(SelectionEnum option)
@@ -15,8 +13,6 @@ namespace PathFinder.GeneticAlgorithm.Factories
         {
             switch (option)
             {
-                case SelectionEnum.Random:
-                    return GetRandomImplementation();
                 case SelectionEnum.RouletteWheel:
                     return GetRouletteWheelSelectionImplementation();
             }

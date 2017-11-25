@@ -1,6 +1,7 @@
 ﻿using PathFinder.GeneticAlgorithm.Factories;
 using PathFinder.GeneticAlgorithm.Abstraction;
 using System.Collections.Generic;
+using PathFinder.Routes;
 
 namespace PathFinder.GeneticAlgorithm
 {
@@ -9,28 +10,26 @@ namespace PathFinder.GeneticAlgorithm
         public override IGenome Apply(IGenome baby)
         {
             var rand = RandomFactory.Rand;
-            if (rand.NextDouble() > MutationRate || baby.ListNodes.Count < 3)
+            if (rand.NextDouble() > MutationRate)
                 return baby;
-            var listcount = baby.ListNodes.Count;
-            const int minSpanSize = 3;
-            if (listcount <= minSpanSize)
-                return baby;
+            var listcount = baby.ListPoints.Count;
+
             int beg, end;
             beg = end = 0;
-            var spanSize = rand.Next(minSpanSize, listcount);
-            beg = rand.Next(1, listcount - spanSize);
+            var spanSize = rand.Next(0, listcount);
+            beg = rand.Next(0, listcount - spanSize);
             end = beg + spanSize;
-            var lstTemp = new List<Node>();
+            var lstTemp = new List<MapPoint>();
             for (int i = beg; i < end; i++)
             {
-                lstTemp.Add(baby.ListNodes[beg]);
-                baby.ListNodes.RemoveAt(beg);
+                lstTemp.Add(baby.ListPoints[beg]);
+                baby.ListPoints.RemoveAt(beg);
             }
-            var insertLocation = rand.Next(1, baby.ListNodes.Count);
+            var insertLocation = rand.Next(0, baby.ListPoints.Count);
             var count = 0;
             for (int i = insertLocation; count < lstTemp.Count; i++)
             {
-                baby.ListNodes.Insert(i, lstTemp[count]);
+                baby.ListPoints.Insert(i, lstTemp[count]);
                 count++;
             }
             return baby;

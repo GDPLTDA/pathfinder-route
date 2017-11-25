@@ -8,16 +8,14 @@ namespace PathFinder.GeneticAlgorithm
         public override IGenome Apply(IGenome baby)
         {
             var rand = RandomFactory.Rand;
-            if (rand.NextDouble() > MutationRate || baby.ListNodes.Count < 3)
+            if (rand.NextDouble() > MutationRate)
                 return baby;
-            var listcount = baby.ListNodes.Count;
-            const int minSpanSize = 3;
-            if (listcount <= minSpanSize)
-                return baby;
+            var listcount = baby.ListPoints.Count;
+
             int beg, end;
             beg = end = 0;
-            var spanSize = rand.Next(minSpanSize, listcount);
-            beg = rand.Next(1, listcount - spanSize);
+            var spanSize = rand.Next(0, listcount);
+            beg = rand.Next(0, listcount - spanSize);
             end = beg + spanSize;
             var span = end - beg;
             var numberOfSwaprsRequired = span;
@@ -25,9 +23,9 @@ namespace PathFinder.GeneticAlgorithm
             {
                 var no1 = rand.Next(beg, end);
                 var no2 = rand.Next(beg, end);
-                var temp = baby.ListNodes[no1];
-                baby.ListNodes[no1] = baby.ListNodes[no2];
-                baby.ListNodes[no2] = temp;
+                var temp = baby.ListPoints[no1];
+                baby.ListPoints[no1] = baby.ListPoints[no2];
+                baby.ListPoints[no2] = temp;
                 --numberOfSwaprsRequired;
             }
             return baby;

@@ -50,12 +50,19 @@ namespace PathFinder
                     var remainingPoints = routesInTime.Select(o => o.Destination).ToList();
 
                     var destinosEntrega = map.Destinations
-                                        .Where(o => remainingPoints.Exists(a => a.Equals(o)));
+                                        .Where(o => remainingPoints.Exists(a => a.Equals(o))).ToList();
+
+                    var mapentr = new RouteMap(map);
+
+                    destinosEntrega.ForEach(async e => await mapentr.AddDestination(e));
+
+                    var g = new Genome { Map = mapentr, ListRoutes = routesInTime.Select(o => o).ToList(), ListPoints = remainingPoints.Select(o => o).ToList() };
 
                     result.ListEntregadores.Add(new Entregador
                     {
-                        Saida = map.Storage,
-                        Pontos = destinosEntrega.ToList(),
+                        Genome = g,
+                        Numero = result.ListEntregadores.Count,
+                        Map = mapentr,
                         NextRoute = routesInTime.First()
                     });
 
@@ -66,7 +73,7 @@ namespace PathFinder
                 }
             }
 
-            //SearchRoute.SaveCache();
+            SearchRoute.SaveCache();
             return result;
         }
 
@@ -75,12 +82,7 @@ namespace PathFinder
             using (TimeMeasure.Init())
             {
                 var result = new EntregadorResult(entregador);
-                var map = new RouteMap();
-                await map.Start(entregador.Saida);
-
-                entregador
-                    .Pontos
-                    .ForEach(async e => await map.AddDestination(e));
+                var map = entregador.Map;
 
                 if (!map.Destinations.Any())
                     return result;
@@ -88,25 +90,28 @@ namespace PathFinder
                 if (entregador.NextRoute.DtChegada > Config.DtLimite)
                     return result.Register(TipoErro.EstourouTempoEntrega);
 
-                // Se existe só um ponto, esse ponto vira o estoque na proximo, então não é preciso
-                if (entregador.Pontos.Count == 1)
+                map.Next(entregador.Genome.ListRoutes);
+
+                if (entregador.Genome.ListPoints.Any())
+                    entregador.Genome.ListPoints.RemoveAt(0);
+
+                if (!entregador.Genome.ListRoutes.Any())
+                {
+                    entregador.NextRoute = null;
                     return result;
+                }
 
                 var best = await GaFinder.FindPathAsync(map, entregador.Genome);
 
-                map.Next(best.ListRoutes);
-
                 entregador.Genome = new Genome(best);
-                entregador.NextRoute = best.ListRoutes.First();
-                entregador.Saida = map.Storage;
-                entregador.Pontos = map.Destinations;
+                entregador.NextRoute = best.ListRoutes.FirstOrDefault();
+                entregador.Map = map;
 
                 return result;
             }
         }
         public static async Task<PRVJTConfig> GetConfigByFile(string fileName)
         {
-
             using (TimeMeasure.Init())
             {
                 var config = new PRVJTConfig();
@@ -119,9 +124,9 @@ namespace PathFinder
                     var entregadores = Convert.ToInt32(ReadConfig("Entregadores", sr));
                     var descarga = ReadConfig("Descarga", sr);
 
-                    config.Map = new RouteMap();
-                    await config.Map.Start(new MapPoint(name, endereco), saida);
-
+                    config.Map = new RouteMap(name, endereco, saida);
+                    config.Map.DataSaida = saida;
+                    
                     config.DtLimite = volta;
                     config.NumEntregadores = entregadores;
                     //Linha de titulo

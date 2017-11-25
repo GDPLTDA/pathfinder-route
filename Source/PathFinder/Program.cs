@@ -39,19 +39,19 @@ namespace PathFinder
             {
                 foreach (var item in result.ListEntregadores)
                 {
-                    if (!item.Pontos.Any())
+                    if (item.NextRoute == null)
                         continue;
 
                     Print($"Calculando Rota do Entregador {item.Numero}...");
 
-                    Print($"Saindo: {item.Saida.Date: dd/MM/yyy hh:mm}");
+                    Print($"Saindo: {item.Map.DataSaida: dd/MM/yyy hh:mm}");
                     Print($"Saia de ({item.Saida.Name}){item.Saida.Endereco}");
                     Print($"Vá para ({item.NextRoute.Destination.Name}){item.NextRoute.Destination.Endereco}");
                     Print($"Horario de Chegada: {item.NextRoute.DtChegada:dd/MM/yyy hh:mm)}");
 
                     var entreresult = await finder.Step(item);
 
-                    if (!entreresult.Erro)
+                    if (entreresult.Erro)
                         PrintErro(entreresult.Messagem);
                 }
 

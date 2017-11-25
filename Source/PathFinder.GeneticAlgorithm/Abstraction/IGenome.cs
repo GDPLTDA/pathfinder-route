@@ -8,9 +8,8 @@ namespace PathFinder.GeneticAlgorithm.Abstraction
     public interface IGenome
     {
         RouteMap Map { get; set; }
-        List<Node> ListNodes { get; set; }
+        List<MapPoint> ListPoints { get; set; }
         List<Route> ListRoutes { get; set; }
-        DateTime Finish { get; set; }
 
         double Fitness { get; }
         void Save();
