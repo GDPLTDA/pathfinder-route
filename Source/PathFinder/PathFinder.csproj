@@ -10,17 +10,37 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Tests\Extras 1.txt" />
+    <None Remove="Tests\Extras 2.txt" />
+    <None Remove="Tests\MacDonalts.txt" />
+    <None Remove="Tests\Senacs 1.txt" />
+    <None Remove="Tests\Senacs 2.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Tests\Extras 1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tests\Extras 2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tests\MacDonalts.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tests\Senacs 1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tests\Senacs 2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ColoredConsole" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PathFinder.GeneticAlgorithm\PathFinder.GeneticAlgorithm.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Senacs 1.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

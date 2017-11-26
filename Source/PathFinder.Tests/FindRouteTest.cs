@@ -1,6 +1,9 @@
 using FluentAssertions;
+using PathFinder.GeneticAlgorithm;
+using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace PathFinder.Tests
@@ -9,43 +12,71 @@ namespace PathFinder.Tests
     {
         [Theory(DisplayName = "Deve encontrar uma rota!")]
         [InlineData("Senacs 1.txt")]
-        [InlineData("Extras 1.txt")]
-        public void Deve_Encontrar_Rota(string fileName)
+        public async Task Deve_Encontrar_Rota(string fileName)
         {
-            var filedata = File.ReadAllText($"./Tests/{fileName}", Encoding.GetEncoding("ISO-8859-1"));
+            var result = await RunTest($"./Tests/{fileName}");
 
-
-            filedata.Should().NotBeNullOrWhiteSpace();
+            Assert.Equal(TipoErro.Concluido, result);
         }
         [Theory(DisplayName = "Não deve encontrar uma rota!")]
         [InlineData("MacDonalts.txt")]
-        public void Nao_Deve_Encontrar_Rota(string fileName)
+        public async Task Nao_Deve_Encontrar_Rota(string fileName)
         {
-            var filedata = File.ReadAllText($"./Tests/{fileName}", Encoding.GetEncoding("ISO-8859-1"));
+            var result = await RunTest($"./Tests/{fileName}");
 
-
-            filedata.Should().NotBeNullOrWhiteSpace();
+            Assert.Equal(TipoErro.EstourouTempo, result);
         }
         [Theory(DisplayName = "Não tem entregadores suficientes para a rota!")]
         [InlineData("Senacs 2.txt")]
-        [InlineData("Extras 2.txt")]
-        [InlineData("MacDonalts.txt")]
-        public void Nao_Tem_Entregadores(string fileName)
+        public async Task Nao_Tem_Entregadores(string fileName)
         {
-            var filedata = File.ReadAllText($"./Tests/{fileName}", Encoding.GetEncoding("ISO-8859-1"));
+            var result = await RunTest($"./Tests/{fileName}");
 
-
-            filedata.Should().NotBeNullOrWhiteSpace();
+            Assert.Equal(TipoErro.LimiteEntregadores, result);
         }
         [Theory(DisplayName = "Estoura o tempo limite!")]
         [InlineData("Senacs 1.txt")]
-        [InlineData("MacDonalts.txt")]
-        public void Estoura_Tempo_Limite(string fileName)
+        public async Task Estoura_Tempo_Limite(string fileName)
         {
-            var filedata = File.ReadAllText($"./Tests/{fileName}", Encoding.GetEncoding("ISO-8859-1"));
+            var result = await RunTest($"./Tests/{fileName}");
 
+            Assert.Equal(TipoErro.EstourouTempoEntrega, result);
+        }
+        public async Task<TipoErro> RunTest(string filename)
+        {
+            var config = await PRVJTFinder.GetConfigByFile(filename);
 
-            filedata.Should().NotBeNullOrWhiteSpace();
+            foreach (MutateEnum mut in Enum.GetValues(typeof(MutateEnum)))
+            {
+                foreach (CrossoverEnum cro in Enum.GetValues(typeof(CrossoverEnum)))
+                {
+                    // Altera a configuração do GA
+                    GASettings.Mutation = mut;
+                    GASettings.Crossover = cro;
+
+                    // Carrega a configuração do roteiro
+                    var finder = new PRVJTFinder(config);
+                    // Executa a divisão de rotas
+                    var result = await finder.Run();
+
+                    if (result.Erro)
+                        return result.TipoErro;
+
+                    while (!result.Concluido)
+                    {
+                        foreach (var item in result.ListEntregadores)
+                        {
+                            if (item.NextRoute == null)
+                                continue;
+                            var entreresult = await finder.Step(item);
+
+                            if (entreresult.Erro)
+                                return result.TipoErro;
+                        }
+                    }
+                }
+            }
+            return TipoErro.Concluido;
         }
     }
 }

@@ -13,6 +13,8 @@ namespace PathFinder
 
     public enum TipoErro
     {
+        [Description("Concluido!")]
+        Concluido,
         [Description("Não é possível entregar a tempo!")]
         EstourouTempo,
         [Description("Limite de entregadores excedido!")]
@@ -117,7 +119,7 @@ namespace PathFinder
                 var config = new PRVJTConfig();
                 using (var sr = new StreamReader(fileName, Encoding.GetEncoding("ISO-8859-1")))
                 {
-                    var name = ReadConfig("Estoque", sr);
+                    var name = ReadConfig("Nome", sr);
                     var endereco = ReadConfig("Endereco", sr);
                     var saida = DateTime.Parse(ReadConfig("Saida", sr));
                     var volta = DateTime.Parse(ReadConfig("Volta", sr));
@@ -150,7 +152,10 @@ namespace PathFinder
         public static string ReadConfig(string configname, StreamReader st)
         {
             var line = st.ReadLine();
-            return Regex.Match(line, $"{configname}=([\\w\\s\\.\\/\\:]+)").Groups.Last().Value;
+
+            var regex = Regex.Match(line, $"{configname}=([\\w\\s\\.\\/\\:\\-]+)").Groups.Last();
+
+            return regex.Value;
         }
     }
 }

@@ -15,24 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PathFinder.GeneticAlgorithm\PathFinder.GeneticAlgorithm.csproj" />
     <ProjectReference Include="..\PathFinder.Routes\PathFinder.Routes.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Tests\Extras 2.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Tests\Senacs 2.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Tests\Senacs 1.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Tests\MacDonalts.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Tests\Extras 1.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\PathFinder\PathFinder.csproj" />
   </ItemGroup>
 
 </Project>

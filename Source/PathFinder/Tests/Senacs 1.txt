@@ -1,8 +1,8 @@
-Estoque=Senac Nacões Unidas
+Nome=Senac Nacões Unidas
 Endereco=Av. Eng. Eusébio Stevaux, 823 - Santo Amaro
 Saida=22/11/2017 09:00:00
 Volta=22/11/2017 20:00:00
-Entregadores=4
+Entregadores=10
 Descarga=20
 Nome					|Endereço															|Abertura	|Fechamento	|
 Senac Largo Treze		|R. Dr. Antônio Bento, 393 - Santo Amaro							|09:00		|12:00		|

@@ -22,7 +22,7 @@ namespace PathFinder.GeneticAlgorithm
 
         IGenome Best { get; set; }
 
-        const int THROTTLE = 1; // quantidade de requests simultaneos
+        int THROTTLE = 1; // quantidade de requests simultaneos
 
         public GeneticAlgorithmFinder()
         {
@@ -31,6 +31,7 @@ namespace PathFinder.GeneticAlgorithm
             PopulationSize = GASettings.PopulationSize;
             GenerationLimit = GASettings.GenerationLimit;
             BestSolutionToPick = GASettings.BestSolutionToPick;
+            THROTTLE = GASettings.Throttle;
         }
         public async Task<IGenome> FindPathAsync(RouteMap map, IGenome seed = null)
         {
@@ -54,17 +55,12 @@ namespace PathFinder.GeneticAlgorithm
                                     .Take(popusize));
             await CalcFitness();
 
-            //double bestfitness = 0;
-            //double countfitness = 0;
-
             for (int i = 0; i < GenerationLimit; i++)
             {
                 var newpopulations = new List<IGenome>();
                 
                 for (int j = 0; j < BestSolutionToPick; j++)
                     newpopulations.Add(Populations[j]);
-
-                 //var obj = new object();
 
                 while (newpopulations.Count < Populations.Count)
                 {
@@ -85,22 +81,6 @@ namespace PathFinder.GeneticAlgorithm
                 await CalcFitness();
                 
                 Best = Populations.First();
-
-                //if (Best.Fitness != bestfitness)
-                //{
-                //    bestfitness = Best.Fitness;
-                //    countfitness = 0;
-                //}
-                //else
-                //    countfitness++;
-
-                //if (countfitness == (0.1 * GenerationLimit))
-                //    break;
-
-                //using (var color = new ConsoleFont(ConsoleColor.Yellow))
-                //    Console.WriteLine($"Geração:{i} Distancia: {Best.ListRoutes.Sum(o => o.Meters)}" +
-                //                        $" Tempo: {Best.ListRoutes.Sum(o => o.Minutes)}" +
-                //                        $" Fitness: {Best.Fitness}");
             }
 
             return Best;

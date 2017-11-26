@@ -6,10 +6,12 @@ namespace PathFinder
     public class PRVJTResult
     {
         public bool Erro { get; set; }
+        public TipoErro TipoErro { get; set; }
         public string Messagem { get; set; }
 
         public PRVJTResult Register(string msg)
         {
+            
             Erro = true;
             Messagem = msg;
 
@@ -17,6 +19,7 @@ namespace PathFinder
         }
         public PRVJTResult Register(TipoErro erro)
         {
+            TipoErro = erro;
             Erro = true;
             Messagem = erro.GetDescription();
             return this;

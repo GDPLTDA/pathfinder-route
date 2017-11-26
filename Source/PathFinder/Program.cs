@@ -10,17 +10,8 @@ namespace PathFinder
         static async Task Main()
         {
             Print("Carregando rotas de teste...");
-            //var map = new RouteMap("São Paulo SP", DateTime.Now);
 
-            //using (TimeMeasure.Init())
-            //{
-            //    File.ReadAllText("Capitais.txt", Encoding.GetEncoding("iso-8859-1"))
-            //        .Replace("\r", string.Empty).Split("\n")
-            //        .ToList()
-            //        .ForEach(e => map.AddDestination(e));
-            //}
-
-            var config = await PRVJTFinder.GetConfigByFile("Senacs 1.txt"); //new PRVJTConfig { Map = map, NumEntregadores = 7 };
+            var config = await PRVJTFinder.GetConfigByFile("./Tests/Senacs 1.txt");
 
             var finder = new PRVJTFinder(config);
 
