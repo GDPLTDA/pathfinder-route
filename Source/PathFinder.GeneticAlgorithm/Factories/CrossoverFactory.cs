@@ -6,8 +6,6 @@ namespace PathFinder.GeneticAlgorithm.Factories
 {
     public class CrossoverFactory
     {
-        public static ICrossover GetSimpleImplementation()
-            => new CrossoverSimple();
         public static ICrossover GetOBXImplementation()
             => new CrossoverOBX();
         public static ICrossover GetPBXImplementation()
@@ -20,8 +18,6 @@ namespace PathFinder.GeneticAlgorithm.Factories
         {
             switch (option)
             {
-                case CrossoverEnum.Simple:
-                    return GetSimpleImplementation();
                 case CrossoverEnum.OBX:
                     return GetOBXImplementation();
                 case CrossoverEnum.PBX:

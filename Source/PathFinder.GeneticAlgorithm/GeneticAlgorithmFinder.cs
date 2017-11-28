@@ -50,9 +50,9 @@ namespace PathFinder.GeneticAlgorithm
                 Populations.Add(seed);
                 popusize--;
             }
-
-            Populations.AddRange(Genome.Generator(map)
-                                    .Take(popusize));
+            for (int i = 0; i < popusize; i++)
+                Populations.Add(Genome.Generator(map));
+            
             await CalcFitness();
 
             for (int i = 0; i < GenerationLimit; i++)

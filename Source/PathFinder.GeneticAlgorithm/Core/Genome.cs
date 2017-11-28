@@ -78,10 +78,9 @@ namespace PathFinder.GeneticAlgorithm
         }
         public override string ToString() => $"F={Fitness}";
 
-        public static IEnumerable<IGenome> Generator(RouteMap map)
+        public static IGenome Generator(RouteMap map)
         {
-            while (true)
-                yield return new Genome(map);
+            return new Genome(map);
         }
 
         public void CalcFitness(IFitness fitness)

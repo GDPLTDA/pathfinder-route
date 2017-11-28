@@ -9,7 +9,7 @@ namespace PathFinder.GeneticAlgorithm
         public override IGenome Apply(IGenome baby)
         {
             var rand = RandomFactory.Rand;
-            if (rand.NextDouble() > MutationRate)
+            if (rand.NextDouble() > MutationRate || baby.ListPoints.Count < 2)
                 return baby;
             var listcount = baby.ListPoints.Count;
             var randomPoint = rand.Next(0, listcount);

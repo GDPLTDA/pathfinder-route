@@ -2,7 +2,6 @@
 {
     public enum CrossoverEnum
     {
-        Simple,
         OBX,
         PBX
     }
@@ -13,8 +12,7 @@
         DM,
         IM,
         IVM,
-        SM,
-        Bitwise
+        SM
     }
     public enum SelectionEnum
     {
