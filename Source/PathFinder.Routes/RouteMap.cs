@@ -10,9 +10,10 @@ namespace PathFinder.Routes
         public MapPoint Storage { get; set; }
 
         public DateTime DataSaida { get; set; }
+        public DateTime DataVolta { get; set; }
         public List<MapPoint> Destinations { get; set; } = new List<MapPoint>();
 
-        public RouteMap(string name, string endereco, DateTime saida)
+        public RouteMap(string name, string endereco, DateTime saida, DateTime volta)
         {
             DataSaida = saida;
             Load(name, endereco);
@@ -29,6 +30,7 @@ namespace PathFinder.Routes
         async Task Load(MapPoint point)
         {
             Storage = await SearchRoute.GetPointAsync(point);
+            Storage.Period = new Period(DataSaida, DataVolta, 0);
         }
 
         public async Task AddDestinations(params string[] param)

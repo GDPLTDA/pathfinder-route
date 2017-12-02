@@ -14,6 +14,12 @@ namespace PathFinder.Routes
             From = TimeSpan.Parse(from);
             To = TimeSpan.Parse(to);
             Descarga = descarga;
-        }        
+        }   
+        public Period(DateTime from,DateTime to, int descarga)
+        {
+            From = new TimeSpan(from.Ticks);
+            To = new TimeSpan(to.Ticks);
+            Descarga = descarga;
+        } 
     }
 }
