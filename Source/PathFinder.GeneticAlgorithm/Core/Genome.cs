@@ -1,7 +1,6 @@
 ﻿using PathFinder.GeneticAlgorithm.Abstraction;
 using PathFinder.GeneticAlgorithm.Factories;
 using PathFinder.Routes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,7 +52,7 @@ namespace PathFinder.GeneticAlgorithm
         {
             var point = Map.Storage;
             ListRoutes = new List<Route>();
-
+            ListPoints = Map.Destinations;
             Route route;
             foreach (var item in ListPoints)
             {
