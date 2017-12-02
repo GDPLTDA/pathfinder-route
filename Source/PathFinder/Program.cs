@@ -11,7 +11,7 @@ namespace PathFinder
         {
             Print("Carregando rotas de teste...");
 
-            var config = await PRVJTFinder.GetConfigByFile("./Tests/Senacs 1.txt");
+            var config = await PRVJTFinder.GetConfigByFile("./Tests/Senacs.txt");
 
             var finder = new PRVJTFinder(config);
 
