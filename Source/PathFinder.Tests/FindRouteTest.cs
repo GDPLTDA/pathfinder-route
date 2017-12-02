@@ -1,8 +1,5 @@
-using FluentAssertions;
 using PathFinder.GeneticAlgorithm;
 using System;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -11,7 +8,7 @@ namespace PathFinder.Tests
     public class UnitTest
     {
         [Theory(DisplayName = "Deve encontrar uma rota!")]
-        [InlineData("Senacs 1.txt")]
+        [InlineData("Aceita.txt")]
         public async Task Deve_Encontrar_Rota(string fileName)
         {
             var result = await RunTest($"./Tests/{fileName}");
@@ -19,7 +16,7 @@ namespace PathFinder.Tests
             Assert.Equal(TipoErro.Concluido, result);
         }
         [Theory(DisplayName = "Não deve encontrar uma rota!")]
-        [InlineData("MacDonalts.txt")]
+        [InlineData("ErroTempo.txt")]
         public async Task Nao_Deve_Encontrar_Rota(string fileName)
         {
             var result = await RunTest($"./Tests/{fileName}");
@@ -27,21 +24,21 @@ namespace PathFinder.Tests
             Assert.Equal(TipoErro.EstourouTempo, result);
         }
         [Theory(DisplayName = "Não tem entregadores suficientes para a rota!")]
-        [InlineData("Senacs 2.txt")]
+        [InlineData("Limite.txt")]
         public async Task Nao_Tem_Entregadores(string fileName)
         {
             var result = await RunTest($"./Tests/{fileName}");
 
             Assert.Equal(TipoErro.LimiteEntregadores, result);
         }
-        [Theory(DisplayName = "Estoura o tempo limite!")]
-        [InlineData("Senacs 1.txt")]
-        public async Task Estoura_Tempo_Limite(string fileName)
-        {
-            var result = await RunTest($"./Tests/{fileName}");
+        //[Theory(DisplayName = "Estoura o tempo limite!")]
+        //[InlineData("Senacs 1.txt")]
+        //public async Task Estoura_Tempo_Limite(string fileName)
+        //{
+        //    var result = await RunTest($"./Tests/{fileName}");
 
-            Assert.Equal(TipoErro.EstourouTempoEntrega, result);
-        }
+        //    Assert.Equal(TipoErro.EstourouTempoEntrega, result);
+        //}
         public async Task<TipoErro> RunTest(string filename)
         {
             var config = await PRVJTFinder.GetConfigByFile(filename);

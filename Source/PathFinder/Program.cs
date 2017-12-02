@@ -11,7 +11,7 @@ namespace PathFinder
         {
             Print("Carregando rotas de teste...");
 
-            var config = await PRVJTFinder.GetConfigByFile("./Tests/Senacs 1.txt");
+            var config = await PRVJTFinder.GetConfigByFile("./Tests/Senacs.txt");
 
             var finder = new PRVJTFinder(config);
 
@@ -45,10 +45,12 @@ namespace PathFinder
                     if (entreresult.Erro)
                         PrintErro(entreresult.Messagem);
                 }
-
                 Print("Proxima rota de todos os entregadores?");
                 Console.ReadKey();
             }
+
+            Print("Finalizado!");
+            Console.ReadKey();
         }
         public static void Print(string message = null) =>
                ColorConsole.WriteLine(

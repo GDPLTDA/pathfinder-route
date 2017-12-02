@@ -10,27 +10,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Tests\Extras 1.txt" />
-    <None Remove="Tests\Extras 2.txt" />
+    <None Remove="Tests\Extras.txt" />
     <None Remove="Tests\MacDonalts.txt" />
-    <None Remove="Tests\Senacs 1.txt" />
-    <None Remove="Tests\Senacs 2.txt" />
+    <None Remove="Tests\Senacs.txt" />
+    <None Remove="Tests\Turisticos.txt" />
+    <None Remove="Tests\Uninoves.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Tests\Extras 1.txt">
+    <Content Include="Tests\Extras.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tests\Extras 2.txt">
+    <Content Include="Tests\Uninoves.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tests\MacDonalts.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tests\Senacs 1.txt">
+    <Content Include="Tests\Senacs.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tests\Senacs 2.txt">
+    <Content Include="Tests\Turisticos.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
