@@ -22,6 +22,7 @@ namespace PathFinder.Routes
         {
             Storage = map.Storage;
             DataSaida = map.DataSaida;
+            DataVolta = map.DataVolta;
         }
         
         async Task Load(string name, string endereco) =>
