@@ -4,30 +4,36 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PathFinder.DataGenerator
 {
     class Program
     {
-        static FileStream arquivoDados;
-        static StreamWriter writer;
-        static Program()
-        {
-            arquivoDados = new FileStream("resultados.csv", FileMode.Create, FileAccess.Write, FileShare.None, 4096, FileOptions.WriteThrough);
-            writer = new StreamWriter(arquivoDados);
-        }
 
-        static void Main() =>
+        static async Task Main()
+        {
+            var arquivoDados = new FileStream("resultados.csv", FileMode.Create, FileAccess.Write, FileShare.None, 4096, FileOptions.WriteThrough);
+
+            using (var writer = new StreamWriter(arquivoDados))
+            {
+                var promises =
                     Directory
-                      .GetFiles(@".\Tests\")
-                      .Select(f => RunTest(f))
-                      .Select(r => r.ToDelimitedString(";") + "\n")
-                      .ForEach(e => writer.Write(e));
+                     .GetFiles(@".\Tests\")
+                     .Select(async f => await RunTest(f))
+                     .Select(async r => (await r).ToDelimitedString(";"))
+                     .Select(async e => await writer.WriteLineAsync(await e));
+
+                foreach (var item in promises)
+                    await item;
+            }
 
 
-        public static IEnumerable<Result> RunTest(string filename)
+        }
+        public async static Task<IEnumerable<Result>> RunTest(string filename)
         {
-            var config = PRVJTFinder.GetConfigByFile(filename).Result;
+            var config = await PRVJTFinder.GetConfigByFile(filename);
+            var ret = new List<Result>();
 
             foreach (MutateEnum mut in Enum.GetValues(typeof(MutateEnum)))
             {
@@ -40,17 +46,17 @@ namespace PathFinder.DataGenerator
                     // Carrega a configuração do roteiro
                     var finder = new PRVJTFinder(config);
                     // Executa a divisão de rotas
-                    var result = finder.Run().Result;
+                    var result = await finder.Run();
 
                     if (result.Erro)
-                        yield return new Result(
+                        ret.Add(new Result(
                                  result.TipoErro,
                                  filename,
                                  -1,
                                  mut,
                                  cro,
                                  result.ListEntregadores.Sum(e => e.Genome.Fitness)
-                             );
+                             ));
 
                     while (!result.Concluido)
                     {
@@ -58,30 +64,31 @@ namespace PathFinder.DataGenerator
                         {
                             if (item.NextRoute == null)
                                 continue;
-                            var entreresult = finder.Step(item).Result;
+                            var entreresult = await finder.Step(item);
 
                             if (entreresult.Erro)
-                                yield return new Result(
+                                ret.Add(new Result(
                                          result.TipoErro,
                                          filename,
                                          -1,
                                          mut,
                                          cro,
                                          result.ListEntregadores.Sum(e => e.Genome.Fitness)
-                                 );
+                                 ));
                         }
                     }
 
-                    yield return new Result(
+                    ret.Add(new Result(
                             result.TipoErro,
                             filename,
                             result.ListEntregadores.Count(),
                             mut,
                             cro,
                             result.ListEntregadores.Sum(e => e.Genome.Fitness)
-                        );
+                        ));
                 }
             }
+            return ret;
         }
 
     }
