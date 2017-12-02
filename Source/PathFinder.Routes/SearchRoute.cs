@@ -14,7 +14,7 @@ namespace PathFinder.Routes
 {
     public static class SearchRoute
     {
-        static bool CacheActive { get; set; } = true;
+        static bool CacheActive { get; set; } = false;
         static bool Traffic { get; set; } = true;
         static ConcurrentDictionary<string, Route> RouteCache = new ConcurrentDictionary<string, Route>();
         static ConcurrentDictionary<string, MapPoint> PointCache = new ConcurrentDictionary<string, MapPoint>();
@@ -25,11 +25,12 @@ namespace PathFinder.Routes
         {
             if (CacheActive)
             {
-                if (File.Exists("RouteCache.txt")) {
+                if (File.Exists("RouteCache.txt"))
+                {
                     RouteCache = JsonConvert.DeserializeObject<ConcurrentDictionary<string, Route>>
                         (File.ReadAllText("RouteCache.txt"));
 
-                    if(RouteCache == null)
+                    if (RouteCache == null)
                         RouteCache = new ConcurrentDictionary<string, Route>();
                 }
                 if (File.Exists("PointCache.txt"))

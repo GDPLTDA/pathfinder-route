@@ -126,7 +126,7 @@ namespace PathFinder
                     var entregadores = Convert.ToInt32(ReadConfig("Entregadores", sr));
                     var descarga = Convert.ToInt32(ReadConfig("Descarga", sr));
 
-                    config.Map = new RouteMap(name, endereco, saida);
+                    config.Map = new RouteMap(name, endereco, saida, volta);
                     config.Map.DataSaida = saida;
                     
                     config.DtLimite = volta;
