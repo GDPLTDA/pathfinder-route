@@ -14,7 +14,7 @@ namespace PathFinder.Routes
 {
     public static class SearchRoute
     {
-        static bool CacheActive { get; set; } = false;
+        static bool CacheActive { get; set; } = true;
         static bool Traffic { get; set; } = true;
         static ConcurrentDictionary<string, Route> RouteCache = new ConcurrentDictionary<string, Route>();
         static ConcurrentDictionary<string, MapPoint> PointCache = new ConcurrentDictionary<string, MapPoint>();

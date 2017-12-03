@@ -18,13 +18,12 @@ namespace PathFinder.DataGenerator
             using (var writer = new StreamWriter(arquivoDados))
             {
                 Directory
-                 .GetFiles(@".\Tests\")
+                 .GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Tests\"))
                  .Select(f => RunTest(f).Result)
                  .Select(r => r.ToDelimitedString(";"))
                  .ForEach(e => writer.WriteLine(e));
+
             }
-
-
         }
         public async static Task<IEnumerable<Result>> RunTest(string filename)
         {
