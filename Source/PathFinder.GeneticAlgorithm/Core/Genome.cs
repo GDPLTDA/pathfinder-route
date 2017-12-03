@@ -61,8 +61,8 @@ namespace PathFinder.GeneticAlgorithm
 
                 point = item;
             }
-            route = await SearchRoute.GetRouteAsync(ListPoints.Last(), Map.Storage);
-            ListRoutes.Add(route);
+            //route = await SearchRoute.GetRouteAsync(ListPoints.Last(), Map.Storage);
+            //ListRoutes.Add(route);
         }
 
         public void Save() =>

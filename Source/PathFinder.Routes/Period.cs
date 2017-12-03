@@ -9,6 +9,11 @@ namespace PathFinder.Routes
         public int Descarga { get; set; }
         public int Hours { get { return new TimeSpan(To.Ticks - From.Ticks).Hours; } }
 
+        public Period()
+        {
+
+        }
+
         public Period(string from,string to, int descarga)
         {
             From = TimeSpan.Parse(from);

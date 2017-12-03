@@ -58,7 +58,7 @@ namespace PathFinder.Routes
         {
             // O primeiro destino das rotas
             Storage = list.First().Destination;
-            DataSaida = list.First().DtChegada;
+            DataSaida = list.First().DtChegada.AddMinutes(Storage.Period.Descarga);
             //Storage.Date = now; // Atualiza a data inicial
             //Remove o primeiro da lista
             list.RemoveAt(0);

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 
 namespace PathFinder.DataGenerator
 {
@@ -21,7 +22,7 @@ namespace PathFinder.DataGenerator
           )
         {
             this.TipoErro = TipoErro;
-            this.FileName = FileName;
+            this.FileName = new FileInfo(FileName).Name;
             this.QtdEntregadores = QtdEntregadores;
             this.Mutation = Mutation;
             this.CrossoverEnum = CrossoverEnum;
