@@ -29,7 +29,7 @@ namespace PathFinder
     {
         public List<Entregador> ListEntregadores { get; set; } = new List<Entregador>();
 
-        public bool Concluido => !ListEntregadores.Exists(o => o.Map.Destinations.Any());
+        public bool Concluido => !ListEntregadores.Any(o => o.NextRoute != null);
 
         public string JpgMap { get; set; }
 

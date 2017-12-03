@@ -153,7 +153,7 @@ namespace PathFinder
         {
             var line = st.ReadLine();
 
-            var regex = Regex.Match(line, $"{configname}=([\\w\\s\\.\\/\\:\\-]+)").Groups.Last();
+            var regex = Regex.Match(line, $"{configname}=([\\w\\s\\.\\,\\/\\:\\-]+)").Groups.Last();
 
             return regex.Value;
         }

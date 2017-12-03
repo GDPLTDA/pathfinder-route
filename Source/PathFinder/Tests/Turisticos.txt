@@ -1,5 +1,5 @@
 Nome=Hotel Ibis São Paulo Paulista
-Estoque=Av. Paulista, 2355 - Bela Vista, São Paulo - SP
+Endereco=Av. Paulista, 2355 - Bela Vista, São Paulo - SP
 Saida=22/11/2017 09:00:00
 Volta=22/11/2017 23:00:00
 Entregadores=1
