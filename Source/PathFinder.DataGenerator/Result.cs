@@ -1,4 +1,6 @@
-﻿namespace PathFinder.DataGenerator
+﻿using System.Linq;
+
+namespace PathFinder.DataGenerator
 {
     public class Result
     {
@@ -25,5 +27,13 @@
             this.CrossoverEnum = CrossoverEnum;
             this.Fitness = Fitness;
         }
+
+        public override string ToString() => GetType()
+                                                .GetProperties().ToList()
+                                                .Select(p => p.GetValue(this)
+                                                ?.ToString() ?? string.Empty)
+                                                .Aggregate((a, b) => $"{a};{b}")
+                                                + "\n";
+
     }
 }
