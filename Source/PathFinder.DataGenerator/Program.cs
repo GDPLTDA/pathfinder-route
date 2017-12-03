@@ -17,9 +17,11 @@ namespace PathFinder.DataGenerator
 
             using (var writer = new StreamWriter(arquivoDados))
             {
+                var path = System.AppDomain.CurrentDomain.BaseDirectory + @"Tests\";
+
                 var promises =
                     Directory
-                     .GetFiles(@".\Tests\")
+                     .GetFiles(path)
                      .Select(async f => await RunTest(f))
                      .Select(async r => (await r).ToDelimitedString(";"))
                      .Select(async e => await writer.WriteLineAsync(await e));
@@ -27,8 +29,6 @@ namespace PathFinder.DataGenerator
                 foreach (var item in promises)
                     await item;
             }
-
-
         }
         public async static Task<IEnumerable<Result>> RunTest(string filename)
         {
