@@ -11,21 +11,17 @@ namespace PathFinder.DataGenerator
     class Program
     {
 
-        static async Task Main()
+        static void Main()
         {
             var arquivoDados = new FileStream("resultados.csv", FileMode.Create, FileAccess.Write, FileShare.None, 4096, FileOptions.WriteThrough);
 
             using (var writer = new StreamWriter(arquivoDados))
             {
-                var promises =
-                    Directory
-                     .GetFiles(@".\Tests\")
-                     .Select(async f => await RunTest(f))
-                     .Select(async r => (await r).ToDelimitedString(";"))
-                     .Select(async e => await writer.WriteLineAsync(await e));
-
-                foreach (var item in promises)
-                    await item;
+                Directory
+                 .GetFiles(@".\Tests\")
+                 .Select(f => RunTest(f).Result)
+                 .Select(r => r.ToDelimitedString(";"))
+                 .ForEach(e => writer.WriteLine(e));
             }
 
 
