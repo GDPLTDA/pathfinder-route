@@ -1,3 +1,4 @@
+Msg;Arquivo;Entregadores;Mutation;Cross;Fitness
 Concluido;Extras.txt;2;EM;OBX;109560
 ;Concluido;Extras.txt;2;EM;PBX;109560
 ;Concluido;Extras.txt;2;DIVM;OBX;109560
@@ -37,18 +38,18 @@ Concluido;Senacs.txt;3;EM;OBX;311876
 ;Concluido;Senacs.txt;3;SM;OBX;311876
 ;Concluido;Senacs.txt;3;SM;PBX;311876
 
-LimiteEntregadores;Turisticos.txt;-1;EM;OBX;172266
-;LimiteEntregadores;Turisticos.txt;-1;EM;PBX;172266
-;LimiteEntregadores;Turisticos.txt;-1;DIVM;OBX;172266
-;LimiteEntregadores;Turisticos.txt;-1;DIVM;PBX;172266
-;LimiteEntregadores;Turisticos.txt;-1;DM;OBX;172266
-;LimiteEntregadores;Turisticos.txt;-1;DM;PBX;172266
-;LimiteEntregadores;Turisticos.txt;-1;IM;OBX;172266
-;LimiteEntregadores;Turisticos.txt;-1;IM;PBX;172266
-;LimiteEntregadores;Turisticos.txt;-1;IVM;OBX;172266
-;LimiteEntregadores;Turisticos.txt;-1;IVM;PBX;172266
-;LimiteEntregadores;Turisticos.txt;-1;SM;OBX;172266
-;LimiteEntregadores;Turisticos.txt;-1;SM;PBX;172266
+Concluido;Turisticos.txt;1;EM;OBX;84573
+;Concluido;Turisticos.txt;1;EM;PBX;84573
+;Concluido;Turisticos.txt;1;DIVM;OBX;84573
+;Concluido;Turisticos.txt;1;DIVM;PBX;84573
+;Concluido;Turisticos.txt;1;DM;OBX;84573
+;Concluido;Turisticos.txt;1;DM;PBX;84573
+;Concluido;Turisticos.txt;1;IM;OBX;84573
+;Concluido;Turisticos.txt;1;IM;PBX;84573
+;Concluido;Turisticos.txt;1;IVM;OBX;84573
+;Concluido;Turisticos.txt;1;IVM;PBX;84573
+;Concluido;Turisticos.txt;1;SM;OBX;84573
+;Concluido;Turisticos.txt;1;SM;PBX;84573
 
 Concluido;Uninoves.txt;2;EM;OBX;190656
 ;Concluido;Uninoves.txt;2;EM;PBX;190656

@@ -35,6 +35,5 @@ namespace PathFinder.DataGenerator
                                                 ?.ToString() ?? string.Empty)
                                                 .Aggregate((a, b) => $"{a};{b}")
                                                 + "\n";
-
     }
 }

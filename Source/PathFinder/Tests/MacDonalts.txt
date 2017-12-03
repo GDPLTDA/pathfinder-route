@@ -1,7 +1,7 @@
 Nome=McDonald's Jardim Paulista
 Endereco=R. Pamplona, 734 - Jardim Paulista, São Paulo - SP
 Saida=22/11/2017 09:00:00
-Volta=22/11/2017 23:00:00
+Volta=22/11/2017 17:00:00
 Entregadores=3
 Descarga=40
 Nome							|Endereço																			|Abertura	|Fechamento	|
