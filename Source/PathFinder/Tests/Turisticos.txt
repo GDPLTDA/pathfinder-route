@@ -1,18 +1,20 @@
-Nome=Extra - Morumbi
-Estoque=Av. das Nações Unidas, 16741 - Santo Amaro
-Saida=22/11/2017 06:00:00
-Volta=22/11/2017 22:00:00
+Nome=Hotel Ibis São Paulo Paulista
+Estoque=Av. Paulista, 2355 - Bela Vista, São Paulo - SP
+Saida=22/11/2017 09:00:00
+Volta=22/11/2017 23:00:00
 Entregadores=1
 Descarga=60
-Nome					|Endereço															|Abertura	|Fechamento	|
-Extra Hipermercado		|R. João Batista de Oliveira, 47 - Centro, Taboão da Serra - SP		|09:00		|22:00		|
-Extra João Dias			|Av. Guido Caloi, 25 - Jardim São Luís, São Paulo - SP				|09:00		|22:00		|
-Extra Aeroporto			|Avenida Washignton Luís, 5859 - Jd. Aeroporto, São Paulo - SP		|09:00		|22:00		|
-Extra - Itaim Bibi		|R. João Cachoeira, 899 - Itaim Bibi, São Paulo - SP				|06:00		|22:00		|
-Extra - Ricardo Jafet	|Av. Dr. Ricardo Jafet, 1501 - Vila Mariana, São Paulo - SP			|09:00		|22:00		|
-Extra					|R. Nossa Sra. das Mercês, 29 - Vila das Merces, São Paulo - SP		|09:00		|22:00		|
-Extra Hipermercado		|Av. Brigadeiro Luís Antônio, 2013 - Bela Vista, São Paulo - SP		|09:00		|22:00		|
-Extra					|Rua Três Rios, 282 - Bom Retiro, São Paulo - SP					|09:00		|22:00		|
-Extra Hiper Guarapiranga|Av. Guarapiranga, 752 - Socorro, São Paulo - SP					|09:00		|22:00		|
-Extra - Jardim Angela	|Estrada Velha do M'Boi Mirim, 4374 - Jardim Angela, São Paulo - SP	|09:00		|22:00		|
-Extra Hiper				|Av. Sen. Teotônio Vilela, 2926 - Jardim Iporanga, São Paulo - SP	|09:00		|22:00		|
+Nome								|Endereço															|Abertura	|Fechamento	|
+Catedral Metropolitana de São Paulo	|Praça da Sé - Sé, São Paulo - SP									|00:00		|23:59		|
+Pte. Estaiada						|Av. Jorn. Roberto Marinho, 85 - Cidade Monções, São Paulo - SP		|00:00		|23:59		|
+Museu Catavento						|Pq. Dom Pedro II - Av. Mercúrio, s/n - Brás, São Paulo - SP		|09:00		|16:00		|
+Aquário de São Paulo				|R. Huet Bacelar, 407 - Ipiranga, São Paulo - SP					|09:00		|17:00		|
+Museu do Ipiranga					|Parque da Independência - s/n - Ipiranga, São Paulo - SP			|09:00		|17:00		|
+Parque Ibirapuera					|Av. Pedro Álvares Cabral - Vila Mariana, São Paulo - SP			|05:00		|23:59		|
+Zoológico De Sao Paulo				|Av. Miguel Estefno, 4241 - Vila Santo Estefano, São Paulo - SP		|09:00		|19:00		|
+Jardim Botânico de São Paulo		|Av. Miguel Estefno, 3031 - Vila Água Funda, São Paulo - SP			|09:00		|17:00		|
+Pateo do Collegio					|Pç. Pateo do Collegio, 2 - Centro, São Paulo - SP					|09:00		|16:30		|
+Parque Estadual Alberto Löfgren		|R. do Horto, 931 - Horto Florestal, São Paulo - SP					|06:00		|18:00		|
+Parque Estadual do Jaraguá			|R. Antônio Cardoso Nogueira, 539 - Vila Chica Luisa, São Paulo - SP|07:00		|17:00		|
+Autódromo de Interlagos				|Av. Sen. Teotônio Vilela, 261 - Interlagos, São Paulo - SP			|07:00		|17:00		|
+Anhembi Sambadrome					|Av. Olavo Fontoura, 1209 - Santana, São Paulo - SP					|07:00		|17:00		|
