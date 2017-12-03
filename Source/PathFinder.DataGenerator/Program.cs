@@ -20,7 +20,7 @@ namespace PathFinder.DataGenerator
                 Directory
                  .GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Tests\"))
                  .Select(f => RunTest(f).Result)
-                 .Select(r => r.ToDelimitedString(";"))
+                 .Select(r => r.ToDelimitedString(string.Empty))
                  .ForEach(e => writer.WriteLine(e));
 
             }
