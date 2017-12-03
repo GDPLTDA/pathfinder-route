@@ -1,4 +1,5 @@
 ﻿using ColoredConsole;
+using PathFinder.Routes;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,13 +12,14 @@ namespace PathFinder
         {
             Print("Carregando rotas de teste...");
 
-            var config = await PRVJTFinder.GetConfigByFile("./Tests/Senacs.txt");
+            var config = await PRVJTFinder.GetConfigByFile("./Tests/Turisticos.txt");
 
             var finder = new PRVJTFinder(config);
 
             Print($"Dividindo Rotas...");
             var result = await finder.Run();
 
+            SearchRoute.SaveCache();
             if (result.Erro)
             {
                 PrintErro(result.Messagem);
@@ -35,10 +37,11 @@ namespace PathFinder
 
                     Print($"Calculando Rota do Entregador {item.Numero}...");
 
-                    Print($"Saindo: {item.Map.DataSaida: dd/MM/yyy hh:mm}");
+                    Print($"Saindo: {item.Map.DataSaida: dd/MM/yyy HH:mm}");
                     Print($"Saia de ({item.Saida.Name}){item.Saida.Endereco}");
                     Print($"Vá para ({item.NextRoute.Destination.Name}){item.NextRoute.Destination.Endereco}");
-                    Print($"Horario de Chegada: {item.NextRoute.DtChegada:dd/MM/yyy hh:mm)}");
+                    Print($"Horario de Chegada: {item.NextRoute.DtChegada:dd/MM/yyy HH:mm)}");
+                    Print($"Espera: {item.NextRoute.Destination.Period.Descarga} Minutos");
 
                     var entreresult = await finder.Step(item);
 

@@ -60,6 +60,8 @@ namespace PathFinder
 
                     var g = new Genome { Map = mapentr, ListRoutes = routesInTime.Select(o => o).ToList(), ListPoints = remainingPoints.Select(o => o).ToList() };
 
+                    g.CalcFitness(GaFinder.Fitness);
+
                     result.ListEntregadores.Add(new Entregador
                     {
                         Genome = g,
@@ -74,8 +76,7 @@ namespace PathFinder
                     map.Destinations.RemoveAll(o => remainingPoints.Exists(a => a.Equals(o)));
                 }
             }
-
-            SearchRoute.SaveCache();
+            
             return result;
         }
 

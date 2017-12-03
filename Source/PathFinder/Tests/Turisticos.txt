@@ -6,15 +6,10 @@ Entregadores=1
 Descarga=60
 Nome								|Endereço															|Abertura	|Fechamento	|
 Catedral Metropolitana de São Paulo	|Praça da Sé - Sé, São Paulo - SP									|00:00		|23:59		|
+Autódromo de Interlagos				|Av. Sen. Teotônio Vilela, 261 - Interlagos, São Paulo - SP			|07:00		|17:00		|
 Pte. Estaiada						|Av. Jorn. Roberto Marinho, 85 - Cidade Monções, São Paulo - SP		|00:00		|23:59		|
 Museu Catavento						|Pq. Dom Pedro II - Av. Mercúrio, s/n - Brás, São Paulo - SP		|09:00		|16:00		|
 Aquário de São Paulo				|R. Huet Bacelar, 407 - Ipiranga, São Paulo - SP					|09:00		|17:00		|
 Museu do Ipiranga					|Parque da Independência - s/n - Ipiranga, São Paulo - SP			|09:00		|17:00		|
 Parque Ibirapuera					|Av. Pedro Álvares Cabral - Vila Mariana, São Paulo - SP			|05:00		|23:59		|
 Zoológico De Sao Paulo				|Av. Miguel Estefno, 4241 - Vila Santo Estefano, São Paulo - SP		|09:00		|19:00		|
-Jardim Botânico de São Paulo		|Av. Miguel Estefno, 3031 - Vila Água Funda, São Paulo - SP			|09:00		|17:00		|
-Pateo do Collegio					|Pç. Pateo do Collegio, 2 - Centro, São Paulo - SP					|09:00		|16:30		|
-Parque Estadual Alberto Löfgren		|R. do Horto, 931 - Horto Florestal, São Paulo - SP					|06:00		|18:00		|
-Parque Estadual do Jaraguá			|R. Antônio Cardoso Nogueira, 539 - Vila Chica Luisa, São Paulo - SP|07:00		|17:00		|
-Autódromo de Interlagos				|Av. Sen. Teotônio Vilela, 261 - Interlagos, São Paulo - SP			|07:00		|17:00		|
-Anhembi Sambadrome					|Av. Olavo Fontoura, 1209 - Santana, São Paulo - SP					|07:00		|17:00		|
