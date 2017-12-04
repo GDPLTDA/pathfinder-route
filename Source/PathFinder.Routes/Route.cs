@@ -19,5 +19,10 @@ namespace PathFinder.Routes
         {
 
         }
+
+        public bool Equals(Route obj)
+        {
+            return Origin.Equals(obj.Origin) && Destination.Equals(obj.Destination);
+        }
     }
 }

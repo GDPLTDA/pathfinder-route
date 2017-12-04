@@ -37,7 +37,6 @@ namespace PathFinder.DataGenerator
                     // Altera a configuração do GA
                     GASettings.Mutation = mut;
                     GASettings.Crossover = cro;
-
                     // Carrega a configuração do roteiro
                     var finder = new PRVJTFinder(config);
                     // Executa a divisão de rotas
@@ -55,27 +54,7 @@ namespace PathFinder.DataGenerator
                              ));
                         continue;
                     }
-
-                    //while (!result.Concluido)
-                    //{
-                    //    foreach (var item in result.ListEntregadores)
-                    //    {
-                    //        if (item.NextRoute == null)
-                    //            continue;
-                    //        var entreresult = await finder.Step(item);
-
-                    //        if (entreresult.Erro)
-                    //            ret.Add(new Result(
-                    //                     result.TipoErro,
-                    //                     filename,
-                    //                     -1,
-                    //                     mut,
-                    //                     cro,
-                    //                     result.ListEntregadores.Sum(e => e.Genome.Fitness)
-                    //             ));
-                    //    }
-                    //}
-
+                    
                     ret.Add(new Result(
                             result.TipoErro,
                             filename,
@@ -88,6 +67,5 @@ namespace PathFinder.DataGenerator
             }
             return ret;
         }
-
     }
 }

@@ -7,6 +7,7 @@ namespace PathFinder.Routes
 {
     public class RouteMap
     {
+        public MapPoint MainStorage { get; set; }
         public MapPoint Storage { get; set; }
 
         public DateTime DataSaida { get; set; }
@@ -16,11 +17,13 @@ namespace PathFinder.Routes
         public RouteMap(string name, string endereco, DateTime saida, DateTime volta)
         {
             DataSaida = saida;
+            DataVolta = volta;
             Load(name, endereco);
         }
         public RouteMap(RouteMap map)
         {
             Storage = map.Storage;
+            MainStorage = map.MainStorage;
             DataSaida = map.DataSaida;
             DataVolta = map.DataVolta;
         }
@@ -31,6 +34,7 @@ namespace PathFinder.Routes
         async Task Load(MapPoint point)
         {
             Storage = await SearchRoute.GetPointAsync(point);
+            MainStorage = Storage;
             Storage.Period = new Period(DataSaida, DataVolta, 0);
         }
 
@@ -56,12 +60,13 @@ namespace PathFinder.Routes
         /// <param name="list"></param>
         public void Next(IList<Route> list)
         {
-            // O primeiro destino das rotas
+            //O primeiro destino das rotas
             Storage = list.First().Destination;
             DataSaida = list.First().DtChegada.AddMinutes(Storage.Period.Descarga);
-            //Storage.Date = now; // Atualiza a data inicial
             //Remove o primeiro da lista
             list.RemoveAt(0);
+            // remove a volta ao estoque
+            list.Remove(list.Last());
             //Limpa a lista de destinos
             Destinations.Clear();
             // Adiciona os destinos removendo o ponto inicial

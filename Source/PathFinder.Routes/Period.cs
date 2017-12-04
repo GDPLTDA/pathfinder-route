@@ -22,8 +22,8 @@ namespace PathFinder.Routes
         }   
         public Period(DateTime from,DateTime to, int descarga)
         {
-            From = new TimeSpan(from.Ticks);
-            To = new TimeSpan(to.Ticks);
+            From = new TimeSpan(from.Hour, from.Minute, 0);
+            To = new TimeSpan(to.Hour, to.Minute, 0);
             Descarga = descarga;
         } 
     }

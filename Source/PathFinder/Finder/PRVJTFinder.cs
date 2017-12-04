@@ -88,7 +88,10 @@ namespace PathFinder
                 var map = entregador.Map;
 
                 if (!map.Destinations.Any())
+                {
+                    result.Entregador.NextRoute = null;
                     return result;
+                }
 
                 if (entregador.NextRoute.DtChegada > Config.DtLimite)
                     return result.Register(TipoErro.EstourouTempoEntrega);
@@ -98,16 +101,13 @@ namespace PathFinder
                 if (entregador.Genome.ListPoints.Any())
                     entregador.Genome.ListPoints.RemoveAt(0);
 
-                if (!entregador.Genome.ListRoutes.Any())
-                {
-                    entregador.NextRoute = null;
-                    return result;
-                }
-
                 var best = await GaFinder.FindPathAsync(map, entregador.Genome);
 
                 entregador.Genome = new Genome(best);
-                entregador.NextRoute = best.ListRoutes.FirstOrDefault();
+
+                var route = best.ListRoutes.FirstOrDefault();
+                if (!entregador.NextRoute.Equals(route))
+                    entregador.NextRoute = route;
                 entregador.Map = map;
 
                 return result;

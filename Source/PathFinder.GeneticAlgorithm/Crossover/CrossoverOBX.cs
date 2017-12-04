@@ -4,6 +4,7 @@ using PathFinder.GeneticAlgorithm.Abstraction;
 using System;
 using System.Collections.Generic;
 using PathFinder.Routes;
+using System.Linq;
 
 namespace PathFinder.GeneticAlgorithm.Crossover
 {
@@ -20,6 +21,10 @@ namespace PathFinder.GeneticAlgorithm.Crossover
             var lstPositions = new List<int>();
             var listmom = Operation.Mom.ListPoints;
             var listdad = Operation.Dad.ListPoints;
+
+            if(!listmom.Any() || !listdad.Any())
+                return Operation;
+
             var minindex = Math.Min(listmom.Count, listdad.Count);
             var pos = rand.Next(0, minindex - 1);
             while (pos < minindex)
