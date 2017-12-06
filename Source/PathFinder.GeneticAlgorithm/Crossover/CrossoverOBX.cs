@@ -17,7 +17,7 @@ namespace PathFinder.GeneticAlgorithm.Crossover
                 return Operation;
             var babymom = CrossoverOperation.Copy(Operation.Mom);
             var babydad = CrossoverOperation.Copy(Operation.Dad);
-            var lstTempCities = new List<MapPoint>();
+            var lstTempCities = new List<Local>();
             var lstPositions = new List<int>();
             var listmom = Operation.Mom.ListPoints;
             var listdad = Operation.Dad.ListPoints;

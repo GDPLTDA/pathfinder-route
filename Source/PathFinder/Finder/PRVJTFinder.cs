@@ -44,17 +44,17 @@ namespace PathFinder
                 {
                     var best = await GaFinder.FindPathAsync(map);
 
-                    var routesInTime = best.ListRoutes.TakeWhile(e => e.DtChegada <= Config.DtLimite).ToList();
+                    var routesInTime = best.ListRoutes.TakeWhile(e => e.DhChegada <= Config.DtLimite).ToList();
 
                     if (!routesInTime.Any())
                         return result.Register(TipoErro.EstourouTempo);
 
-                    var remainingPoints = routesInTime.Select(o => o.Destination).ToList();
+                    var remainingPoints = routesInTime.Select(o => o.Destino).ToList();
 
                     var destinosEntrega = map.Destinations
                                         .Where(o => remainingPoints.Exists(a => a.Equals(o))).ToList();
 
-                    var mapentr = new RouteMap(map);
+                    var mapentr = new Roteiro(map);
 
                     destinosEntrega.ForEach(async e => await mapentr.AddDestination(e));
 
@@ -93,7 +93,7 @@ namespace PathFinder
                     return result;
                 }
 
-                if (entregador.NextRoute.DtChegada > Config.DtLimite)
+                if (entregador.NextRoute.DhChegada > Config.DtLimite)
                     return result.Register(TipoErro.EstourouTempoEntrega);
 
                 map.Next(entregador.Genome.ListRoutes);
@@ -127,7 +127,7 @@ namespace PathFinder
                     var entregadores = Convert.ToInt32(ReadConfig("Entregadores", sr));
                     var descarga = Convert.ToInt32(ReadConfig("Descarga", sr));
 
-                    config.Map = new RouteMap(name, endereco, saida, volta);
+                    config.Map = new Roteiro(name, endereco, saida, volta);
                     config.Map.DataSaida = saida;
                     
                     config.DtLimite = volta;
@@ -139,7 +139,7 @@ namespace PathFinder
                     {
                         var line = sr.ReadLine().Split("|").Select(o => o.Replace("\t", "")).ToList();
 
-                        var map = new MapPoint(line[0], line[1])
+                        var map = new Local(line[0], line[1])
                         {
                             Period = new Period(line[2], line[3], descarga)
                         };

@@ -7,7 +7,7 @@ namespace PathFinder
 {
     public class PRVJTConfig
     {
-        public RouteMap Map { get; set; }
+        public Roteiro Map { get; set; }
         public int NumEntregadores { get; set; }
         public DateTime DtLimite { get; set; } = DateTime.Now.AddDays(4);
     }

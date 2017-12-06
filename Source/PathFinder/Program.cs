@@ -39,9 +39,9 @@ namespace PathFinder
 
                     Print($"Saindo: {item.Map.DataSaida: dd/MM/yyy HH:mm}");
                     Print($"Saia de ({item.Saida.Name}){item.Saida.Endereco}");
-                    Print($"Vá para ({item.NextRoute.Destination.Name}){item.NextRoute.Destination.Endereco}");
-                    Print($"Horario de Chegada: {item.NextRoute.DtChegada:dd/MM/yyy HH:mm)}");
-                    Print($"Espera: {item.NextRoute.Destination.Period.Descarga} Minutos");
+                    Print($"Vá para ({item.NextRoute.Destino.Name}){item.NextRoute.Destino.Endereco}");
+                    Print($"Horario de Chegada: {item.NextRoute.DhChegada:dd/MM/yyy HH:mm)}");
+                    Print($"Espera: {item.NextRoute.Destino.Period.Descarga} Minutos");
 
                     var entreresult = await finder.Step(item);
 

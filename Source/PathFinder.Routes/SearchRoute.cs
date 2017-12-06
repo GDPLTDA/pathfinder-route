@@ -16,8 +16,8 @@ namespace PathFinder.Routes
     {
         static bool CacheActive { get; set; } = true;
         static bool Traffic { get; set; } = true;
-        static ConcurrentDictionary<string, Route> RouteCache = new ConcurrentDictionary<string, Route>();
-        static ConcurrentDictionary<string, MapPoint> PointCache = new ConcurrentDictionary<string, MapPoint>();
+        static ConcurrentDictionary<string, Rota> RouteCache = new ConcurrentDictionary<string, Rota>();
+        static ConcurrentDictionary<string, Local> PointCache = new ConcurrentDictionary<string, Local>();
         const string Url = "https://maps.googleapis.com/maps/api/";
         const string Key = "AIzaSyBFP8cY4DSZM_7Z9k2svtu-Ktdjhq23UNI";
 
@@ -27,19 +27,19 @@ namespace PathFinder.Routes
             {
                 if (File.Exists("RouteCache.txt"))
                 {
-                    RouteCache = JsonConvert.DeserializeObject<ConcurrentDictionary<string, Route>>
+                    RouteCache = JsonConvert.DeserializeObject<ConcurrentDictionary<string, Rota>>
                         (File.ReadAllText("RouteCache.txt"));
 
                     if (RouteCache == null)
-                        RouteCache = new ConcurrentDictionary<string, Route>();
+                        RouteCache = new ConcurrentDictionary<string, Rota>();
                 }
                 if (File.Exists("PointCache.txt"))
                 {
-                    PointCache = JsonConvert.DeserializeObject<ConcurrentDictionary<string, MapPoint>>
+                    PointCache = JsonConvert.DeserializeObject<ConcurrentDictionary<string, Local>>
                         (File.ReadAllText("PointCache.txt"));
 
                     if (PointCache == null)
-                        PointCache = new ConcurrentDictionary<string, MapPoint>();
+                        PointCache = new ConcurrentDictionary<string, Local>();
                 }
             }
         }
@@ -50,7 +50,7 @@ namespace PathFinder.Routes
             File.WriteAllText("PointCache.Txt", JsonConvert.SerializeObject(PointCache));
         }
 
-        public static async Task<Route> GetRouteAsync(MapPoint origin, MapPoint destination)
+        public static async Task<Rota> GetRouteAsync(Local origin, Local destination)
         {
             var key = $"{origin.Endereco}|{destination.Endereco}";
 
@@ -64,11 +64,11 @@ namespace PathFinder.Routes
 
             return ret;
         }
-        public static async Task<Route> ReadRequestRouteAsync(MapPoint origin, MapPoint destination, string key, WebRequest request)
+        public static async Task<Rota> ReadRequestRouteAsync(Local origin, Local destination, string key, WebRequest request)
         {
             var response = request.GetResponse();
 
-            var route = new Route();
+            var route = new Rota();
 
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
@@ -90,10 +90,10 @@ namespace PathFinder.Routes
                     {
                         foreach (var l in r.legs)
                         {
-                            route.Origin = origin;
-                            route.Destination = destination;
-                            route.Meters = l.distance.value;
-                            route.Seconds = l.duration.value;
+                            route.Origem = origin;
+                            route.Destino = destination;
+                            route.Metros = l.distance.value;
+                            route.Segundos = l.duration.value;
 
                             if (CacheActive && !RouteCache.TryAdd(key, route))
                                 ColorConsole.WriteLine($"CONFLICT AT {key}".Red());
@@ -103,7 +103,7 @@ namespace PathFinder.Routes
             }
             return route;
         }
-        public async static Task<MapPoint> GetPointAsync(MapPoint mappoint)
+        public async static Task<Local> GetPointAsync(Local mappoint)
         {
             if (PointCache.ContainsKey(mappoint.Endereco))
             {
@@ -119,7 +119,7 @@ namespace PathFinder.Routes
 
             return ret;
         }
-        public async static Task<MapPoint> ReadRequestPointAsync(MapPoint mappoint, WebRequest request)
+        public async static Task<Local> ReadRequestPointAsync(Local mappoint, WebRequest request)
         {
             var response = request.GetResponse();
 
@@ -149,7 +149,7 @@ namespace PathFinder.Routes
             return mappoint;
         }
 
-        public static void SaveRouteImage(List<Route> listRoutes)
+        public static void SaveRouteImage(List<Rota> listRoutes)
         {
             var request = GetRequestStaticMapRoute(listRoutes);
 
@@ -180,7 +180,7 @@ namespace PathFinder.Routes
         /// <param name="ori"></param>
         /// <param name="des"></param>
         /// <returns></returns>
-        static WebRequest GetRequestNameRoute(MapPoint ori, MapPoint des)
+        static WebRequest GetRequestNameRoute(Local ori, Local des)
             => WebRequest.Create(
                 $"{Url}directions/json?origin={ori.Endereco}&destination={des.Endereco}&sensor=false&key={Key}");
         /// <summary>
@@ -188,7 +188,7 @@ namespace PathFinder.Routes
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        static WebRequest GetRequestPointRoute(MapPoint ori, MapPoint des)
+        static WebRequest GetRequestPointRoute(Local ori, Local des)
             => WebRequest.Create(
                 $"{Url}directions/json?" +
                 $"origin={ConvNumber(ori.Latitude)},{ConvNumber(ori.Longitude)}&" +
@@ -207,12 +207,12 @@ namespace PathFinder.Routes
         /// </summary>
         /// <param name="listRoutes"></param>
         /// <returns></returns>
-        static WebRequest GetRequestStaticMapRoute(List<Route> listRoutes)
+        static WebRequest GetRequestStaticMapRoute(List<Rota> listRoutes)
         {
             var strbuild = new StringBuilder();
             foreach (var route in listRoutes)
-                strbuild.Append($"|{ConvNumber(route.Origin.Latitude)},{ConvNumber(route.Origin.Longitude)}|" +
-                                $"{ConvNumber(route.Destination.Latitude)},{ConvNumber(route.Destination.Longitude)}");
+                strbuild.Append($"|{ConvNumber(route.Origem.Latitude)},{ConvNumber(route.Origem.Longitude)}|" +
+                                $"{ConvNumber(route.Destino.Latitude)},{ConvNumber(route.Destino.Longitude)}");
 
             var url = $"{Url}staticmap?path={strbuild.ToString().Substring(1)}&markers={strbuild.ToString().Substring(1)}&size=512x512";
 

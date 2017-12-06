@@ -33,7 +33,7 @@ namespace PathFinder.GeneticAlgorithm
             BestSolutionToPick = GASettings.BestSolutionToPick;
             THROTTLE = GASettings.Throttle;
         }
-        public async Task<IGenome> FindPathAsync(RouteMap map, IGenome seed = null)
+        public async Task<IGenome> FindPathAsync(Roteiro map, IGenome seed = null)
         {
             if (Mutate == null || Crossover == null || Fitness == null || Selection == null)
                 throw new System.Exception("GA cant run without all operators");

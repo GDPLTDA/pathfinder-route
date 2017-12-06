@@ -9,16 +9,16 @@ namespace PathFinder.GeneticAlgorithm
 {
     public class Genome : IGenome
     {
-        public RouteMap Map { get; set; }
-        public List<MapPoint> ListPoints { get; set; }
-        public List<Route> ListRoutes { get; set; }
+        public Roteiro Map { get; set; }
+        public List<Local> ListPoints { get; set; }
+        public List<Rota> ListRoutes { get; set; }
         public double Fitness { get; private set; }
 
         public Genome()
         {
 
         }
-        public Genome(RouteMap map)
+        public Genome(Roteiro map)
         {
             Map = map;
             Initialize();
@@ -31,7 +31,7 @@ namespace PathFinder.GeneticAlgorithm
         }
         void Initialize()
         {
-            ListPoints = new List<MapPoint>();
+            ListPoints = new List<Local>();
             var rand = RandomFactory.Rand;
 
             var count = Map.Destinations.Count;
@@ -51,9 +51,9 @@ namespace PathFinder.GeneticAlgorithm
         public async Task CalcRoutesAsync()
         {
             var point = Map.Storage;
-            ListRoutes = new List<Route>();
+            ListRoutes = new List<Rota>();
             ListPoints = Map.Destinations;
-            Route route;
+            Rota route;
             foreach (var item in ListPoints)
             {
                 route = await SearchRoute.GetRouteAsync(point, item);
@@ -62,7 +62,7 @@ namespace PathFinder.GeneticAlgorithm
                 point = item;
             }
 
-            MapPoint lastpoint;
+            Local lastpoint;
 
             if (ListPoints.Any())
                 lastpoint = ListPoints.Last();
@@ -79,15 +79,15 @@ namespace PathFinder.GeneticAlgorithm
         public bool IsEqual(IGenome genome)
         {
             if (genome != null)
-                if (ListRoutes.Sum(o => o.Meters) == genome.ListRoutes.Sum(o => o.Meters))
-                    if (ListRoutes.Sum(o => o.Minutes) == genome.ListRoutes.Sum(o => o.Minutes))
+                if (ListRoutes.Sum(o => o.Metros) == genome.ListRoutes.Sum(o => o.Metros))
+                    if (ListRoutes.Sum(o => o.Minutos) == genome.ListRoutes.Sum(o => o.Minutos))
                         return true;
 
             return false;
         }
         public override string ToString() => $"F={Fitness}";
 
-        public static IGenome Generator(RouteMap map)
+        public static IGenome Generator(Roteiro map)
         {
             return new Genome(map);
         }

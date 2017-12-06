@@ -19,7 +19,7 @@ namespace PathFinder.GeneticAlgorithm
             var spanSize = rand.Next(0, listcount);
             beg = rand.Next(0, listcount - spanSize);
             end = beg + spanSize;
-            var lstTemp = new List<MapPoint>();
+            var lstTemp = new List<Local>();
             for (int i = beg; i < end; i++)
             {
                 lstTemp.Add(baby.ListPoints[beg]);

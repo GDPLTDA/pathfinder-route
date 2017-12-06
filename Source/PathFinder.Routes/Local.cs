@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace PathFinder.Routes
 {
-    public class MapPoint
+    public class Local
     {
         public string Name { get; set; }
         public string Endereco { get; set; }
@@ -10,11 +11,11 @@ namespace PathFinder.Routes
         public double Longitude { get; set; }
         public Period Period { get; set; }
 
-        public MapPoint()
+        public Local()
         {
         }
 
-        public MapPoint(string name, string endereco = null)
+        public Local(string name, string endereco = null)
         {
             Name = name;
             Endereco = endereco;
@@ -22,8 +23,15 @@ namespace PathFinder.Routes
                 Endereco = name;
         }
 
+        public async Task<Local> UpdateLocal(string abertura, string fechamento, int espera)
+        {
+            Period = new Period(abertura, fechamento, espera);
+
+            return await SearchRoute.GetPointAsync(this);
+        }
+
         public override string ToString() => $"({Latitude},{Longitude}) {Name}";
 
-        public bool Equals(MapPoint o) => Latitude == o.Latitude && Longitude == o.Longitude;
+        public bool Equals(Local o) => Latitude == o.Latitude && Longitude == o.Longitude;
     }
 }

@@ -13,9 +13,9 @@ namespace PathFinder.GeneticAlgorithm
 
             foreach (var item in genome.ListRoutes)
             {
-                var date = finish.AddMinutes(item.Minutes);
-                var from = CreateDateTime(date, item.Destination.Period.From);
-                var to = CreateDateTime(date, item.Destination.Period.To);
+                var date = finish.AddMinutes(item.Minutos);
+                var from = CreateDateTime(date, item.Destino.Period.From);
+                var to = CreateDateTime(date, item.Destino.Period.To);
                 
                 if (date > to)
                 {
@@ -26,12 +26,12 @@ namespace PathFinder.GeneticAlgorithm
                 if (date < from)
                     date = date.Add(from - date);
 
-                item.DtChegada = date;
-                finish = date.AddMinutes(item.Destination.Period.Descarga);
+                item.DhChegada = date;
+                finish = date.AddMinutes(item.Destino.Period.Descarga);
             }
             var totaltime = new TimeSpan(finish.Ticks - start.Ticks);
 
-            return genome.ListRoutes.Sum(o=>o.Meters) + totaltime.Minutes;
+            return genome.ListRoutes.Sum(o=>o.Metros) + totaltime.Minutes;
         }
 
         DateTime CreateDateTime(DateTime date, TimeSpan time)
