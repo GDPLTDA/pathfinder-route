@@ -1,30 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PathFinder;
 using PathFinder.Routes;
+using RouteGA.Models;
 
 namespace RouteGA.Controllers
 {
     [Route("api/[controller]")]
     public class RouteController : Controller
     {
-        Roteiro Roteiro { get; set; }
-
-        // GET api/route
-        [HttpGet]
-        public IEnumerable<Entregador> Get()
-        {
-            return new Entregador[] { new Entregador()};
-        }
-
-        // GET api/route/5
-        [HttpGet("{id}")]
-        public Entregador Get(int entregador)
-        {
-            return new Entregador();
-        }
-        //// GET api/route/5
+        //// GET api/local
         [HttpGet("local")]
         public async Task<Local> GetLocal(string name, string endereco, string abertura, string fechamento, int espera)
         {
@@ -35,35 +22,17 @@ namespace RouteGA.Controllers
 
         // POST api/route
         [HttpPost("roteiro")]
-        public async Task PostRoteiro([FromBody]Local local)
+        public async Task<IEnumerable<EntregadorModelView>> PostRoteiro([FromBody]RoteiroViewModel roteiro)
         {
-            Roteiro = new Roteiro(local);
-        }
+            var config = await roteiro.ToConfig();
+            var finder = new PRVJTFinder(config);
 
-        // POST api/route
-        [HttpPost("destino")]
-        public async Task PostLocal([FromBody]Local local)
-        {
-            await Roteiro.AddDestination(local);
-        }
+            var result = await finder.Run();
 
-        //// POST api/route
-        //[HttpPost]
-        //public void Post([FromBody]Roteiro roteiro)
-        //{
-        //    Roteiro = roteiro;
-        //}
+            if (result.Erro)
+                return new EntregadorModelView[] { new EntregadorModelView() };
 
-        // PUT api/route/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/route/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return result.ListEntregadores.Select(o=> new EntregadorModelView(o));
         }
     }
 }
