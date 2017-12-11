@@ -1,36 +1,37 @@
-﻿using System;
+﻿using PathFinder;
+using PathFinder.Routes;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using PathFinder;
-using PathFinder.Routes;
 
 namespace RouteGA.Models
 {
     public class RoteiroViewModel
     {
-        public LocalModelView Origem { get; set; }
+        public LocalViewModel Origem { get; set; }
 
-        public IList<LocalModelView> Destinos { get; set; }
+        public IList<LocalViewModel> Destinos { get; set; }
 
         public int NumeroEntregadores { get; set; }
 
-        public DateTime DhSaida { get; set; }
-        public DateTime DhLimite { get; set; }
+        public string DhSaida { get; set; }
+        public string DhLimite { get; set; }
 
-        public RoteiroViewModel()
+
+        async internal Task<PRVJTConfig> ToPRVJTConfig()
         {
-            
-        }
+            var dataLimite = DateTime.Parse(DhLimite);
+            var dataSaida = DateTime.Parse(DhSaida);
 
-        async internal Task<PRVJTConfig> ToConfig()
-        {
-            var config = new PRVJTConfig();
+            var config = new PRVJTConfig
+            {
+                Map = new Roteiro(Origem.Endereco, Origem.Endereco, dataSaida, dataLimite)
+            };
 
-            config.Map = new Roteiro(Origem.Endereco, Origem.Endereco, DhSaida, DhLimite);
-            config.Map.DataSaida = DhSaida;
+            config.Map.DataSaida = dataSaida;
 
-            config.DtLimite = DhLimite;
-            config.NumEntregadores = NumeroEntregadores;
+            config.DtLimite = dataLimite;
+            config.NumEntregadores = NumeroEntregadores == 0 ? int.MaxValue : NumeroEntregadores;
 
             foreach (var item in Destinos)
             {

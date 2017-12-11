@@ -1,16 +1,16 @@
 ﻿using System;
 namespace RouteGA.Models
 {
-    public class RotaModelView
+    public class RotaViewModel
     {
-        public LocalModelView Saida { get; set; }
+        public LocalViewModel Saida { get; set; }
         public DateTime DhSaida { get; set; }
         public double Metros { get; set; }
         public double Minutos { get; set; }
         public DateTime DhChegada { get; set; }
-        public LocalModelView Chegada { get; set; }
+        public LocalViewModel Chegada { get; set; }
 
-        public RotaModelView()
+        public RotaViewModel()
         {
         }
     }

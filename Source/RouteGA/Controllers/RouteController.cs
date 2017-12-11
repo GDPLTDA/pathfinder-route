@@ -1,38 +1,41 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PathFinder;
 using PathFinder.Routes;
 using RouteGA.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RouteGA.Controllers
 {
     [Route("api/[controller]")]
     public class RouteController : Controller
     {
-        //// GET api/local
-        [HttpGet("local")]
-        public async Task<Local> GetLocal(string name, string endereco, string abertura, string fechamento, int espera)
+        public async Task<IActionResult> Get(string name, string endereco, string abertura, string fechamento, int espera)
         {
+            if (new[] { name, endereco, abertura, fechamento }.Any(e => string.IsNullOrWhiteSpace(e)))
+                return BadRequest("Parametros invalidos");
+
             var local = new Local(name, endereco);
 
-            return await local.UpdateLocal(abertura, fechamento, espera);
+            return Ok(await local.UpdateLocal(abertura, fechamento, espera));
         }
 
-        // POST api/route
-        [HttpPost("roteiro")]
-        public async Task<IEnumerable<EntregadorModelView>> PostRoteiro([FromBody]RoteiroViewModel roteiro)
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]RoteiroViewModel roteiro)
         {
-            var config = await roteiro.ToConfig();
+            var config = await roteiro.ToPRVJTConfig();
             var finder = new PRVJTFinder(config);
+
 
             var result = await finder.Run();
 
             if (result.Erro)
-                return new EntregadorModelView[] { new EntregadorModelView() };
+                return Ok(EntregadorViewModel.Empty);
 
-            return result.ListEntregadores.Select(o=> new EntregadorModelView(o));
+            var viewmodel = result.ListEntregadores.Select(o => new EntregadorViewModel(o)).ToList();
+
+
+            return Ok(viewmodel);
         }
     }
 }
