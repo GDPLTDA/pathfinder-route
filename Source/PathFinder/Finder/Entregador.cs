@@ -13,5 +13,7 @@ namespace PathFinder
         public Rota NextRoute { get; set; }
         public Roteiro Map { get; set; }
         public IGenome Genome { get; set; }
+
+        public IEnumerable<Rota> Routes => Genome.ListRoutes;
     }
 }

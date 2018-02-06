@@ -1,69 +1,41 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PathFinder;
 using PathFinder.Routes;
+using RouteGA.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RouteGA.Controllers
 {
     [Route("api/[controller]")]
     public class RouteController : Controller
     {
-        Roteiro Roteiro { get; set; }
+        public async Task<IActionResult> Get(string name, string endereco, string abertura, string fechamento, int espera)
+        {
+            if (new[] { name, endereco, abertura, fechamento }.Any(e => string.IsNullOrWhiteSpace(e)))
+                return BadRequest("Parametros invalidos");
 
-        // GET api/route
-        [HttpGet]
-        public IEnumerable<Entregador> Get()
-        {
-            return new Entregador[] { new Entregador()};
-        }
-
-        // GET api/route/5
-        [HttpGet("{id}")]
-        public Entregador Get(int entregador)
-        {
-            return new Entregador();
-        }
-        //// GET api/route/5
-        [HttpGet("local")]
-        public async Task<Local> GetLocal(string name, string endereco, string abertura, string fechamento, int espera)
-        {
             var local = new Local(name, endereco);
 
-            return await local.UpdateLocal(abertura, fechamento, espera);
+            return Ok(await local.UpdateLocal(abertura, fechamento, espera));
         }
 
-        // POST api/route
-        [HttpPost("roteiro")]
-        public async Task PostRoteiro([FromBody]Local local)
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]RoteiroViewModel roteiro)
         {
-            Roteiro = new Roteiro(local);
-        }
+            var config = await roteiro.ToPRVJTConfig();
+            var finder = new PRVJTFinder(config);
 
-        // POST api/route
-        [HttpPost("destino")]
-        public async Task PostLocal([FromBody]Local local)
-        {
-            await Roteiro.AddDestination(local);
-        }
 
-        //// POST api/route
-        //[HttpPost]
-        //public void Post([FromBody]Roteiro roteiro)
-        //{
-        //    Roteiro = roteiro;
-        //}
+            var result = await finder.Run();
 
-        // PUT api/route/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+            if (result.Erro)
+                return Ok(EntregadorViewModel.Empty);
 
-        // DELETE api/route/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var viewmodel = result.ListEntregadores.Select(o => new EntregadorViewModel(o)).ToList();
+
+
+            return Ok(viewmodel);
         }
     }
 }

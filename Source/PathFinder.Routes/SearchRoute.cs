@@ -174,39 +174,22 @@ namespace PathFinder.Routes
             };
             Process.Start(psi);
         }
-        /// <summary>
-        /// Busca o tempo,distancia entre dois pontos usando o endereço
-        /// </summary>
-        /// <param name="ori"></param>
-        /// <param name="des"></param>
-        /// <returns></returns>
+
         static WebRequest GetRequestNameRoute(Local ori, Local des)
             => WebRequest.Create(
                 $"{Url}directions/json?origin={ori.Endereco}&destination={des.Endereco}&sensor=false&key={Key}");
-        /// <summary>
-        /// Busca o tempo,distancia entre dois pontos usando o Latitude e Longitude
-        /// </summary>
-        /// <param name="point"></param>
-        /// <returns></returns>
+
         static WebRequest GetRequestPointRoute(Local ori, Local des)
             => WebRequest.Create(
                 $"{Url}directions/json?" +
                 $"origin={ConvNumber(ori.Latitude)},{ConvNumber(ori.Longitude)}&" +
                 $"destination={ConvNumber(des.Latitude)},{ConvNumber(des.Longitude)}&" +
                 $"sensor=false&key={Key}");
-        /// <summary>
-        /// Busca os dados do ponto usando o endereço
-        /// </summary>
-        /// <param name="point"></param>
-        /// <returns></returns>
+
         static WebRequest GetRequestAddress(string address)
             => WebRequest.Create(
                 $"{Url}geocode/json?address={address}&sensor=false&key={Key}");
-        /// <summary>
-        /// Busca uma imagem da rota total
-        /// </summary>
-        /// <param name="listRoutes"></param>
-        /// <returns></returns>
+
         static WebRequest GetRequestStaticMapRoute(List<Rota> listRoutes)
         {
             var strbuild = new StringBuilder();
@@ -218,11 +201,7 @@ namespace PathFinder.Routes
 
             return WebRequest.Create(url);
         }
-        /// <summary>
-        /// Converte para a busca em Json
-        /// </summary>
-        /// <param name="num"></param>
-        /// <returns></returns>
+
         public static string ConvNumber(double num)
             => Math.Round(num, 6).ToString().Replace(',', '.');
     }

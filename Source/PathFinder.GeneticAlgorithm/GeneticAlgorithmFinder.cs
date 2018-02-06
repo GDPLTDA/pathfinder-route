@@ -52,13 +52,13 @@ namespace PathFinder.GeneticAlgorithm
             }
             for (int i = 0; i < popusize; i++)
                 Populations.Add(Genome.Generator(map));
-            
+
             await CalcFitness();
 
             for (int i = 0; i < GenerationLimit; i++)
             {
                 var newpopulations = new List<IGenome>();
-                
+
                 for (int j = 0; j < BestSolutionToPick; j++)
                     newpopulations.Add(Populations[j]);
 
@@ -79,7 +79,7 @@ namespace PathFinder.GeneticAlgorithm
                 Populations = newpopulations.ToList();
 
                 await CalcFitness();
-                
+
                 Best = Populations.First();
             }
 
@@ -101,10 +101,16 @@ namespace PathFinder.GeneticAlgorithm
             Selection = selection;
         }
 
-        async Task CalcGenomeRoutesAsync() =>
-            await Populations
-                     .ToObservable(NewThreadScheduler.Default)
-                     .Select(n => Observable.FromAsync(n.CalcRoutesAsync))
-                     .Merge(THROTTLE);
+        async Task CalcGenomeRoutesAsync()
+        {
+            if (THROTTLE == 1)
+                foreach (var item in Populations)
+                    await item.CalcRoutesAsync();
+            else
+                await Populations
+                         .ToObservable(NewThreadScheduler.Default)
+                         .Select(n => Observable.FromAsync(n.CalcRoutesAsync))
+                         .Merge(THROTTLE);
+        }
     }
 }
