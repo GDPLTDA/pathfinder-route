@@ -1,18 +1,15 @@
 import React from 'react'
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
-
-import 'rc-time-picker/assets/index.css';
 import moment from 'moment';
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import TimePicker from 'rc-time-picker';
 
 const format = 'HH:mm';
-
 const now = moment().hour(0).minute(0);
 
 export default class PlaceSearch extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { address: '', lat:0, lng:0, store:'Store', from:'00:00', to:'00:00'}
+    this.state = { address: '', lat:0, lng:0, isStore: true, from:'00:00', to:'00:00'}
   }
 
   onChange = (address) => this.setState({ address })
@@ -27,14 +24,14 @@ export default class PlaceSearch extends React.Component {
      this.props.onSelect(this.state)
   }
   onChangeFrom = (value) => {
-    var from = value.format(format)
+    const from = value.format(format)
     this.setState({ from })
 
     this.props.onSelect(this.state)
     console.log(value && from);
   }
   onChangeTo = (value) => {
-    var to = value.format(format)
+    const to = value.format(format)
     this.setState({ to })
 
     this.props.onSelect(this.state)

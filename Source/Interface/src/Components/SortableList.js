@@ -13,7 +13,7 @@ const SortableItem = SortableElement(
         </div>
         <div className="gps-point">
           <i className="fa fa-map-marker" />
-          <span className={location.store == "Store" ? "noteStore" : "note"}>{location.store}  </span>
+          <span className={location.isStore ? "note noteStore" : "note"}>{location.isStore ? "Store" : "Place"}  </span>
           <span className="note">{location.lat.toFixed(5)}, {location.lng.toFixed(5)}</span>
         </div>
         <button className="remove-button" onClick={e => onRemove(location)}>

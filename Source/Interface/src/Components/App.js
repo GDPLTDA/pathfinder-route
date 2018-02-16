@@ -4,13 +4,14 @@ import Map from './Map'
 import {getGeoLocation} from "../html5"
 import AdressList from './AddressList'
 import SearchRoute from './SearchRoute'
+import toastr from 'toastr'
 
 export default class App extends React.Component
 {
     constructor()
     {
         super()
-        this.state = {address: "", lat: 0, lng: 0, store: 'Store', from:'00:00', to:'00:00'}
+        this.state = {address: "", lat: 0, lng: 0, isStore: true, from:'00:00', to:'00:00'}
         this.setToCurrentLocation();
     }
 
@@ -23,11 +24,11 @@ export default class App extends React.Component
     }
 
     onSelectPlace = (location) => {
-        this.setState({...location});
+        this.setState({...location})
     }
 
     onClickButton = (location) => {
-        console.log("funcionou!!!")
+        toastr.info("funcionou!!!")
     }
     
     render() {   

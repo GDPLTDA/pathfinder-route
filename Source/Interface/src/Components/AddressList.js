@@ -6,25 +6,25 @@ import {arrayMove} from 'react-sortable-hoc'
 export default class AddressList extends React.Component
 {
     constructor()
-    {
+    { 
         super()
         this.state = {items : []}
     }
 
-    addLocation = (e) => {
-        //e.preventDefault()
+    addLocation = () => {
         const locations = this.state.items
         const newLocation = {...this.props.location}
 
-        var found = locations.some(function (el) {
-            return el.lat === newLocation.lat && el.lng === newLocation.lng;
-          });
+        const found = locations.some( el =>
+            el.lat === newLocation.lat 
+            && el.lng === newLocation.lng
+        )
 
         if ( newLocation.address==="" || found)
             return;
 
         if(locations.length != 0)
-            newLocation.store = "Place"
+            newLocation.isStore = false
 
         locations.push(newLocation)
         this.setState({items: locations})
@@ -35,24 +35,25 @@ export default class AddressList extends React.Component
     removeLocation = (item) => {
         const items = this.state.items
         _.remove(items, item)
-        this.setState({items})
+        this.setState({items: this.updateStoreStatus(items)})
     }
 
     onSortEnd = ({oldIndex, newIndex}) => {
         this.setState({
             items: arrayMove(this.state.items, oldIndex, newIndex),
             });
-
-        const locations = this.state.items
-        locations.forEach(function(entry) {
-            if(locations.indexOf(entry) == 0)
-                entry.store = "Store"
-            else
-                entry.store = "Place"
-            console.log(entry);
-        });
-        this.setState({items: locations})
+         
+        this.setState({items: this.updateStoreStatus(this.state.items)})
     };
+
+    updateStoreStatus(locations = []){
+        return locations.map(  
+            (entry,index) =>
+               (index == 0)
+               ? {...entry, isStore: true}
+               : {...entry, isStore: false}
+            )
+    }
 
     render() {
         return (
