@@ -1,10 +1,18 @@
 import React from 'react'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
+import 'rc-time-picker/assets/index.css';
+import moment from 'moment';
+import TimePicker from 'rc-time-picker';
+
+const format = 'HH:mm';
+
+const now = moment().hour(0).minute(0);
+
 export default class PlaceSearch extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { address: '', lat:0, lng:0}
+    this.state = { address: '', lat:0, lng:0, store:'Store', from:'00:00', to:'00:00'}
   }
 
   onChange = (address) => this.setState({ address })
@@ -12,13 +20,26 @@ export default class PlaceSearch extends React.Component {
   handleSelect = async (address) => {
     this.setState({ address })
 
-   let latLng = await geocodeByAddress(this.state.address)
+    let latLng = await geocodeByAddress(this.state.address)
                       .then(results => getLatLng(results[0]));
-
+    
      this.setState({...latLng})
      this.props.onSelect(this.state)
   }
-  
+  onChangeFrom = (value) => {
+    var from = value.format(format)
+    this.setState({ from })
+
+    this.props.onSelect(this.state)
+    console.log(value && from);
+  }
+  onChangeTo = (value) => {
+    var to = value.format(format)
+    this.setState({ to })
+
+    this.props.onSelect(this.state)
+    console.log(value && to);
+  }
   render() {
 
     const inputProps = {
@@ -41,15 +62,29 @@ export default class PlaceSearch extends React.Component {
         </small>
       </div>
     )
-
+    
     return (
         <div className="form-group">
 					<label htmlFor="addressInput">Address</label>
-          <PlacesAutocomplete  
+          <PlacesAutocomplete
                 classNames={cssClasses} 
                 inputProps={inputProps} 
                 onSelect={this.handleSelect}
                 renderSuggestion={renderSuggestion} />
+          <TimePicker
+              showSecond={false}
+              defaultValue={now}
+              classNames={cssClasses}
+              onChange={this.onChangeFrom}
+              format={format}
+          />
+          <TimePicker
+              showSecond={false}
+              defaultValue={now}
+              classNames={cssClasses}
+              onChange={this.onChangeTo}
+              format={format}
+          />
         </div>
     )
   }

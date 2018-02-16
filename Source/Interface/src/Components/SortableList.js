@@ -8,14 +8,16 @@ const SortableItem = SortableElement(
     <li className="SortableItem">
         <DragHandle />
         <div>
-          {location.address}
+          {location.from} - {location.to} <br/>
+          {location.address} 
         </div>
         <div className="gps-point">
           <i className="fa fa-map-marker" />
+          <span className={location.store == "Store" ? "noteStore" : "note"}>{location.store}  </span>
           <span className="note">{location.lat.toFixed(5)}, {location.lng.toFixed(5)}</span>
         </div>
         <button className="remove-button" onClick={e => onRemove(location)}>
-          <i className="fa fa-trash suggestion-icon" />
+          <i className="fa fa-trash"/>
         </button>
     </li>
 )

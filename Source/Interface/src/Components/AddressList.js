@@ -12,17 +12,24 @@ export default class AddressList extends React.Component
     }
 
     addLocation = (e) => {
-        e.preventDefault()
+        //e.preventDefault()
         const locations = this.state.items
         const newLocation = {...this.props.location}
 
-        if ( newLocation.address==="" || _.some(locations, newLocation))
+        var found = locations.some(function (el) {
+            return el.lat === newLocation.lat && el.lng === newLocation.lng;
+          });
+
+        if ( newLocation.address==="" || found)
             return;
+
+        if(locations.length != 0)
+            newLocation.store = "Place"
 
         locations.push(newLocation)
         this.setState({items: locations})
 
-        console.log(this.props.location)
+        this.props.onClickButton()
     }
 
     removeLocation = (item) => {
@@ -33,8 +40,18 @@ export default class AddressList extends React.Component
 
     onSortEnd = ({oldIndex, newIndex}) => {
         this.setState({
-        items: arrayMove(this.state.items, oldIndex, newIndex),
+            items: arrayMove(this.state.items, oldIndex, newIndex),
+            });
+
+        const locations = this.state.items
+        locations.forEach(function(entry) {
+            if(locations.indexOf(entry) == 0)
+                entry.store = "Store"
+            else
+                entry.store = "Place"
+            console.log(entry);
         });
+        this.setState({items: locations})
     };
 
     render() {
