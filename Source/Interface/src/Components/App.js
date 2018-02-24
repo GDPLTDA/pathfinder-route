@@ -4,8 +4,8 @@ import Map from './Map'
 import { getGeoLocation } from '../html5'
 import AdressList from './AddressList'
 import SearchRoute from './SearchRoute'
-import toastr from 'toastr'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+import toastr from 'toastr'
 
 const format = 'HH:mm';
 export default class App extends React.Component {
@@ -29,9 +29,10 @@ export default class App extends React.Component {
 
     handleSelect = async address => {
         this.setState({ address })
-
+        toastr.error(JSON.stringify(address))
         let latLng = await geocodeByAddress(this.state.address)
-                            .then(results => getLatLng(results[0]))
+                                .then(results => getLatLng(results[0]))
+                                .catch( e => {console.log(e); toastr.info(JSON.stringify(e))})
 
         this.setState({ ...latLng })
     }

@@ -23,6 +23,6 @@
   },
   "devDependencies": {
     "create-react-scripts": "^0.1.6",
-    "react-scripts": "^1.1.0"
+    "react-scripts": "^1.1.1"
   }
 }

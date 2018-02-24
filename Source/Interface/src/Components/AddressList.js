@@ -23,7 +23,7 @@ export default class AddressList extends React.Component
         if ( newLocation.address==="" || found)
             return;
 
-        if(locations.length != 0)
+        if(locations.length !== 0)
             newLocation.isStore = false
 
         locations.push(newLocation)
@@ -49,7 +49,7 @@ export default class AddressList extends React.Component
     updateStoreStatus(locations = []){
         return locations.map(  
             (entry,index) =>
-               (index == 0)
+               (index === 0)
                ? {...entry, isStore: true}
                : {...entry, isStore: false}
             )
