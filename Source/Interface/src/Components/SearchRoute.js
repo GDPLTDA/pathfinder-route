@@ -14,23 +14,23 @@ export default class SearchRoute extends React.Component {
               "Endereco" : "Rua Maria Roschel Schunck, 817"
       },
       "Destinos" : [
-                      {
-                              "Endereco" : "Av. Engenheiro Eusébio Stevaux, 823",
-                              "DhInicial" : "12:00:00",
-                              "DhFinal" : "23:00:00",
-                              "MinutosEspera" : 30
-                      },
-                      {
-                              "Endereco" : "Av. das Nações Unidas, 22540 ",
-                              "DhInicial" : "12:00:00",
-                              "DhFinal" : "23:00:00",
-                              "MinutosEspera" : 30
+            {
+                      "Endereco" : "Av. Engenheiro Eusébio Stevaux, 823",
+                      "DhInicial" : "12:00:00",
+                      "DhFinal" : "23:00:00",
+                      "MinutosEspera" : 30
+            },
+            {
+                        "Endereco" : "Av. das Nações Unidas, 22540 ",
+                        "DhInicial" : "12:00:00",
+                        "DhFinal" : "23:00:00",
+                        "MinutosEspera" : 30
                       }
               ]
       }
 
       console.log("Buscando..")
-      
+
       fetch('http://localhost:64880/api/route', {
         method: 'POST',
         headers: {
