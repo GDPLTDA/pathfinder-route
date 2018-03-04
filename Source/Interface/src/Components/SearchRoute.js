@@ -5,6 +5,7 @@ export default class SearchRoute extends React.Component {
     super(props)
   }
 
+<<<<<<< HEAD
   Search = (e) => {
     let json = {
       "DhSaida" : "11/12/2017 10:00:00",
@@ -42,6 +43,13 @@ export default class SearchRoute extends React.Component {
       .then((responseJson) => {
         console.log(responseJson)
       })
+=======
+  Search = async (e)  => {
+      console.log("Buscando..")
+      const data = await fetch("http://localhost:64880/api/home", {method:'POST'})
+      const json = await data.json()
+      console.log(json)
+>>>>>>> 438c2a569971decf7b93e6470fe4ed008677a7b8
 }
 
   render() {

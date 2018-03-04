@@ -8,5 +8,11 @@ namespace RouteGA.Controllers
     {
         public IActionResult Get() => Ok("Hello");
 
+        [HttpPost]
+        public IActionResult Post() => Ok("Foi");
+
     }
+
+
+
 }
