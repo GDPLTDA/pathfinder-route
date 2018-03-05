@@ -13,7 +13,7 @@ namespace RouteGA.Controllers
         public async Task<IActionResult> Get(string name, string endereco, string abertura, string fechamento, int espera)
         {
             if (new[] { name, endereco, abertura, fechamento }.Any(e => string.IsNullOrWhiteSpace(e)))
-                return BadRequest("Parametros invalidos");
+                return BadRequest("Parâmetros inválidos");
 
             var local = new Local(name, endereco);
 
