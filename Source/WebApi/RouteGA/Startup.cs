@@ -37,7 +37,6 @@ namespace RouteGA
 
 
             app.UseMvc();
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
         }
     }
 }

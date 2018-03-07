@@ -5,7 +5,8 @@ export default class SearchRoute extends React.Component {
     super(props)
   }
 
-  Search = (e) => {
+
+  Search = async (e) => {
     let json = {
       "DhSaida" : "11/12/2017 10:00:00",
       "DhLimite" : "12/12/2017 10:00:00",
@@ -31,17 +32,17 @@ export default class SearchRoute extends React.Component {
 
       console.log("Buscando..")
 
-      fetch('http://localhost:64880/api/route', {
+     const response =  await fetch('http://localhost:64880/api/route', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(json)
-      }).then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson)
       })
+      .then((response) => response.json())
+
+      console.log(response)
 }
 
   render() {
