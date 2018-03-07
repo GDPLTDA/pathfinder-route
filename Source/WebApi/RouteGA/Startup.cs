@@ -17,13 +17,7 @@ namespace RouteGA
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-<<<<<<< HEAD
             services.AddCors();
-=======
-
-            services.AddCors();
-
->>>>>>> 438c2a569971decf7b93e6470fe4ed008677a7b8
             services.AddMvc();
         }
 
