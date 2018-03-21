@@ -11,7 +11,9 @@
     "react-google-maps": "^9.4.5",
     "react-native": "^0.53.0",
     "react-places-autocomplete": "^6.1.0",
+    "react-simple-table": "^1.0.1",
     "react-sortable-hoc": "^0.6.8",
+    "react-table": "^6.8.0",
     "react-time-input": "0.0.17",
     "toastr": "^2.1.4"
   },

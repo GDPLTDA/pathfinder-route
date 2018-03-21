@@ -1,18 +1,12 @@
 import React from 'react'
 import _ from 'lodash'
 import SortableList from './SortableList'
-import {arrayMove} from 'react-sortable-hoc'
+
 
 export default class AddressList extends React.Component
 {
-    constructor()
-    { 
-        super()
-        this.state = {items : []}
-    }
-
     addLocation = () => {
-        const locations = this.state.items
+        const locations = this.props.items
         const newLocation = {...this.props.location}
 
         const found = locations.some( el =>
@@ -27,34 +21,20 @@ export default class AddressList extends React.Component
             newLocation.isStore = false
 
         locations.push(newLocation)
-        this.setState({items: locations})
+        this.setState({listLocations: locations})
 
         this.props.onClickButton()
     }
 
-    removeLocation = (item) => {
-        const items = this.state.items
+    onRemoveLocation = (item) => {
+        const items = this.props.items
         _.remove(items, item)
-        this.setState({items: this.updateStoreStatus(items)})
+        this.props.onRemoveLocation(item)
     }
 
     onSortEnd = ({oldIndex, newIndex}) => {
-        this.setState({
-            items: arrayMove(this.state.items, oldIndex, newIndex),
-            });
-         
-        this.setState({items: this.updateStoreStatus(this.state.items)})
+        this.props.onSortEnd(oldIndex, newIndex)
     };
-
-    updateStoreStatus(locations = []){
-        return locations.map(  
-            (entry,index) =>
-               (index === 0)
-               ? {...entry, isStore: true}
-               : {...entry, isStore: false}
-            )
-    }
-
     render() {
         return (
             <div>
@@ -62,7 +42,7 @@ export default class AddressList extends React.Component
                     <button className="btn btn-success" onClick={this.addLocation}>Add</button>
                 </div>
                 <div className="form-group">
-                    <SortableList items={this.state.items} onSortEnd={this.onSortEnd} onRemove={this.removeLocation} helperClass="SortableHelper" useDragHandle={true} />
+                    <SortableList items={this.props.items} onSortEnd={this.onSortEnd} onRemove={this.onRemoveLocation} helperClass="SortableHelper" useDragHandle={true} />
                 </div>  
             </div>
         )

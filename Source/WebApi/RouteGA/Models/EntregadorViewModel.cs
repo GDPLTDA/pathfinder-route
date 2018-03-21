@@ -6,6 +6,7 @@ namespace RouteGA.Models
 {
     public class EntregadorViewModel
     {
+        public int Id { get; set; }
         public IEnumerable<RotaViewModel> Rotas { get; private set; }
         public static EntregadorViewModel[] Empty { get => new[] { new EntregadorViewModel() }; }
 
@@ -27,6 +28,7 @@ namespace RouteGA.Models
 
                 });
 
+            Id = entregador.Numero;
             Rotas = rotas;
         }
     }
