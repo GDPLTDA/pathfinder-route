@@ -71,70 +71,96 @@ export default class App extends React.Component {
     }
 
     Search = async (e) => {
+
+        let test = true
+        let json = {}
         let items = this.state.listLocations
         let store = items.find(function (obj) { return obj.isStore; });
         let listDestinos = items.filter(function (obj) { return !obj.isStore; });
 
-        console.log(store)
-        console.log(listDestinos)
-
-        let json = {
-          DhSaida : "11/12/2017 10:00:00",
-          DhLimite : "12/12/2017 10:00:00",
-          Origem :{
-                  Endereco : "Rua Maria Roschel Schunck, 817"
-          },
-          Destinos : [
-                {
-                    Endereco : "Av. Engenheiro Eusébio Stevaux, 823",
-                    DhInicial : "12:00:00",
-                    DhFinal : "23:00:00",
-                    MinutosEspera : 30
+        if(!test){
+            let destinos = []
+            for (let i = 0; i < listDestinos.length; i++) {
+                destinos.push(
+                    {
+                        Endereco : listDestinos[i].address,
+                        DhInicial : listDestinos[i].from + ":00",
+                        DhFinal : listDestinos[i].to + ":00",
+                        MinutosEspera : 30
+                    }
+                )
+            } 
+            json = {
+                DhSaida : "11/12/2017 " + store.from + ":00",
+                DhLimite : "11/12/2017 " + store.to + ":00",
+                Origem :{
+                    Endereco : store.address
                 },
-                {
-                    Endereco : "Av. das Nações Unidas, 22540",
-                    DhInicial : "12:00:00",
-                    DhFinal : "23:00:00",
-                    MinutosEspera : 30
-                },
-                {
-                    Endereco : "Rua Urussuí, 271 - Itaim Bibi, São Paulo - SP, Brasil",
-                    DhInicial : "12:00:00",
-                    DhFinal : "23:00:00",
-                    MinutosEspera : 30
-                },
-                {
-                    Endereco : "Av. Paulista - Bela Vista, São Paulo - SP, Brasil",
-                    DhInicial : "12:00:00",
-                    DhFinal : "23:00:00",
-                    MinutosEspera : 30
-                },
-                {
-                    Endereco : "Rua Augusta - Consolação, São Paulo - SP, Brasil",
-                    DhInicial : "12:00:00",
-                    DhFinal : "23:00:00",
-                    MinutosEspera : 30
-                },
-                {
-                    Endereco : "Rua Vergueiro - Vila Dom Pedro I, São Paulo - SP, Brasil",
-                    DhInicial : "12:00:00",
-                    DhFinal : "23:00:00",
-                    MinutosEspera : 30
-                },
-                {
-                    Endereco : "Praça da Sé - Centro, São Paulo - SP, Brasil",
-                    DhInicial : "12:00:00",
-                    DhFinal : "23:00:00",
-                    MinutosEspera : 30
-                },
-                {
-                    Endereco : "Catavento Cultural e Educacional - Avenida Mercúrio - Brás, São Paulo - SP, Brasil",
-                    DhInicial : "12:00:00",
-                    DhFinal : "23:00:00",
-                    MinutosEspera : 30
-                }
-            ]
+                Destinos : destinos
+            }
+            console.log(json)
         }
+        else
+        {
+            json = {
+                DhSaida : "11/12/2017 06:00:00",
+                DhLimite : "11/12/2017 14:00:00",
+                Origem :{
+                        Endereco : "Rua Maria Roschel Schunck, 817"
+                },
+                Destinos : [
+                        {
+                            Endereco : "Av. Engenheiro Eusébio Stevaux, 823",
+                            DhInicial : "12:00:00",
+                            DhFinal : "23:00:00",
+                            MinutosEspera : 30
+                        },
+                        {
+                            Endereco : "Av. das Nações Unidas, 22540",
+                            DhInicial : "12:00:00",
+                            DhFinal : "23:00:00",
+                            MinutosEspera : 30
+                        },
+                        {
+                            Endereco : "Rua Urussuí, 271 - Itaim Bibi, São Paulo - SP, Brasil",
+                            DhInicial : "12:00:00",
+                            DhFinal : "23:00:00",
+                            MinutosEspera : 30
+                        },
+                        {
+                            Endereco : "Av. Paulista - Bela Vista, São Paulo - SP, Brasil",
+                            DhInicial : "12:00:00",
+                            DhFinal : "23:00:00",
+                            MinutosEspera : 30
+                        },
+                        {
+                            Endereco : "Rua Augusta - Consolação, São Paulo - SP, Brasil",
+                            DhInicial : "12:00:00",
+                            DhFinal : "23:00:00",
+                            MinutosEspera : 30
+                        },
+                        {
+                            Endereco : "Rua Vergueiro - Vila Dom Pedro I, São Paulo - SP, Brasil",
+                            DhInicial : "12:00:00",
+                            DhFinal : "23:00:00",
+                            MinutosEspera : 30
+                        },
+                        {
+                            Endereco : "Praça da Sé - Centro, São Paulo - SP, Brasil",
+                            DhInicial : "12:00:00",
+                            DhFinal : "23:00:00",
+                            MinutosEspera : 30
+                        },
+                        {
+                            Endereco : "Catavento Cultural e Educacional - Avenida Mercúrio - Brás, São Paulo - SP, Brasil",
+                            DhInicial : "12:00:00",
+                            DhFinal : "23:00:00",
+                            MinutosEspera : 30
+                        }
+                    ]
+            }
+        }
+
         this.setState({
             loading: true
         })

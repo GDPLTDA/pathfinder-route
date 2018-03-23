@@ -6,7 +6,6 @@ export default class TableRoute extends React.Component {
     if(this.props.listEntregador.length === 0)
         return <div/>
     
-        
     const columns = [{
         Header: 'Saída',
         accessor: 'saida.endereco' // String-based value accessors!
@@ -14,27 +13,52 @@ export default class TableRoute extends React.Component {
         Header: 'Chegada',
         accessor: 'chegada.endereco',
       }, {
-        id: 'chegada', // Required because our accessor is not a string
-        Header: 'Dh. Chegada',
+        id: 'saida',
+        Header: 'Saída',
+        maxWidth:90,
+        className:'text-center',    
+        Cell: row =>( <span className='text-center'>{row.value}</span> ),
         accessor: d => {
-            const chegada = d.dhChegada
-            return chegada
+            return d.dhSaida
           }
       }, {
-        Header: 'Metros',
-        accessor: 'metros',
+        id: 'chegada',
+        Header: 'Chegada',
+        maxWidth:90,
+        className:'text-center',
+        Cell: row =>( <span className='text-center'>{row.value}</span> ),
+        accessor: d => {
+            return d.dhChegada
+          }
       }, {
-        Header: 'Minutos',
+        Header: 'Distancia',
+        accessor: 'metros',
+        className:'text-center',
+        Cell: row =>( <span className='text-center'>{row.value}</span> ),
+        maxWidth:120
+      }, {
+        Header: 'Tempo',
         accessor: 'minutos',
+        className:'text-center',
+        Cell: row =>( <span className='text-center'>{row.value}</span> ),
+        maxWidth:120
       }]
-    return (
-        <div className="col-sm-12 border-top col-xs-offset-2">
-            <h3>Entregador</h3>
+
+    return this.props.listEntregador.map((item, index) => (
+        <div className="col-lg-12 div-entregador">
             <ReactTable
-                data={this.props.listEntregador[0].rotas}
-                columns={columns}
+                data={this.props.listEntregador[index].rotas}
+                columns={[
+                    {
+                      Header: "Entregador " + (index + 1),
+                      columns: columns
+                    }]}
+                defaultPageSize={this.props.listEntregador[index].rotas.length}
+                showPagination={false}
+                className="-striped -highlight"
+                resizable={false}
             />
         </div>
-    )
+    ));
   }
 }
