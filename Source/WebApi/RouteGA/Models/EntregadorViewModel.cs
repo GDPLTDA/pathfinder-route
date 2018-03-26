@@ -22,9 +22,9 @@ namespace RouteGA.Models
                 {
                     Saida = new LocalViewModel(item.Origem),
                     Chegada = new LocalViewModel(item.Destino),
-                    DhChegada = item.DhChegada,
-                    Metros = item.Metros,
-                    Minutos = item.Minutos,
+                    DhChegada = item.DhChegada.ToString("hh:mm"),
+                    Metros = item.Metros.ToString(),
+                    Minutos = item.Minutos.ToString("n3"),
 
                 });
 
