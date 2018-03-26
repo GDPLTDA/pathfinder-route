@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using VRP.GeneticAlgorithm.Models;
 
 namespace VRP.GeneticAlgorithm
@@ -59,19 +58,19 @@ namespace VRP.GeneticAlgorithm
 
             }
 
-            var lastRoute = routes?
-                              .LastOrDefault()?
-                              .legs?
-                              .LastOrDefault();
+            var lastRoute = routes?.LastOrDefault();
+            var route = (lastRoute?.legs as IEnumerable<dynamic>)?.LastOrDefault();
 
+            double distance = route.distance.value;
+            double duration = route.duration.value;
 
-            return new Route(origin, destination, lastRoute.distance.value, lastRoute.distance.duration.value);
+            return new Route(origin, destination, distance, duration);
         }
 
         public async Task<Local> GetPointAsync(string address, string name)
         {
 
-            var url = GetRequestAddress(HttpUtility.UrlEncode(address));
+            var url = GetRequestAddress((address));
             var ret = await ReadRequestPointAsync(address, name, url, Period.Default);
             Console.WriteLine($"Endereço Encontrado: {ret.Address} ({ret.Position.Lat},{ret.Position.Long})");
 
@@ -82,7 +81,7 @@ namespace VRP.GeneticAlgorithm
             var json = await httpClient.GetStringAsync(url);
             dynamic data = JsonConvert.DeserializeObject(json);
 
-            if (data == null)
+            if (data == null || data.status == "ZERO_RESULTS")
                 throw new Exception("Dados nao encontrados");
 
             var results = data.results as IEnumerable<dynamic>;
@@ -91,14 +90,18 @@ namespace VRP.GeneticAlgorithm
                 Console.WriteLine($"{data.status}: {address}");
 
             var r = results.LastOrDefault();
-            var position = new Position(r.geometry.location.lat, r.geometry.location.lng);
+            double lat = r.geometry.location.lat;
+            double lon = r.geometry.location.lng;
+
+            var position = new Position(lat, lon);
 
             return new Local(name, address, position, period);
         }
 
 
         static string GetRequestNameRoute(Local ori, Local des)
-            => $"{Url}directions/json?origin={ori.Address}&destination={des.Address}&sensor=false&key={Key}";
+            => $"{Url}directions/json?origin={(ori.Address)}&" +
+                $"destination={(des.Address)}&sensor=false&key={Key}";
 
         static string GetRequestPointRoute(Local ori, Local des)
             => $"{Url}directions/json?" +
@@ -107,7 +110,7 @@ namespace VRP.GeneticAlgorithm
                 $"sensor=false&key={Key}";
 
         static string GetRequestAddress(string address)
-            => $"{Url}geocode/json?address={address}&sensor=false&key={Key}";
+            => $"{Url}geocode/json?address={(address)}&sensor=false&key={Key}";
 
 
         static string ConvNumber(double num)

@@ -25,10 +25,9 @@ namespace VRP.Runner
                     new GASettings()
                 );
 
-
             var address = new[] {
-                   "Rua Maria Roshel Schunck, 817",
-                   "Avenida Manuel Alves Soares, 460"
+                   "Rua Maria Roschel Schunck 817",
+                   "Avenida Manuel Alves Soares 460"
             };
 
             var locals = new List<Local>();

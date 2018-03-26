@@ -20,7 +20,7 @@ namespace VRP.GeneticAlgorithm
 
         private readonly GASettings settings;
 
-        public static readonly Random Random;
+        internal static readonly Random Random = new Random();
 
         int ParallelQuantity = 1;
 
@@ -52,10 +52,11 @@ namespace VRP.GeneticAlgorithm
             var mutationRate = config.MutationRate;
 
             var population = await Enumerable.Range(0, settings.PopulationSize)
-                             .Select(_ => new Genome(locals.Shuffle()).CalcFitness(Fitness))
+                             .Select(_ => new Genome(locals.Shuffle()))
                              .ToObservable()
                              .Select(n => Observable.FromAsync(e => n.CalcRoutesAsync(routeService.CalcFullRoute)))
                              .Merge(ParallelQuantity)
+                             .Select(e => e.CalcFitness(Fitness))
                              .ToList();
 
             var lastGen = await
