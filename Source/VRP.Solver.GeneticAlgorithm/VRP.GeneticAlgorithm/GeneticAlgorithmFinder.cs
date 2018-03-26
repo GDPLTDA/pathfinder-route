@@ -22,7 +22,7 @@ namespace VRP.GeneticAlgorithm
 
         internal static readonly Random Random = new Random();
 
-        int ParallelQuantity = 1;
+        protected int ParallelQuantity = 1;
 
         public GeneticAlgorithmFinder(
                 FitnessDelegate fitnessDelegate,

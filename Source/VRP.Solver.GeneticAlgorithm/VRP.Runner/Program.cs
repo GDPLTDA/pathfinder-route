@@ -17,10 +17,10 @@ namespace VRP.Runner
 
             var service = new GoogleService(httpClient);
             var ga = new GeneticAlgorithmFinder(
-                    FitnessTimePath.Calc,
-                    MutateSM.Apply,
-                    CrossoverOBX.Make,
-                    SelectionRouletteWheel.SelectCouple,
+                    Fitness.FitnessTimePath,
+                    Mutates.MutateSM,
+                    Crossover.CrossoverOBX,
+                    Selection.SelectCouple,
                     service,
                     new GASettings()
                 );

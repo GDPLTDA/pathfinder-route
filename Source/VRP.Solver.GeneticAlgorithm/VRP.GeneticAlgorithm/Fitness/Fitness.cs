@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace VRP.GeneticAlgorithm
 {
-    public class FitnessTimePath
+    public class Fitness
     {
-        public static double Calc(Genome genome) //, DateTime beginDatetime)
+        public static double FitnessTimePath(Genome genome) //, DateTime beginDatetime)
         {
             var start = DateTime.UtcNow;
             var finish = start;

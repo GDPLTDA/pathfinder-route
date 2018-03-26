@@ -3,10 +3,10 @@ using System.Linq;
 
 namespace VRP.GeneticAlgorithm
 {
-    public class SelectionRouletteWheel
+    public class Selection
     {
 
-        public static Genome Select(IList<Genome> listnode)
+        public static Genome SelectionRouletteWheel(IList<Genome> listnode)
         {
 
             var maxFitness = listnode.Max(e => e.Fitness);
@@ -38,6 +38,6 @@ namespace VRP.GeneticAlgorithm
 
             return new Genome(listnode[index].Locals);
         }
-        public static (Genome mon, Genome dad) SelectCouple(IList<Genome> population) => (Select(population), Select(population));
+        public static (Genome mon, Genome dad) SelectCouple(IList<Genome> population) => (SelectionRouletteWheel(population), SelectionRouletteWheel(population));
     }
 }
