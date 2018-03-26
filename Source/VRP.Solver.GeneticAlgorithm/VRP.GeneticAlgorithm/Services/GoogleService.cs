@@ -9,7 +9,7 @@ using VRP.GeneticAlgorithm.Models;
 
 namespace VRP.GeneticAlgorithm
 {
-    public class GoogleService : IDisposable, IRouteService
+    public class GoogleService : IRouteService
     {
         const string Url = "https://maps.googleapis.com/maps/api/";
         const string Key = "AIzaSyBFP8cY4DSZM_7Z9k2svtu-Ktdjhq23UNI";
@@ -29,16 +29,17 @@ namespace VRP.GeneticAlgorithm
                 .ToObservable()
                 .Select(e => (e, e))
                 .Scan((a, b) => (a.Item2, b.Item1))
+                .Skip(1)
                 .SelectMany(e => Observable.FromAsync(x => GetRouteAsync(e.Item2, e.Item1)))
                 .ToArray();
 
 
-        public async Task<Route> GetRouteAsync(Local origin, Local destination)
+        public virtual async Task<Route> GetRouteAsync(Local origin, Local destination)
         {
             var request = GetRequestPointRoute(origin, destination);
             var ret = await ReadRequestRouteAsync(origin, destination, request);
 
-            Console.WriteLine($"Rota Encontrada: : {origin.Address} {destination.Address}");
+            Console.WriteLine($"Rota Encontrada: : {origin.Address} -> {destination.Address} = {ret.Meters}m");
 
             return ret;
         }
@@ -54,7 +55,7 @@ namespace VRP.GeneticAlgorithm
             if (!routes.Any())
             {
                 if (data.status == "OVER_QUERY_LIMIT")
-                    throw new Exception("Estourou o limite diario!");
+                    throw new Exception("Estourou o limite diário!");
 
             }
 
@@ -67,7 +68,7 @@ namespace VRP.GeneticAlgorithm
             return new Route(origin, destination, distance, duration);
         }
 
-        public async Task<Local> GetPointAsync(string address, string name)
+        public virtual async Task<Local> GetPointAsync(string address, string name)
         {
 
             var url = GetRequestAddress((address));
@@ -116,6 +117,5 @@ namespace VRP.GeneticAlgorithm
         static string ConvNumber(double num)
             => Math.Round(num, 6).ToString().Replace(',', '.');
 
-        public void Dispose() => httpClient.Dispose();
     }
 }

@@ -13,9 +13,9 @@ namespace VRP.Runner
 
         static async Task Main()
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Calc routes:");
 
-            var service = new GoogleService(httpClient);
+            var service = new CachedGoogleService(httpClient);
             var ga = new GeneticAlgorithmFinder(
                     Fitness.FitnessTimePath,
                     Mutates.MutateSM,
@@ -27,7 +27,8 @@ namespace VRP.Runner
 
             var address = new[] {
                    "Rua Maria Roschel Schunck 817",
-                   "Avenida Manuel Alves Soares 460"
+                   "Avenida Manuel Alves Soares 460",
+                   "Lambda3",
             };
 
             var locals = new List<Local>();

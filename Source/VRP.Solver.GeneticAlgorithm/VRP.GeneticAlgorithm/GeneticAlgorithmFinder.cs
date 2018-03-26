@@ -68,7 +68,7 @@ namespace VRP.GeneticAlgorithm
                ;
 
 
-            return lastGen.First();
+            return lastGen.OrderBy(e => e.Fitness).First();
         }
 
 
@@ -86,12 +86,13 @@ namespace VRP.GeneticAlgorithm
                     .Select(e => Crossover(crossOverRate, e.dad, e.mon))
                     .SelectMany(e => e.ToArray())
                     .Select(e => Mutation(mutationRate, e))
-                    .Select(e => new Genome(e.Locals).CalcFitness(Fitness))
+                    .Select(e => new Genome(e.Locals))
                 )
                 .OrderBy(e => e.Fitness)
                 .ToObservable(NewThreadScheduler.Default)
                 .Select(n => Observable.FromAsync(e => n.CalcRoutesAsync(routeService.CalcFullRoute)))
                 .Merge(ParallelQuantity)
+                .Select(e => e.CalcFitness(Fitness))
                 .ToList();
 
 

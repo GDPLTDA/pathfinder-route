@@ -30,7 +30,8 @@ namespace VRP.GeneticAlgorithm
         internal Genome Clone() => new Genome(Locals, Fitness, Routes);
 
         public Genome CalcFitness(FitnessDelegate func) => new Genome(Locals, func?.Invoke(this) ?? double.MaxValue, Routes);
-        public async Task<Genome> CalcRoutesAsync(Func<IEnumerable<Local>, Task<IReadOnlyCollection<Route>>> func) => new Genome(Locals, Fitness, await func(Locals));
+        public async Task<Genome> CalcRoutesAsync(Func<IEnumerable<Local>, Task<IReadOnlyCollection<Route>>> func) =>
+            new Genome(Locals, Fitness, await func(Locals));
 
         public bool IsEqual(Genome genome) => genome.Fitness == Fitness;
 
