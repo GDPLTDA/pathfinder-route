@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment';
 import PlacesAutocomplete from 'react-places-autocomplete'
 import TimePicker from 'rc-time-picker';
+import NumericInput from 'react-numeric-input';
 
 const now = moment().hour(0).minute(0);
 const cssClasses = {
@@ -28,28 +29,47 @@ const renderSuggestion =  ({ formattedSuggestion }) => (
     }
     
     return (
-        <div className="form-group">
-					<label htmlFor="addressInput">Address</label>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-12">
           <PlacesAutocomplete
-                classNames={cssClasses} 
-                inputProps={inputProps} 
-                onSelect={props.onHandleSelect}
-                renderSuggestion={renderSuggestion} />
-          <TimePicker
-              showSecond={false}
-              defaultValue={now}
-              classNames={cssClasses}
-              onChange={props.onChangeFrom}
-              format={props.format}
-          />
-          <TimePicker
-              showSecond={false}
-              defaultValue={now}
-              classNames={cssClasses}
-              onChange={props.onChangeTo}
-              format={props.format}
-          />
+                  classNames={cssClasses} 
+                  inputProps={inputProps} 
+                  onSelect={props.onHandleSelect}
+                  renderSuggestion={renderSuggestion} />
+          </div>
         </div>
+        <div class="row">
+          <div class="col-sm-4">
+          <TimePicker
+                  showSecond={false}
+                  className="form-control"
+                  defaultValue={now}
+                  onChange={props.onChangeFrom}
+                  format={props.format}
+              />
+          </div>
+          <div class="col-sm-4">
+          <TimePicker
+                  showSecond={false}
+                  className="form-control"
+                  defaultValue={now}
+                  onChange={props.onChangeTo}
+                  format={props.format}
+              />
+          </div>
+          <div class="col-sm-3">
+          <NumericInput 
+                  mobile
+                  className="form-control"
+                  onChange={props.onChangeWait} 
+                  min={10}
+                  value={props.ValueWait}
+                  />
+                  
+          </div>
+        </div>
+      </div>
     )
   }
 

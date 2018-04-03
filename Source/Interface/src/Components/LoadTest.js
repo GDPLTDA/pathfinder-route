@@ -5,7 +5,7 @@ export default class SearchRoute extends React.Component {
     return (
         <div>
             <div className="form-group">
-                <button className="btn btn-success btn-block" onClick={this.props.Search}>Calculate</button>
+                <button className="btn btn-info btn-block" onClick={this.props.Teste}>Teste</button>
             </div> 
         </div>
     )

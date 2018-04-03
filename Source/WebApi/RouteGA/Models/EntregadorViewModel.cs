@@ -1,4 +1,5 @@
 ﻿using PathFinder;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,12 +25,19 @@ namespace RouteGA.Models
                     Chegada = new LocalViewModel(item.Destino),
                     DhChegada = item.DhChegada.ToString("hh:mm"),
                     Metros = item.Metros.ToString(),
-                    Minutos = item.Minutos.ToString("n3"),
+                    Minutos = ConvMinutos(item.Segundos),
 
                 });
 
             Id = entregador.Numero;
             Rotas = rotas;
+        }
+
+        string ConvMinutos(double segundos)
+        {
+            var span = new TimeSpan(0, 0, Convert.ToInt32(segundos));
+
+            return $"{span.Hours.ToString().PadLeft(2, '0')}:{span.Minutes.ToString().PadLeft(2, '0')}";
         }
     }
 }

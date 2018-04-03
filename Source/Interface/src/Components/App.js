@@ -4,6 +4,7 @@ import Map from './Map'
 import { getGeoLocation } from '../html5'
 import AdressList from './AddressList'
 import SearchRoute from './SearchRoute'
+import LoadTest from './LoadTest'
 import TableRoute from './TableRoute'
 import LoadingSpinner from './LoadingSpinner'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
@@ -14,7 +15,7 @@ const format = 'HH:mm';
 export default class App extends React.Component {
     constructor() {
         super()
-        this.state = { loading: false, address: '',results: [], lat: 0, lng: 0, isStore: true, from: '00:00', to: '00:00', listLocations: [] }
+        this.state = { loading: false, address: '',results: [], lat: 0, lng: 0, isStore: true, from: '00:00', to: '00:00', wait: 30, listLocations: [] }
         this.setToCurrentLocation()
     }
 
@@ -47,10 +48,15 @@ export default class App extends React.Component {
         const to = value.format(format)
         this.setState({ to })
     }
+    onChangeWait = value => {
+        const wait = value
+        console.log(value)
+        this.setState({ wait })
+    }
 
     onRemoveLocation = (item) => {
         this.setState({
-            istLocations: this.UpdateStoreStatus(this.state.listLocations)
+            listLocations: this.UpdateStoreStatus(this.state.listLocations)
         })
     }
 
@@ -70,97 +76,118 @@ export default class App extends React.Component {
             )
     }
 
-    Search = async (e) => {
+    GetDados = ()=> 
+    this.setState({
+        listLocations: [
+        { 
+            address: 'Rua Maria Roschel Schunck, 817',
+            isStore: true, 
+            lat:0,
+            lng:0,
+            from: '06:00', 
+            to: '14:00',
+            wait: 30
+        },
+        { 
+            address: 'Av. Engenheiro Eusébio Stevaux, 823',
+            isStore: false, 
+            lat:0,
+            lng:0,
+            from: '12:00', 
+            to: '23:00',
+            wait: 60 
+        },
+        {
+            address: 'Av. das Nações Unidas, 22540',
+            isStore: false,
+            lat:0,
+            lng:0,
+            from: '12:00', 
+            to: '23:00',
+            wait: 30 
+        },
+        { 
+            address: 'Rua Urussuí, 271 - Itaim Bibi, São Paulo - SP, Brasil',
+            isStore: false,
+            lat:0,
+            lng:0,
+            from: '12:00', 
+            to: '23:00',
+            wait: 90 
+        },
+        { 
+            address: 'Av. Paulista - Bela Vista, São Paulo - SP, Brasil',
+            isStore: false,
+            lat:0,
+            lng:0,
+            from: '12:00', 
+            to: '23:00',
+            wait: 30 
+        },
+        { 
+            address: 'Rua Augusta - Consolação, São Paulo - SP, Brasil',
+            isStore: false,
+            lat:0,
+            lng:0,
+            from: '12:00', 
+            to: '23:00',
+            wait: 20 
+        },
+        { 
+            address: 'Rua Vergueiro - Vila Dom Pedro I, São Paulo - SP, Brasil',
+            isStore: false,
+            lat:0,
+            lng:0,
+            from: '12:00', 
+            to: '23:00',
+            wait: 10 
+        },
+        { 
+            address: 'Praça da Sé - Centro, São Paulo - SP, Brasil',
+            isStore: false,
+            lat:0,
+            lng:0,
+            from: '12:00', 
+            to: '23:00',
+            wait: 30 
+        },
+        { 
+            address: 'Catavento Cultural e Educacional - Avenida Mercúrio - Brás, São Paulo - SP, Brasil',
+            isStore: false,
+            lat:0,
+            lng:0,
+            from: '12:00',
+            to: '23:00',
+            wait: 30
+        }
+    ]})
 
-        let test = true
-        let json = {}
+    Search = async (e) => {
         let items = this.state.listLocations
         let store = items.find(function (obj) { return obj.isStore; });
         let listDestinos = items.filter(function (obj) { return !obj.isStore; });
+        let destinos = []
 
-        if(!test){
-            let destinos = []
-            for (let i = 0; i < listDestinos.length; i++) {
-                destinos.push(
-                    {
-                        Endereco : listDestinos[i].address,
-                        DhInicial : listDestinos[i].from + ":00",
-                        DhFinal : listDestinos[i].to + ":00",
-                        MinutosEspera : 30
-                    }
-                )
-            } 
-            json = {
-                DhSaida : "11/12/2017 " + store.from + ":00",
-                DhLimite : "11/12/2017 " + store.to + ":00",
-                Origem :{
-                    Endereco : store.address
-                },
-                Destinos : destinos
-            }
-            console.log(json)
+        for (let i = 0; i < listDestinos.length; i++) {
+            destinos.push(
+                {
+                    Endereco : listDestinos[i].address,
+                    DhInicial : listDestinos[i].from + ":00",
+                    DhFinal : listDestinos[i].to + ":00",
+                    MinutosEspera : 30
+                }
+            )
+        } 
+        let json = {
+            DhSaida : "11/12/2017 " + store.from + ":00",
+            DhLimite : "11/12/2017 " + store.to + ":00",
+            Origem :{
+                Endereco : store.address
+            },
+            Destinos : destinos
         }
-        else
-        {
-            json = {
-                DhSaida : "11/12/2017 06:00:00",
-                DhLimite : "11/12/2017 14:00:00",
-                Origem :{
-                        Endereco : "Rua Maria Roschel Schunck, 817"
-                },
-                Destinos : [
-                        {
-                            Endereco : "Av. Engenheiro Eusébio Stevaux, 823",
-                            DhInicial : "12:00:00",
-                            DhFinal : "23:00:00",
-                            MinutosEspera : 30
-                        },
-                        {
-                            Endereco : "Av. das Nações Unidas, 22540",
-                            DhInicial : "12:00:00",
-                            DhFinal : "23:00:00",
-                            MinutosEspera : 30
-                        },
-                        {
-                            Endereco : "Rua Urussuí, 271 - Itaim Bibi, São Paulo - SP, Brasil",
-                            DhInicial : "12:00:00",
-                            DhFinal : "23:00:00",
-                            MinutosEspera : 30
-                        },
-                        {
-                            Endereco : "Av. Paulista - Bela Vista, São Paulo - SP, Brasil",
-                            DhInicial : "12:00:00",
-                            DhFinal : "23:00:00",
-                            MinutosEspera : 30
-                        },
-                        {
-                            Endereco : "Rua Augusta - Consolação, São Paulo - SP, Brasil",
-                            DhInicial : "12:00:00",
-                            DhFinal : "23:00:00",
-                            MinutosEspera : 30
-                        },
-                        {
-                            Endereco : "Rua Vergueiro - Vila Dom Pedro I, São Paulo - SP, Brasil",
-                            DhInicial : "12:00:00",
-                            DhFinal : "23:00:00",
-                            MinutosEspera : 30
-                        },
-                        {
-                            Endereco : "Praça da Sé - Centro, São Paulo - SP, Brasil",
-                            DhInicial : "12:00:00",
-                            DhFinal : "23:00:00",
-                            MinutosEspera : 30
-                        },
-                        {
-                            Endereco : "Catavento Cultural e Educacional - Avenida Mercúrio - Brás, São Paulo - SP, Brasil",
-                            DhInicial : "12:00:00",
-                            DhFinal : "23:00:00",
-                            MinutosEspera : 30
-                        }
-                    ]
-            }
-        }
-
+        console.log(json)
+        
         this.setState({
             loading: true
         })
@@ -186,17 +213,20 @@ export default class App extends React.Component {
         const { results, loading } = this.state;
 
         return (
-            <div className="row app">
-                <div className="col-sm-5">
+            <div className="form-group row app">
+                <div className="form-group col-sm-5">
                     <PlaceSearch
                         onSelect={this.onSelectPlace}
                         onHandleSelect={this.handleSelect}
                         onChangeFrom={this.onChangeFrom}
                         onChangeTo={this.onChangeTo}
+                        onChangeWait={this.onChangeWait}
+                        ValueWait={this.state.wait}
                         onTextChange={this.onChange}
                         format={format}
                         address={this.state.address}
                     />
+                    <LoadTest Teste={this.GetDados}/>
                     <AdressList
                         onRemoveLocation={this.onRemoveLocation}
                         onSortEnd={this.onSortEnd}

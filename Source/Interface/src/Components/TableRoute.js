@@ -31,11 +31,11 @@ export default class TableRoute extends React.Component {
             return d.dhChegada
           }
       }, {
-        Header: 'Distancia',
+        Header: 'Metros',
         accessor: 'metros',
         className:'text-center',
         Cell: row =>( <span className='text-center'>{row.value}</span> ),
-        maxWidth:120
+        maxWidth: 120
       }, {
         Header: 'Tempo',
         accessor: 'minutos',

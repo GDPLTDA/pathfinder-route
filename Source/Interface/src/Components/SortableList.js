@@ -8,7 +8,7 @@ const SortableItem = SortableElement(
     <li className="SortableItem">
         <DragHandle />
         <div>
-          {location.from} - {location.to} <br/>
+          {location.from} - {location.to} - {location.wait} Minutes<br/>
           {location.address} 
         </div>
         <div className="gps-point">

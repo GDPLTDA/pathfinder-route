@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactTable from 'react-table'
 
 export default class LoadingSpinner extends React.Component {
   render() {
