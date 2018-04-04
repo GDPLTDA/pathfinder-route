@@ -3,16 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
-using VRP.GeneticAlgorithm.Models;
 
-namespace VRP.GeneticAlgorithm
+namespace PathFinder.Routes
 {
     public class GoogleService : IRouteService
     {
         const string Url = "https://maps.googleapis.com/maps/api/";
-        const string Key = "AIzaSyBm6unznpnoVDNak1s-iV_N9bQqCVpmKpE";
+        public string Key = "AIzaSyBm6unznpnoVDNak1s-iV_N9bQqCVpmKpE";
 
         readonly HttpClient httpClient;
 
@@ -22,29 +20,16 @@ namespace VRP.GeneticAlgorithm
         }
 
 
-
-        public async Task<IReadOnlyCollection<Route>> CalcFullRoute(IEnumerable<Local> locals)
-        {
-            return await
-                        locals
-                        .ToObservable()
-                        .Select(e => (e, e))
-                        .Scan((a, b) => (a.Item2, b.Item1))
-                        .Skip(1)
-                        .SelectMany(e => Observable.FromAsync(x => GetRouteAsync(e.Item1, e.Item2)))
-                        .ToArray();
-        }
-
-        public virtual async Task<Route> GetRouteAsync(Local origin, Local destination)
+        public virtual async Task<Rota> GetRouteAsync(Local origin, Local destination)
         {
             var request = GetRequestPointRoute(origin, destination);
             var ret = await ReadRequestRouteAsync(origin, destination, request);
 
-            Console.WriteLine($"Rota Encontrada: : {origin.Address} -> {destination.Address} = {ret.Meters}m");
+            Console.WriteLine($"Rota Encontrada: : {origin.Endereco} -> {destination.Endereco} = {ret.Metros}m");
 
             return ret;
         }
-        public async Task<Route> ReadRequestRouteAsync(Local origin, Local destination, string url)
+        public async Task<Rota> ReadRequestRouteAsync(Local origin, Local destination, string url)
         {
             var json = await httpClient.GetStringAsync(url);
             dynamic data = JsonConvert.DeserializeObject(json);
@@ -66,15 +51,21 @@ namespace VRP.GeneticAlgorithm
             double distance = route.distance.value;
             double duration = route.duration.value;
 
-            return new Route(origin, destination, distance, duration);
+            return new Rota
+            {
+                Origem = origin,
+                Destino = destination,
+                Metros = distance,
+                Segundos = duration
+            };
         }
 
-        public virtual async Task<Local> GetPointAsync(string address, string name)
+        public virtual async Task<Local> GetPointAsync(Local local)
         {
 
-            var url = GetRequestAddress((address));
-            var ret = await ReadRequestPointAsync(address, name, url, Period.Default);
-            Console.WriteLine($"Endereço Encontrado: {ret.Address} ({ret.Position.Lat},{ret.Position.Long})");
+            var url = GetRequestAddress((local.Endereco));
+            var ret = await ReadRequestPointAsync(local.Endereco, local.Name, url, local.Period);
+            Console.WriteLine($"Endereço Encontrado: {ret.Endereco} ({ret.Latitude},{ret.Longitude})");
 
             return ret;
         }
@@ -95,27 +86,26 @@ namespace VRP.GeneticAlgorithm
             double lat = r.geometry.location.lat;
             double lon = r.geometry.location.lng;
 
-            var position = new Position(lat, lon);
 
-            return new Local(name, address, position, period);
+            return new Local(name, address) { Latitude = lat, Longitude = lon, Period = period };
         }
 
 
-        static string GetRequestNameRoute(Local ori, Local des)
-            => $"{Url}directions/json?origin={(ori.Address)}&" +
-                $"destination={(des.Address)}&sensor=false&key={Key}";
+        string GetRequestNameRoute(Local ori, Local des)
+            => $"{Url}directions/json?origin={(ori.Endereco)}&" +
+                $"destination={(des.Endereco)}&sensor=false&key={Key}";
 
-        static string GetRequestPointRoute(Local ori, Local des)
+        string GetRequestPointRoute(Local ori, Local des)
             => $"{Url}directions/json?" +
-                $"origin={ConvNumber(ori.Position.Lat)},{ConvNumber(ori.Position.Long)}&" +
-                $"destination={ConvNumber(des.Position.Lat)},{ConvNumber(des.Position.Long)}&" +
+                $"origin={ConvNumber(ori.Latitude)},{ConvNumber(ori.Longitude)}&" +
+                $"destination={ConvNumber(des.Latitude)},{ConvNumber(des.Longitude)}&" +
                 $"sensor=false&key={Key}";
 
-        static string GetRequestAddress(string address)
+        string GetRequestAddress(string address)
             => $"{Url}geocode/json?address={(address)}&sensor=false&key={Key}";
 
 
-        static string ConvNumber(double num)
+        string ConvNumber(double num)
             => Math.Round(num, 6).ToString().Replace(',', '.');
 
     }

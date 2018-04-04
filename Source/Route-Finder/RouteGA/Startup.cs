@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PathFinder.Routes;
+using System.Net.Http;
 
 namespace RouteGA
 {
@@ -17,6 +19,9 @@ namespace RouteGA
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddSingleton<HttpClient>();
+            services.AddTransient<IRouteService, CachedGoogleService>();
             services.AddCors();
             services.AddMvc();
         }

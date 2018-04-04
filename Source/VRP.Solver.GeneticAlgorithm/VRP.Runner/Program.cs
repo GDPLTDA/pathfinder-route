@@ -29,11 +29,12 @@ namespace VRP.Runner
                    "Rua Maria Roschel Schunck 817",
                    "Avenida Manuel Alves Soares 460",
                    "Lambda3",
+                   "Senac Santo Amaro",
             };
 
             var locals = new List<Local>();
             foreach (var item in address)
-                locals.Add(await service.GetPointAsync(item, ""));
+                locals.Add(await service.GetPointAsync(item, item));
 
             var response = await ga.Epoch(locals);
 

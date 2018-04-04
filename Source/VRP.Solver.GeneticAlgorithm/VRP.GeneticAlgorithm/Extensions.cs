@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 
 namespace VRP.GeneticAlgorithm
 {
@@ -13,5 +14,6 @@ namespace VRP.GeneticAlgorithm
                 select value;
 
         public static T[] ToArray<T>(this (T, T) self) => new T[] { self.Item1, self.Item2 };
+
     }
 }

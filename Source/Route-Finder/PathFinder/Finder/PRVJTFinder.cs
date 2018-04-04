@@ -24,13 +24,15 @@ namespace PathFinder
     }
     public class PRVJTFinder
     {
+        private readonly IRouteService routeService;
         readonly GeneticAlgorithmFinder GaFinder;
         readonly PRVJTConfig Config;
 
-        public PRVJTFinder(PRVJTConfig config)
+        public PRVJTFinder(PRVJTConfig config, IRouteService routeService)
         {
             Config = config;
-            GaFinder = new GeneticAlgorithmFinder();
+            GaFinder = new GeneticAlgorithmFinder(routeService);
+            this.routeService = routeService;
         }
 
         public async Task<FinderResult> Run()
@@ -54,7 +56,7 @@ namespace PathFinder
                     var destinosEntrega = map.Destinations
                                         .Where(o => remainingPoints.Exists(a => a.Equals(o))).ToList();
 
-                    var mapentr = new Roteiro(map);
+                    var mapentr = map.Clone();
 
                     destinosEntrega.ForEach(async e => await mapentr.AddDestination(e));
 
@@ -76,7 +78,7 @@ namespace PathFinder
                     map.Destinations.RemoveAll(o => remainingPoints.Exists(a => a.Equals(o)));
                 }
             }
-            
+
             return result;
         }
 
@@ -113,7 +115,7 @@ namespace PathFinder
                 return result;
             }
         }
-        public static async Task<PRVJTConfig> GetConfigByFile(string fileName)
+        public static async Task<PRVJTConfig> GetConfigByFile(string fileName, IRouteService routeService)
         {
             using (TimeMeasure.Init())
             {
@@ -127,9 +129,10 @@ namespace PathFinder
                     var entregadores = Convert.ToInt32(ReadConfig("Entregadores", sr));
                     var descarga = Convert.ToInt32(ReadConfig("Descarga", sr));
 
-                    config.Map = new Roteiro(name, endereco, saida, volta);
+                    config.Map = new Roteiro(routeService, name, endereco, saida, volta);
+                    //await config
                     config.Map.DataSaida = saida;
-                    
+
                     config.DtLimite = volta;
                     config.NumEntregadores = entregadores;
                     //Linha de titulo

@@ -18,14 +18,14 @@ namespace RouteGA.Models
         public string DhLimite { get; set; }
 
 
-        async internal Task<PRVJTConfig> ToPRVJTConfig()
+        async internal Task<PRVJTConfig> ToPRVJTConfig(IRouteService routeService)
         {
             var dataLimite = DateTime.Parse(DhLimite);
             var dataSaida = DateTime.Parse(DhSaida);
 
             var config = new PRVJTConfig
             {
-                Map = new Roteiro(Origem.Endereco, Origem.Endereco, dataSaida, dataLimite)
+                Map = new Roteiro(routeService, Origem.Endereco, Origem.Endereco, dataSaida, dataLimite)
             };
 
             config.Map.DataSaida = dataSaida;

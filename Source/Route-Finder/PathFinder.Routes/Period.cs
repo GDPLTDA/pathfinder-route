@@ -14,23 +14,23 @@ namespace PathFinder.Routes
 
         }
 
-        public Period(string from,string to, int descarga)
+        public Period(string from, string to, int descarga)
         {
             From = TimeSpan.Parse(from);
             To = TimeSpan.Parse(to);
             Descarga = descarga;
-        }   
-        public Period(DateTime from,DateTime to, int descarga)
+        }
+        public Period(DateTime from, DateTime to, int descarga)
         {
             From = new TimeSpan(from.Hour, from.Minute, 0);
             To = new TimeSpan(to.Hour, to.Minute, 0);
             Descarga = descarga;
-        } 
-        public Period(TimeSpan from,TimeSpan to, int descarga)
+        }
+        public Period(TimeSpan from, TimeSpan to, int descarga)
         {
             From = from;
             To = to;
             Descarga = descarga;
-        } 
+        }
     }
 }

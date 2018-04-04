@@ -51,18 +51,22 @@ namespace VRP.GeneticAlgorithm
             var crossOverRate = config.CrossoverRate;
             var mutationRate = config.MutationRate;
 
+            locals = EnumerableEx.Return(locals.First()).Concat(locals.Skip(1).Shuffle());
+
             var population = await Enumerable.Range(0, settings.PopulationSize)
-                             .Select(_ => new Genome(locals.Shuffle()))
+                             .Select(_ => new Genome(locals))
                              .ToObservable()
-                             .Select(n => Observable.FromAsync(e => n.CalcRoutesAsync(routeService.CalcFullRoute)))
+                             .Select(n => Observable.FromAsync(_ => n.CalcRoutesAsync(routeService.CalcFullRoute)))
                              .Merge(ParallelQuantity)
                              .Select(e => e.CalcFitness(Fitness))
                              .ToList();
 
+
+
             var lastGen = await
                   GetNewPopulationCollectionAsync(population, crossOverRate, mutationRate)
                  .ToObservable()
-                 .SelectMany(e => Observable.FromAsync(() => e))
+                 .SelectMany(n => Observable.FromAsync(_ => n))
                  .Take(settings.GenerationLimit)
                  .LastAsync()
                ;
@@ -74,23 +78,25 @@ namespace VRP.GeneticAlgorithm
 
         private IEnumerable<Task<IEnumerable<Genome>>> GetNewPopulationCollectionAsync(IEnumerable<Genome> populations, double crossOverRate, double mutationRate)
         {
-            for (; ; )
+            while (true)
                 yield return GetNextPopulationAsync(populations, crossOverRate, mutationRate);
         }
 
         private async Task<IEnumerable<Genome>> GetNextPopulationAsync(IEnumerable<Genome> populations, double crossOverRate, double mutationRate) =>
-           await populations.Take(settings.BestSolutionToPick)
+           await populations
+                .Take(settings.BestSolutionToPick)
                 .Concat(
                     Enumerable.Range(0, settings.PopulationSize - settings.BestSolutionToPick)
                     .Select(e => Selection(populations.ToList()))
                     .Select(e => Crossover(crossOverRate, e.dad, e.mon))
                     .SelectMany(e => e.ToArray())
+                    .Take(settings.PopulationSize)
                     .Select(e => Mutation(mutationRate, e))
                     .Select(e => new Genome(e.Locals))
                 )
                 .OrderBy(e => e.Fitness)
                 .ToObservable(NewThreadScheduler.Default)
-                .Select(n => Observable.FromAsync(e => n.CalcRoutesAsync(routeService.CalcFullRoute)))
+                .Select(n => Observable.FromAsync(_ => n.CalcRoutesAsync(routeService.CalcFullRoute)))
                 .Merge(ParallelQuantity)
                 .Select(e => e.CalcFitness(Fitness))
                 .ToList();

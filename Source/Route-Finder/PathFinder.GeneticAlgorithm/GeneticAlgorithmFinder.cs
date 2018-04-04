@@ -20,12 +20,16 @@ namespace PathFinder.GeneticAlgorithm
         public int GenerationLimit { get; set; }
         public int BestSolutionToPick { get; set; }
 
+        private readonly IRouteService routeService;
+
         IGenome Best { get; set; }
 
         int THROTTLE = 1; // quantidade de requests simultaneos
 
-        public GeneticAlgorithmFinder()
+        public GeneticAlgorithmFinder(IRouteService routeService)
         {
+            this.routeService = routeService;
+
             Mutate = MutateFactory.GetImplementation(GASettings.Mutation);
             Crossover = CrossoverFactory.GetImplementation(GASettings.Crossover);
             PopulationSize = GASettings.PopulationSize;
@@ -105,11 +109,11 @@ namespace PathFinder.GeneticAlgorithm
         {
             if (THROTTLE == 1)
                 foreach (var item in Populations)
-                    await item.CalcRoutesAsync();
+                    await item.CalcRoutesAsync(routeService);
             else
                 await Populations
                          .ToObservable(NewThreadScheduler.Default)
-                         .Select(n => Observable.FromAsync(n.CalcRoutesAsync))
+                         .Select(n => Observable.FromAsync(_ => n.CalcRoutesAsync(routeService)))
                          .Merge(THROTTLE);
         }
     }

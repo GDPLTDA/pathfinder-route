@@ -1,25 +1,29 @@
 ﻿using ColoredConsole;
 using PathFinder.Routes;
 using System;
-using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace PathFinder
 {
     class Program
     {
+        static HttpClient httpClient = new HttpClient();
+
         static async Task Main()
         {
             Print("Carregando rotas de teste...");
+            var service = new CachedGoogleService(httpClient);
+            service.LoadCache();
 
-            var config = await PRVJTFinder.GetConfigByFile("./Tests/Turisticos.txt");
-
-            var finder = new PRVJTFinder(config);
+            var config = await PRVJTFinder.GetConfigByFile("./Tests/Senacs.txt", service);
+            var finder = new PRVJTFinder(config, service);
 
             Print($"Dividindo Rotas...");
             var result = await finder.Run();
 
-            SearchRoute.SaveCache();
+            service.SaveCache();
+
             if (result.Erro)
             {
                 PrintErro(result.Messagem);

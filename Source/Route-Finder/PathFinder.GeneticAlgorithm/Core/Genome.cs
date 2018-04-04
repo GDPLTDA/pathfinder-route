@@ -48,7 +48,7 @@ namespace PathFinder.GeneticAlgorithm
                 count--;
             }
         }
-        public async Task CalcRoutesAsync()
+        public async Task CalcRoutesAsync(IRouteService routeService)
         {
             var point = Map.Storage;
             ListRoutes = new List<Rota>();
@@ -56,7 +56,7 @@ namespace PathFinder.GeneticAlgorithm
             Rota route;
             foreach (var item in ListPoints)
             {
-                route = await SearchRoute.GetRouteAsync(point, item);
+                route = await routeService.GetRouteAsync(point, item);
                 ListRoutes.Add(route);
 
                 point = item;
@@ -69,12 +69,10 @@ namespace PathFinder.GeneticAlgorithm
             else
                 lastpoint = point;
 
-            route = await SearchRoute.GetRouteAsync(lastpoint, Map.MainStorage);
+            route = await routeService.GetRouteAsync(lastpoint, Map.MainStorage);
             ListRoutes.Add(route);
         }
 
-        public void Save() =>
-            SearchRoute.SaveRouteImage(ListRoutes);
 
         public bool IsEqual(IGenome genome)
         {

@@ -9,38 +9,36 @@ namespace PathFinder.Routes
     {
         public Local MainStorage { get; set; }
         public Local Storage { get; set; }
-
+        public readonly IRouteService _routeService;
         public DateTime DataSaida { get; set; }
         public DateTime DataVolta { get; set; }
         public List<Local> Destinations { get; set; } = new List<Local>();
 
-        public Roteiro(string name, string endereco, DateTime saida, DateTime volta)
+
+        private Roteiro(IRouteService routeService) { _routeService = routeService; }
+
+        public Roteiro(IRouteService routeService, string name, string endereco, DateTime saida, DateTime volta)
         {
+            _routeService = routeService;
             DataSaida = saida;
             DataVolta = volta;
-            Load(name, endereco);
+            Load(name, endereco).Wait();
         }
-        public Roteiro(Roteiro map)
+        public Roteiro Clone() => new Roteiro(_routeService)
         {
-            Storage = map.Storage;
-            MainStorage = map.MainStorage;
-            DataSaida = map.DataSaida;
-            DataVolta = map.DataVolta;
-        }
+            Storage = Storage,
+            MainStorage = MainStorage,
+            DataSaida = DataSaida,
+            DataVolta = DataVolta,
+        };
 
-        public Roteiro(Local storage)
-        {
-            Storage = storage;
-            MainStorage = storage;
 
-            Load(storage);
-        }
         async Task Load(string name, string endereco) =>
             await Load(new Local(name, endereco));
 
         async Task Load(Local point)
         {
-            Storage = await SearchRoute.GetPointAsync(point);
+            Storage = await _routeService.GetPointAsync(point);
             MainStorage = Storage;
             Storage.Period = new Period(DataSaida, DataVolta, 0);
         }
@@ -52,23 +50,23 @@ namespace PathFinder.Routes
         }
         public async Task AddDestination(string destination)
         {
-            var point = await SearchRoute.GetPointAsync(new Local(destination));
+            var point = await _routeService.GetPointAsync(new Local(destination));
             Destinations.Add(point);
         }
         public async Task AddDestination(string endereco, string abertura, string fechamento, int espera)
         {
-            var point = await SearchRoute.GetPointAsync(
+            var point = await _routeService.GetPointAsync(
                         new Local(endereco, endereco)
-                            {
-                                Period = new Period(abertura, fechamento, espera)
-                            }
+                        {
+                            Period = new Period(abertura, fechamento, espera)
+                        }
                         );
 
             Destinations.Add(point);
         }
         public async Task AddDestination(Local mappoint)
         {
-            var point = await SearchRoute.GetPointAsync(mappoint);
+            var point = await _routeService.GetPointAsync(mappoint);
             Destinations.Add(point);
         }
 

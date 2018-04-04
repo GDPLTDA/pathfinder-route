@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace PathFinder.Routes
+﻿namespace PathFinder.Routes
 {
     public class Local
     {
@@ -21,13 +18,6 @@ namespace PathFinder.Routes
             Endereco = endereco;
             if (endereco == null)
                 Endereco = name;
-        }
-
-        public async Task<Local> UpdateLocal(string abertura, string fechamento, int espera)
-        {
-            Period = new Period(abertura, fechamento, espera);
-
-            return await SearchRoute.GetPointAsync(this);
         }
 
         public override string ToString() => $"({Latitude},{Longitude}) {Name}";

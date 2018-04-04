@@ -10,21 +10,33 @@ namespace RouteGA.Controllers
     [Route("api/[controller]")]
     public class RouteController : Controller
     {
+        private readonly IRouteService routeService;
+
+        public RouteController(IRouteService routeService)
+        {
+            this.routeService = routeService;
+        }
+
         public async Task<IActionResult> Get(string name, string endereco, string abertura, string fechamento, int espera)
         {
             if (new[] { name, endereco, abertura, fechamento }.Any(e => string.IsNullOrWhiteSpace(e)))
                 return BadRequest("Parâmetros inválidos");
 
-            var local = new Local(name, endereco);
+            var local = new Local(name, endereco)
+            {
+                Period = new Period(abertura, fechamento, espera)
+            };
 
-            return Ok(await local.UpdateLocal(abertura, fechamento, espera));
+            local = await routeService.GetPointAsync(local);
+
+            return Ok(local);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]RoteiroViewModel roteiro)
         {
-            var config = await roteiro.ToPRVJTConfig();
-            var finder = new PRVJTFinder(config);
+            var config = await roteiro.ToPRVJTConfig(routeService);
+            var finder = new PRVJTFinder(config, routeService);
 
 
             var result = await finder.Run();
