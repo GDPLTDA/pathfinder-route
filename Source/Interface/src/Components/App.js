@@ -1,23 +1,32 @@
 import React from 'react'
+import { Switch, Route } from 'react-router-dom'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
-import {arrayMove} from 'react-sortable-hoc'
+import { arrayMove } from 'react-sortable-hoc'
 import toastr from 'toastr'
 
-import PlaceSearch from './PlaceSearch'
-import Map from './Map'
 import { getGeoLocation } from '../html5'
-import AdressList from './AddressList'
-import SearchRouteButton from './SearchRouteButton'
-import TableRoute from './TableRoute'
-import LoadingSpinner from './LoadingSpinner'
 import mockData from '../Mock/routes'
 import {Search} from '../Services/SearchService'
+import AddressManagerPage from './AddressManagerPage'
+import RouteViewerPage from './RouteViewerPage';
 
 const format = 'HH:mm';
 export default class App extends React.Component {
     constructor() {
         super()
-        this.state = { loading: false, address: '',results: [], lat: 0, lng: 0, isStore: true, from: '00:00', to: '00:00', wait: 30, listLocations: [] }
+        this.state = { 
+            loading: false, 
+            address: '',
+            results: [], 
+            lat: 0, 
+            lng: 0, 
+            isStore: true, 
+            from: '00:00', to: '00:00', 
+            wait: 30,
+            hasResults: false,
+            listLocations: [] 
+        }
+
         this.setToCurrentLocation()
     }
 
@@ -68,29 +77,32 @@ export default class App extends React.Component {
             });
     };
 
-    UpdateStoreStatus = (locations = []) =>
+    updateStoreStatus = (locations = []) =>
         locations.map((entry,index) => ({...entry, isStore: (index === 0)}))
 
-    GetDados = () => this.setState(mockData)
+    getDados = () => this.setState(mockData)
 
-    Search = async () => {
+    search = async () => {
         this.setState({ loading: true })
         try {
-          const response = await Search(this.state.listLocations);
-            this.setState({ 
-                loading: false,
-                results: response
-            })
+        //   const response = await Search(this.state.listLocations);
+        //     this.setState({ 
+        //         loading: false,
+        //         results: response,
+        //         hasResults: true
+        //     })
+            this.props.history.push('/result')
+            
         }
         catch (e) {
-            this.setState({ loading: false })
+            this.setState({ loading: false, hasResults:false })
             toastr.error(e);
         }
     }
 
     render() {
-        const state = this.state
-        let { results, loading } = this.state;
+        const state = this.state;
+        let { results, loading } = state;
 
         if(results.length !== 0){
             if(typeof results.mensagem !== 'undefined'){
@@ -100,44 +112,38 @@ export default class App extends React.Component {
         }
         else
             results=[{mensagem: "", rotas:[]}]
-            
+ 
+        
+        const addressPage = () =>
+            <AddressManagerPage 
+                onSelect={this.onSelect}
+                onHandleSelect={this.onHandleSelect}
+                onChangeFrom={this.onChangeFrom}
+                onChangeTo={this.onChangeTo}
+                onChangeWait={this.onChangeWait}
+                valueWait={state.wait}
+                onTextChange={this.onChange}
+                format={format}
+                address={state.address}
+                onRemoveLocation={this.onRemoveLocation}
+                onSortEnd={this.onSortEnd}
+                listLocations={state.listLocations}
+                location={{...state}}
+                onClickButton={this.onClickButton}
+                getDados={this.getDados}
+                search={this.search}
+                lat={state.lat}
+                lng={state.lng}
+            />
+        
+        const routePage = () => <RouteViewerPage loading={loading} results={results} />
+
         return (
-            <div className="form-group row app">
-                <div className="form-group col-sm-5">
-                    <PlaceSearch
-                        onSelect={this.onSelectPlace}
-                        onHandleSelect={this.handleSelect}
-                        onChangeFrom={this.onChangeFrom}
-                        onChangeTo={this.onChangeTo}
-                        onChangeWait={this.onChangeWait}
-                        ValueWait={this.state.wait}
-                        onTextChange={this.onChange}
-                        format={format}
-                        address={this.state.address}
-                    />
-                    <AdressList
-                        onRemoveLocation={this.onRemoveLocation}
-                        onSortEnd={this.onSortEnd}
-                        items={this.state.listLocations}
-                        location={{ ...state }}
-                        onClickButton={this.onClickButton}
-                        Teste={this.GetDados}
-                    />
-                    <SearchRouteButton Search={this.Search}/>
-                </div>
-                <div className="col-sm-7">
-                    <Map
-                        lat={state.lat}
-                        lng={state.lng}
-                        loadingElement={<div style={{ height: `100%` }} />}
-                        containerElement={<div style={{ height: `100%` }} />}
-                        mapElement={<div style={{ height: `100%` }} />}
-                    />
-                </div>
-                {
-                    loading ? <LoadingSpinner /> : 
-                    <TableRoute mensagem={results[0].mensagem} listEntregador = {results}/>
-                }
+            <div className="app">
+                <Switch>
+                    <Route exact path='/'  component={addressPage}/>
+                    <Route path='/result' component={routePage}/>
+                </Switch>
             </div>
         )
     }

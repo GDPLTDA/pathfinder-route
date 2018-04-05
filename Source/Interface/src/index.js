@@ -7,4 +7,11 @@ import 'rc-time-picker/assets/index.css';
 import 'toastr/build/toastr.min.css'
 import 'react-table/react-table.css'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import { BrowserRouter, withRouter  } from "react-router-dom"
+const AppWithRouter = withRouter(App)
+
+ReactDOM.render((
+    <BrowserRouter>
+        <AppWithRouter />
+    </BrowserRouter>
+  ), document.getElementById('root'))
