@@ -26,6 +26,7 @@ namespace PathFinder.GeneticAlgorithm
                 if (date < from)
                     date = date.Add(from - date);
 
+                item.DhSaida = finish;
                 item.DhChegada = date;
                 finish = date.AddMinutes(item.Destino.Period.Descarga);
             }

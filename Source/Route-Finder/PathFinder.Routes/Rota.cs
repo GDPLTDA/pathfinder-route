@@ -8,10 +8,12 @@ namespace PathFinder.Routes
         public Local Destino { get; set; }
 
         public double Metros { get; set; }
+        public double Km { get { return Metros / 1000; } }
 
         public double Segundos { get; set; }
         public double Minutos { get { return Segundos / 60; } }
 
+        public DateTime DhSaida { get; set; }
         public DateTime DhChegada { get; set; }
 
         public Rota()

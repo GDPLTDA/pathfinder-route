@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactTable from 'react-table'
+import MensagemErro from './MensagemErro'
 
 export default class TableRoute extends React.Component {
   render() {
@@ -31,8 +32,8 @@ export default class TableRoute extends React.Component {
             return d.dhChegada
           }
       }, {
-        Header: 'Metros',
-        accessor: 'metros',
+        Header: 'KM',
+        accessor: 'km',
         className:'text-center',
         Cell: row =>( <span className='text-center'>{row.value}</span> ),
         maxWidth: 120
@@ -42,10 +43,17 @@ export default class TableRoute extends React.Component {
         className:'text-center',
         Cell: row =>( <span className='text-center'>{row.value}</span> ),
         maxWidth:120
+      }, {
+        Header: 'Espera',
+        accessor: 'chegada.minutosespera',
+        className:'text-center',
+        Cell: row =>( <span className='text-center'>{row.value}</span> ),
+        maxWidth:120
       }]
 
-    return this.props.listEntregador.map((item, index) => (
+      return this.props.listEntregador.map((item, index) => (
         <div className="col-lg-12 div-entregador">
+            <MensagemErro mensagem = {this.props.mensagem} /> 
             <ReactTable
                 data={this.props.listEntregador[index].rotas}
                 columns={[

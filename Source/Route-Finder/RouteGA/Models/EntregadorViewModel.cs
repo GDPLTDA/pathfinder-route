@@ -8,6 +8,7 @@ namespace RouteGA.Models
     public class EntregadorViewModel
     {
         public int Id { get; set; }
+        public string Mensagem { get; set; }
         public IEnumerable<RotaViewModel> Rotas { get; private set; }
         public static EntregadorViewModel[] Empty { get => new[] { new EntregadorViewModel() }; }
 
@@ -23,10 +24,11 @@ namespace RouteGA.Models
                 {
                     Saida = new LocalViewModel(item.Origem),
                     Chegada = new LocalViewModel(item.Destino),
-                    DhChegada = item.DhChegada.ToString("hh:mm"),
+                    DhSaida = item.DhSaida.ToString("HH:mm"),
+                    DhChegada = item.DhChegada.ToString("HH:mm"),
                     Metros = item.Metros.ToString(),
-                    Minutos = ConvMinutos(item.Segundos),
-
+                    Km = item.Km.ToString("n3"),
+                    Minutos = ConvMinutos(item.Segundos)
                 });
 
             Id = entregador.Numero;

@@ -62,15 +62,15 @@ namespace PathFinder.GeneticAlgorithm
                 point = item;
             }
 
-            Local lastpoint;
+            //Local lastpoint;
 
-            if (ListPoints.Any())
-                lastpoint = ListPoints.Last();
-            else
-                lastpoint = point;
+            //if (ListPoints.Any())
+            //    lastpoint = ListPoints.Last();
+            //else
+            //    lastpoint = point;
 
-            route = await routeService.GetRouteAsync(lastpoint, Map.MainStorage);
-            ListRoutes.Add(route);
+            //route = await routeService.GetRouteAsync(lastpoint, Map.MainStorage);
+            //ListRoutes.Add(route);
         }
 
 

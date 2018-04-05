@@ -50,7 +50,6 @@ export default class App extends React.Component {
     }
     onChangeWait = value => {
         const wait = value
-        console.log(value)
         this.setState({ wait })
     }
 
@@ -85,25 +84,16 @@ export default class App extends React.Component {
             lat:0,
             lng:0,
             from: '06:00', 
-            to: '14:00',
-            wait: 30
-        },
-        { 
-            address: 'Av. Engenheiro Eusébio Stevaux, 823',
-            isStore: false, 
-            lat:0,
-            lng:0,
-            from: '12:00', 
             to: '23:00',
-            wait: 60 
+            wait: 30
         },
         {
             address: 'Av. das Nações Unidas, 22540',
             isStore: false,
             lat:0,
             lng:0,
-            from: '12:00', 
-            to: '23:00',
+            from: '08:00', 
+            to: '10:00',
             wait: 30 
         },
         { 
@@ -112,7 +102,7 @@ export default class App extends React.Component {
             lat:0,
             lng:0,
             from: '12:00', 
-            to: '23:00',
+            to: '12:00',
             wait: 90 
         },
         { 
@@ -121,7 +111,7 @@ export default class App extends React.Component {
             lat:0,
             lng:0,
             from: '12:00', 
-            to: '23:00',
+            to: '15:00',
             wait: 30 
         },
         { 
@@ -134,12 +124,21 @@ export default class App extends React.Component {
             wait: 20 
         },
         { 
+            address: 'Av. Engenheiro Eusébio Stevaux, 823',
+            isStore: false, 
+            lat:0,
+            lng:0,
+            from: '12:00', 
+            to: '13:00',
+            wait: 60 
+        },
+        { 
             address: 'Rua Vergueiro - Vila Dom Pedro I, São Paulo - SP, Brasil',
             isStore: false,
             lat:0,
             lng:0,
             from: '12:00', 
-            to: '23:00',
+            to: '20:00',
             wait: 10 
         },
         { 
@@ -157,7 +156,7 @@ export default class App extends React.Component {
             lat:0,
             lng:0,
             from: '12:00',
-            to: '23:00',
+            to: '17:00',
             wait: 30
         }
     ]})
@@ -174,7 +173,8 @@ export default class App extends React.Component {
                     Endereco : listDestinos[i].address,
                     DhInicial : listDestinos[i].from + ":00",
                     DhFinal : listDestinos[i].to + ":00",
-                    MinutosEspera : 30
+                    MinutosEspera : 30,
+                    
                 }
             )
         } 
@@ -186,7 +186,6 @@ export default class App extends React.Component {
             },
             Destinos : destinos
         }
-        console.log(json)
         
         this.setState({
             loading: true
@@ -201,7 +200,7 @@ export default class App extends React.Component {
           })
           .then((response) => response.json())
           .catch( e => {console.log(e); toastr.info(JSON.stringify(e))})
-          
+
           this.setState({
             loading: false,
             results: response
@@ -210,8 +209,17 @@ export default class App extends React.Component {
 
     render() {
         const state = this.state
-        const { results, loading } = this.state;
+        let { results, loading } = this.state;
 
+        if(results.length !== 0){
+            if(typeof results.mensagem !== 'undefined'){
+                console.log(results.mensagem)
+                results=[{mensagem: results.mensagem, rotas:[]}]
+            }
+        }
+        else
+            results=[{mensagem: "", rotas:[]}]
+            
         return (
             <div className="form-group row app">
                 <div className="form-group col-sm-5">
@@ -245,8 +253,10 @@ export default class App extends React.Component {
                         mapElement={<div style={{ height: `100%` }} />}
                     />
                 </div>
-                {loading ? <LoadingSpinner /> : <TableRoute listEntregador ={results} />}
-                
+                {
+                    loading ? <LoadingSpinner /> : 
+                    <TableRoute mensagem={results[0].mensagem} listEntregador = {results}/>
+                }
             </div>
         )
     }

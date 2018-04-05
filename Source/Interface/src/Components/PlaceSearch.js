@@ -29,9 +29,9 @@ const renderSuggestion =  ({ formattedSuggestion }) => (
     }
     
     return (
-      <div class="form-group">
-        <div class="row">
-          <div class="col-sm-12">
+      <div className="form-group">
+        <div className="row">
+          <div className="col-sm-12">
           <PlacesAutocomplete
                   classNames={cssClasses} 
                   inputProps={inputProps} 
@@ -39,8 +39,8 @@ const renderSuggestion =  ({ formattedSuggestion }) => (
                   renderSuggestion={renderSuggestion} />
           </div>
         </div>
-        <div class="row">
-          <div class="col-sm-4">
+        <div className="row">
+          <div className="col-sm-4">
           <TimePicker
                   showSecond={false}
                   className="form-control"
@@ -49,7 +49,7 @@ const renderSuggestion =  ({ formattedSuggestion }) => (
                   format={props.format}
               />
           </div>
-          <div class="col-sm-4">
+          <div className="col-sm-4">
           <TimePicker
                   showSecond={false}
                   className="form-control"
@@ -58,7 +58,7 @@ const renderSuggestion =  ({ formattedSuggestion }) => (
                   format={props.format}
               />
           </div>
-          <div class="col-sm-3">
+          <div className="col-sm-3">
           <NumericInput 
                   mobile
                   className="form-control"

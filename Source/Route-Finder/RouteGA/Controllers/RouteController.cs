@@ -42,7 +42,7 @@ namespace RouteGA.Controllers
             var result = await finder.Run();
 
             if (result.Erro)
-                return Ok(EntregadorViewModel.Empty);
+                return Ok(new EntregadorViewModel { Mensagem = result.Messagem });
 
             var viewmodel = result.ListEntregadores.Select(o => new EntregadorViewModel(o)).ToList();
 
