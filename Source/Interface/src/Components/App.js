@@ -1,15 +1,17 @@
 import React from 'react'
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+import {arrayMove} from 'react-sortable-hoc'
+import toastr from 'toastr'
+
 import PlaceSearch from './PlaceSearch'
 import Map from './Map'
 import { getGeoLocation } from '../html5'
 import AdressList from './AddressList'
-import SearchRoute from './SearchRoute'
-import LoadTest from './LoadTest'
+import SearchRouteButton from './SearchRouteButton'
 import TableRoute from './TableRoute'
 import LoadingSpinner from './LoadingSpinner'
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
-import toastr from 'toastr'
-import {arrayMove} from 'react-sortable-hoc'
+import mockData from '../Mock/routes'
+import {Search} from '../Services/SearchService'
 
 const format = 'HH:mm';
 export default class App extends React.Component {
@@ -66,145 +68,24 @@ export default class App extends React.Component {
             });
     };
 
-    UpdateStoreStatus(locations = []){
-        return locations.map(  
-            (entry,index) =>
-               (index === 0)
-               ? {...entry, isStore: true}
-               : {...entry, isStore: false}
-            )
-    }
+    UpdateStoreStatus = (locations = []) =>
+        locations.map((entry,index) => ({...entry, isStore: (index === 0)}))
 
-    GetDados = ()=> 
-    this.setState({
-        listLocations: [
-        { 
-            address: 'Rua Maria Roschel Schunck, 817',
-            isStore: true, 
-            lat:0,
-            lng:0,
-            from: '06:00', 
-            to: '23:00',
-            wait: 30
-        },
-        {
-            address: 'Av. das Nações Unidas, 22540',
-            isStore: false,
-            lat:0,
-            lng:0,
-            from: '08:00', 
-            to: '10:00',
-            wait: 30 
-        },
-        { 
-            address: 'Rua Urussuí, 271 - Itaim Bibi, São Paulo - SP, Brasil',
-            isStore: false,
-            lat:0,
-            lng:0,
-            from: '12:00', 
-            to: '12:00',
-            wait: 90 
-        },
-        { 
-            address: 'Av. Paulista - Bela Vista, São Paulo - SP, Brasil',
-            isStore: false,
-            lat:0,
-            lng:0,
-            from: '12:00', 
-            to: '15:00',
-            wait: 30 
-        },
-        { 
-            address: 'Rua Augusta - Consolação, São Paulo - SP, Brasil',
-            isStore: false,
-            lat:0,
-            lng:0,
-            from: '12:00', 
-            to: '23:00',
-            wait: 20 
-        },
-        { 
-            address: 'Av. Engenheiro Eusébio Stevaux, 823',
-            isStore: false, 
-            lat:0,
-            lng:0,
-            from: '12:00', 
-            to: '13:00',
-            wait: 60 
-        },
-        { 
-            address: 'Rua Vergueiro - Vila Dom Pedro I, São Paulo - SP, Brasil',
-            isStore: false,
-            lat:0,
-            lng:0,
-            from: '12:00', 
-            to: '20:00',
-            wait: 10 
-        },
-        { 
-            address: 'Praça da Sé - Centro, São Paulo - SP, Brasil',
-            isStore: false,
-            lat:0,
-            lng:0,
-            from: '12:00', 
-            to: '23:00',
-            wait: 30 
-        },
-        { 
-            address: 'Catavento Cultural e Educacional - Avenida Mercúrio - Brás, São Paulo - SP, Brasil',
-            isStore: false,
-            lat:0,
-            lng:0,
-            from: '12:00',
-            to: '17:00',
-            wait: 30
+    GetDados = () => this.setState(mockData)
+
+    Search = async () => {
+        this.setState({ loading: true })
+        try {
+          const response = await Search(this.state.listLocations);
+            this.setState({ 
+                loading: false,
+                results: response
+            })
         }
-    ]})
-
-    Search = async (e) => {
-        let items = this.state.listLocations
-        let store = items.find(function (obj) { return obj.isStore; });
-        let listDestinos = items.filter(function (obj) { return !obj.isStore; });
-        let destinos = []
-
-        for (let i = 0; i < listDestinos.length; i++) {
-            destinos.push(
-                {
-                    Endereco : listDestinos[i].address,
-                    DhInicial : listDestinos[i].from + ":00",
-                    DhFinal : listDestinos[i].to + ":00",
-                    MinutosEspera : 30,
-                    
-                }
-            )
-        } 
-        let json = {
-            DhSaida : "11/12/2017 " + store.from + ":00",
-            DhLimite : "11/12/2017 " + store.to + ":00",
-            Origem :{
-                Endereco : store.address
-            },
-            Destinos : destinos
+        catch (e) {
+            this.setState({ loading: false })
+            toastr.error(e);
         }
-        
-        this.setState({
-            loading: true
-        })
-        const response =  await fetch('http://localhost:64880/api/route', {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(json)
-          })
-          .then((response) => response.json())
-          .catch( e => {console.log(e); toastr.info(JSON.stringify(e))})
-
-          this.setState({
-            loading: false,
-            results: response
-        })
     }
 
     render() {
@@ -234,15 +115,15 @@ export default class App extends React.Component {
                         format={format}
                         address={this.state.address}
                     />
-                    <LoadTest Teste={this.GetDados}/>
                     <AdressList
                         onRemoveLocation={this.onRemoveLocation}
                         onSortEnd={this.onSortEnd}
                         items={this.state.listLocations}
                         location={{ ...state }}
                         onClickButton={this.onClickButton}
+                        Teste={this.GetDados}
                     />
-                    <SearchRoute Search={this.Search}/>
+                    <SearchRouteButton Search={this.Search}/>
                 </div>
                 <div className="col-sm-7">
                     <Map

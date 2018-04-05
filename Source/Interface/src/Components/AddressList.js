@@ -40,6 +40,7 @@ export default class AddressList extends React.Component
             <div>
                 <div className="form-group">
                     <button className="btn btn-success" onClick={this.addLocation}>Add</button>
+                    <button className="btn btn-info" onClick={this.props.Teste}>Dados de Teste</button>
                 </div>
                 <div className="form-group">
                     <SortableList items={this.props.items} onSortEnd={this.onSortEnd} onRemove={this.onRemoveLocation} helperClass="SortableHelper" useDragHandle={true} />

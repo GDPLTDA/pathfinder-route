@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class SearchRoute extends React.Component {
+export default class SearchRouteButton extends React.Component {
   render() {
     return (
         <div>
