@@ -1,15 +1,18 @@
-﻿using PathFinder.GeneticAlgorithm.Factories;
-using PathFinder.GeneticAlgorithm;
-using PathFinder.GeneticAlgorithm.Abstraction;
+﻿using PathFinder.GeneticAlgorithm.Abstraction;
+using PathFinder.GeneticAlgorithm.Factories;
+using PathFinder.Routes;
 using System;
 using System.Collections.Generic;
-using PathFinder.Routes;
 using System.Linq;
 
 namespace PathFinder.GeneticAlgorithm.Crossover
 {
     public class CrossoverOBX : AbstractCrossover
     {
+        public CrossoverOBX(GASettings settings) : base(settings)
+        {
+        }
+
         public override CrossoverOperation Make(CrossoverOperation Operation)
         {
             var rand = RandomFactory.Rand;
@@ -22,7 +25,7 @@ namespace PathFinder.GeneticAlgorithm.Crossover
             var listmom = Operation.Mom.ListPoints;
             var listdad = Operation.Dad.ListPoints;
 
-            if(!listmom.Any() || !listdad.Any())
+            if (!listmom.Any() || !listdad.Any())
                 return Operation;
 
             var minindex = Math.Min(listmom.Count, listdad.Count);
@@ -60,7 +63,7 @@ namespace PathFinder.GeneticAlgorithm.Crossover
                 {
                     if (babymom.ListPoints[cit].Equals(lstTempCities[i]))
                     {
-                        if(lstTempCities.Count < cPos)
+                        if (lstTempCities.Count < cPos)
                             babymom.ListPoints[cit] = lstTempCities[cPos];
                         ++cPos;
                         break;

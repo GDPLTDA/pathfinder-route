@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PathFinder;
+using PathFinder.GeneticAlgorithm;
 using PathFinder.Routes;
 using RouteGA.Models;
 using System.Linq;
@@ -35,8 +36,9 @@ namespace RouteGA.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]RoteiroViewModel roteiro)
         {
+            var settings = new GASettings();
             var config = await roteiro.ToPRVJTConfig(routeService);
-            var finder = new PRVJTFinder(config, routeService);
+            var finder = new PRVJTFinder(config, routeService, settings);
 
 
             var result = await finder.Run();

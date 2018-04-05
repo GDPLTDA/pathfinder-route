@@ -31,9 +31,9 @@
     }
     public abstract class AbstractCrossover : ICrossover
     {
-        protected AbstractCrossover()
+        protected AbstractCrossover(GASettings settings)
         {
-            CrossoverRate = GASettings.CrossoverRate;
+            CrossoverRate = settings.CrossoverRate;
         }
         protected double CrossoverRate { get; set; }
         CrossoverOperation Operation { get; set; }

@@ -1,4 +1,5 @@
 ﻿using ColoredConsole;
+using PathFinder.GeneticAlgorithm;
 using PathFinder.Routes;
 using System;
 using System.Net.Http;
@@ -17,7 +18,7 @@ namespace PathFinder
             service.LoadCache();
 
             var config = await PRVJTFinder.GetConfigByFile("./Tests/Senacs.txt", service);
-            var finder = new PRVJTFinder(config, service);
+            var finder = new PRVJTFinder(config, service, new GASettings());
 
             Print($"Dividindo Rotas...");
             var result = await finder.Run();

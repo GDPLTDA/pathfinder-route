@@ -1,9 +1,11 @@
 ﻿using MoreLinq;
 using PathFinder.GeneticAlgorithm;
+using PathFinder.Routes;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace PathFinder.DataGenerator
@@ -28,17 +30,20 @@ namespace PathFinder.DataGenerator
         public async static Task<IEnumerable<Result>> RunTest(string filename)
         {
             var ret = new List<Result>();
+            var http = new HttpClient();
+            var settings = new GASettings();
+            var routeService = new CachedGoogleService(http);
 
             foreach (MutateEnum mut in Enum.GetValues(typeof(MutateEnum)))
             {
                 foreach (CrossoverEnum cro in Enum.GetValues(typeof(CrossoverEnum)))
                 {
-                    var config = await PRVJTFinder.GetConfigByFile(filename);
+                    var config = await PRVJTFinder.GetConfigByFile(filename, routeService);
                     // Altera a configuração do GA
-                    GASettings.Mutation = mut;
-                    GASettings.Crossover = cro;
+                    settings.Mutation = mut;
+                    settings.Crossover = cro;
                     // Carrega a configuração do roteiro
-                    var finder = new PRVJTFinder(config);
+                    var finder = new PRVJTFinder(config, routeService, settings);
                     // Executa a divisão de rotas
                     var result = await finder.Run();
 
@@ -54,7 +59,7 @@ namespace PathFinder.DataGenerator
                              ));
                         continue;
                     }
-                    
+
                     ret.Add(new Result(
                             result.TipoErro,
                             filename,
@@ -65,6 +70,7 @@ namespace PathFinder.DataGenerator
                         ));
                 }
             }
+            http.Dispose();
             return ret;
         }
     }

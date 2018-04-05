@@ -1,6 +1,5 @@
-﻿using PathFinder.GeneticAlgorithm.Factories;
-using PathFinder.GeneticAlgorithm;
-using PathFinder.GeneticAlgorithm.Abstraction;
+﻿using PathFinder.GeneticAlgorithm.Abstraction;
+using PathFinder.GeneticAlgorithm.Factories;
 using System;
 using System.Collections.Generic;
 
@@ -8,6 +7,7 @@ namespace PathFinder.GeneticAlgorithm.Crossover
 {
     public class CrossoverPBX : AbstractCrossover
     {
+        public CrossoverPBX(GASettings settings) : base(settings) { }
         public override CrossoverOperation Make(CrossoverOperation Operation)
         {
             var rand = RandomFactory.Rand;

@@ -29,7 +29,7 @@ const renderSuggestion =  ({ formattedSuggestion }) => (
     }
     
     return (
-      <div className="form-group">
+      <div className="form-group search-bar">
         <div className="row">
           <div className="col-sm-12">
           <PlacesAutocomplete

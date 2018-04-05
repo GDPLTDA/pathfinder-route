@@ -1,5 +1,7 @@
 using PathFinder.GeneticAlgorithm;
+using PathFinder.Routes;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -7,6 +9,18 @@ namespace PathFinder.Tests
 {
     public class UnitTest
     {
+
+        static HttpClient httpClient;
+        GASettings GASettings;
+        IRouteService RouteService;
+        public UnitTest()
+        {
+            httpClient = new HttpClient();
+            GASettings = new GASettings();
+            RouteService = new CachedGoogleService(httpClient);
+        }
+
+
         [Theory(DisplayName = "Deve encontrar uma rota!")]
         [InlineData("Aceita.txt")]
         public async Task Deve_Encontrar_Rota(string fileName)
@@ -41,7 +55,7 @@ namespace PathFinder.Tests
         //}
         public async Task<TipoErro> RunTest(string filename)
         {
-            var config = await PRVJTFinder.GetConfigByFile(filename);
+            var config = await PRVJTFinder.GetConfigByFile(filename, RouteService);
 
             foreach (MutateEnum mut in Enum.GetValues(typeof(MutateEnum)))
             {
@@ -52,7 +66,7 @@ namespace PathFinder.Tests
                     GASettings.Crossover = cro;
 
                     // Carrega a configuração do roteiro
-                    var finder = new PRVJTFinder(config);
+                    var finder = new PRVJTFinder(config, RouteService, GASettings);
                     // Executa a divisão de rotas
                     var result = await finder.Run();
 

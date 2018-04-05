@@ -28,10 +28,10 @@ namespace PathFinder
         readonly GeneticAlgorithmFinder GaFinder;
         readonly PRVJTConfig Config;
 
-        public PRVJTFinder(PRVJTConfig config, IRouteService routeService)
+        public PRVJTFinder(PRVJTConfig config, IRouteService routeService, GASettings settings)
         {
             Config = config;
-            GaFinder = new GeneticAlgorithmFinder(routeService);
+            GaFinder = new GeneticAlgorithmFinder(routeService, settings);
             this.routeService = routeService;
         }
 

@@ -2,9 +2,9 @@
 {
     public abstract class AbstractMutate : IMutate
     {
-        protected AbstractMutate()
+        protected AbstractMutate(GASettings settings)
         {
-            MutationRate = GASettings.MutationRate;
+            MutationRate = settings.MutationRate;
         }
         public double MutationRate { get; set; }
         public abstract IGenome Apply(IGenome baby);

@@ -26,16 +26,16 @@ namespace PathFinder.GeneticAlgorithm
 
         int THROTTLE = 1; // quantidade de requests simultaneos
 
-        public GeneticAlgorithmFinder(IRouteService routeService)
+        public GeneticAlgorithmFinder(IRouteService routeService, GASettings settings)
         {
             this.routeService = routeService;
 
-            Mutate = MutateFactory.GetImplementation(GASettings.Mutation);
-            Crossover = CrossoverFactory.GetImplementation(GASettings.Crossover);
-            PopulationSize = GASettings.PopulationSize;
-            GenerationLimit = GASettings.GenerationLimit;
-            BestSolutionToPick = GASettings.BestSolutionToPick;
-            THROTTLE = GASettings.Throttle;
+            Mutate = MutateFactory.GetImplementation(settings.Mutation, settings);
+            Crossover = CrossoverFactory.GetImplementation(settings.Crossover, settings);
+            PopulationSize = settings.PopulationSize;
+            GenerationLimit = settings.GenerationLimit;
+            BestSolutionToPick = settings.BestSolutionToPick;
+            THROTTLE = settings.Throttle;
         }
         public async Task<IGenome> FindPathAsync(Roteiro map, IGenome seed = null)
         {

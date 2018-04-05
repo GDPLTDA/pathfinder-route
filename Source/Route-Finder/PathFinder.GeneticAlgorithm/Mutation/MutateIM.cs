@@ -1,11 +1,14 @@
-﻿using PathFinder.GeneticAlgorithm.Factories;
-using PathFinder.GeneticAlgorithm.Abstraction;
-using System.Linq;
+﻿using PathFinder.GeneticAlgorithm.Abstraction;
+using PathFinder.GeneticAlgorithm.Factories;
 
 namespace PathFinder.GeneticAlgorithm
 {
     public class MutateIM : AbstractMutate
     {
+        public MutateIM(GASettings settings) : base(settings)
+        {
+        }
+
         public override IGenome Apply(IGenome baby)
         {
             var rand = RandomFactory.Rand;

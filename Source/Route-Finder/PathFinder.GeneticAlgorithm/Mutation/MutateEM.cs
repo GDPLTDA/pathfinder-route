@@ -1,11 +1,12 @@
-﻿using PathFinder.GeneticAlgorithm.Factories;
-using PathFinder.GeneticAlgorithm.Abstraction;
-using System.Linq;
+﻿using PathFinder.GeneticAlgorithm.Abstraction;
+using PathFinder.GeneticAlgorithm.Factories;
 
 namespace PathFinder.GeneticAlgorithm
 {
     public class MutateEM : AbstractMutate
     {
+        public MutateEM(GASettings settings) : base(settings) { }
+
         public override IGenome Apply(IGenome baby)
         {
             var rand = RandomFactory.Rand;
@@ -16,7 +17,7 @@ namespace PathFinder.GeneticAlgorithm
             var pos1 = rand.Next(0, listcount);
             var pos2 = pos1;
             while (pos1 == pos2)
-                pos2 = rand.Next(0, listcount); 
+                pos2 = rand.Next(0, listcount);
             var temp = baby.ListPoints[pos1];
             baby.ListPoints[pos1] = baby.ListPoints[pos2];
             baby.ListPoints[pos2] = temp;
