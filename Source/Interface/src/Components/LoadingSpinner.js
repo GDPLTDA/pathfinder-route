@@ -1,11 +1,8 @@
 import React from 'react'
 
-export default class LoadingSpinner extends React.Component {
-  render() {
-    return (
-        <div className="col-sm-12 border-top col-xs-offset-2">
+const LoadingSpinner = () => 
+        <div className="col-sm-10 border-top col-xs-offset-2 spinner">
             <i className="fa fa-spinner fa-spin" /> Loading...
         </div>
-    )
-  }
-}
+
+export default LoadingSpinner;

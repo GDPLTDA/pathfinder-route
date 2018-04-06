@@ -6,9 +6,10 @@ import toastr from 'toastr'
 
 import { getGeoLocation } from '../html5'
 import mockData from '../Mock/routes'
-import {Search} from '../Services/SearchService'
+import { Search } from '../Services/SearchService'
 import AddressManagerPage from './AddressManagerPage'
 import RouteViewerPage from './RouteViewerPage';
+import Header from './Header'
 
 const format = 'HH:mm';
 export default class App extends React.Component {
@@ -26,37 +27,40 @@ export default class App extends React.Component {
             hasResults: false,
             listLocations: [] 
         }
-
-        this.setToCurrentLocation()
     }
 
-    setToCurrentLocation = async () => {
-        const location = await getGeoLocation()
-        this.setState({
+    componentDidMount()
+    {
+       this.setToCurrentLocation()
+    }
+
+    setToCurrentLocation = () => 
+        getGeoLocation()
+        .then(location => this.setState({
             lat: location.coords.latitude,
             lng: location.coords.longitude
-        })
-    }
+        }))
+        .catch( e => {console.log(e); toastr.error(JSON.stringify(e))})
+    
     
     onChange = (address) => this.setState({ address })
     onSelectPlace = location => this.setState({ ...location })
     onClickButton = location => this.setState({address:""})
 
-    handleSelect = async address => {
+    onHandleSelect = async address => {
         this.setState({ address })
-        toastr.error(JSON.stringify(address))
+        toastr.info(JSON.stringify(address))
         let latLng = await geocodeByAddress(address)
                                 .then(results => getLatLng(results[0]))
-                                .catch( e => {console.log(e); toastr.info(JSON.stringify(e))})
-
+                                .catch( e => {console.log(e); toastr.error(JSON.stringify(e))})
         this.setState({ ...latLng })
     }
     onChangeFrom = value => {
-        const from = value.format(format)
+        const from = value ? value.format(format) : "00:00"
         this.setState({ from })
     }
     onChangeTo = value => {
-        const to = value.format(format)
+        const to =  value ? value.format(format) : "00:00"
         this.setState({ to })
     }
     onChangeWait = value => {
@@ -83,16 +87,14 @@ export default class App extends React.Component {
     getDados = () => this.setState(mockData)
 
     search = async () => {
-        this.setState({ loading: true })
+        this.setState({ loading: true, hasResults: true })
+        this.props.history.push('/result')
         try {
-        //   const response = await Search(this.state.listLocations);
-        //     this.setState({ 
-        //         loading: false,
-        //         results: response,
-        //         hasResults: true
-        //     })
-            this.props.history.push('/result')
-            
+          const response = await Search(this.state.listLocations);
+            this.setState({ 
+                loading: false,
+                results: response
+            })
         }
         catch (e) {
             this.setState({ loading: false, hasResults:false })
@@ -140,9 +142,10 @@ export default class App extends React.Component {
 
         return (
             <div className="app">
+                <Header hasResults={this.state.hasResults}  />
                 <Switch>
-                    <Route exact path='/'  component={addressPage}/>
-                    <Route path='/result' component={routePage}/>
+                    <Route exact path='/'  render={addressPage}/>
+                    <Route path='/result' render={routePage}/>
                 </Switch>
             </div>
         )

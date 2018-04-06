@@ -52,7 +52,7 @@ export default class TableRoute extends React.Component {
       }]
 
       return this.props.listEntregador.map((item, index) => (
-        <div className="col-lg-12 div-entregador" key={index}>
+        <div className="col-lg-6 div-entregador" key={index}>
             <MensagemErro mensagem = {this.props.mensagem} /> 
             <ReactTable
                 data={this.props.listEntregador[index].rotas}

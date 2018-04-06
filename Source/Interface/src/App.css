@@ -4,11 +4,12 @@ html, body {
 
 .app {
   height: 100%;
+  padding: 10px;
+  height: 100%;
 }
 
 #root{
   height: 100%;
-  padding-left: 20px;
 }
 
 .autocomplete-container {
@@ -150,3 +151,4 @@ html, body {
 .btn {
   margin: 5px;
 }
+
