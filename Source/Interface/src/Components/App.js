@@ -88,6 +88,7 @@ export default class App extends React.Component {
 
     search = async () => {
         this.setState({ loading: true, hasResults: true })
+        window.scrollTo(0, 0)
         this.props.history.push('/result')
         try {
           const response = await Search(this.state.listLocations);

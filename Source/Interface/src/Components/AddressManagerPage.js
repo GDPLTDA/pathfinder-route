@@ -30,11 +30,13 @@ const AddressManagerPage = (props) =>
     </div>
     <div className="col-sm-7">
         <Map
-            lat={props.lat}
-            lng={props.lng}
+            center={{lat: props.lat,lng: props.lng}}
+            markers={[{lat: props.lat,lng: props.lng}]}
+            zoom={17}
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `100%` }} />}
             mapElement={<div style={{ height: `100%` }} />}
+            googleMapURL={"https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places"}
         />
     </div>
 </div>

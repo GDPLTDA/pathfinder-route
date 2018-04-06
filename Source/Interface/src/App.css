@@ -95,6 +95,8 @@ html, body {
   color: red;
 }
 
+*[hidden] { display: none; }
+
 .remove-button {
   font-size:48px;
   text-align: top;
