@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react'//son
 import { withGoogleMap,GoogleMap, DirectionsRenderer,withScriptjs,Marker } from "react-google-maps"
 /* eslint-disable no-undef */
 
@@ -7,27 +7,35 @@ class MapBase extends React.Component {
     constructor(props)
     {
         super(props)
-        this.state = {index:0,  center: {lat:0, lng:0}}
+        this.state = { center: {lat:0, lng:0}, directions:[]}
     }
 
-   async componentDidMount(){
+    async componentDidMount(){
         if(!this.props.listEntregador)
             return
 
-       const route = this.props.listEntregador[this.state.index].rotas
+        const directions = []
+        const routes = this.props.listEntregador
 
-       console.log(route)
-       const directionsPromises = route.map(e => ({
-                                         from: { lat: e.saida.lat, lng: e.saida.lng },
-                                         to: { lat: e.chegada.lat, lng: e.chegada.lng }
-                                     }))
+        if (!routes[0] || !routes[0].rotas[0])
+            return
+
+        for (let route of routes)
+        {
+            const directionsPromises = route.rotas.map(e => ({
+                                        from: { lat: e.saida.lat, lng: e.saida.lng },
+                                        to: { lat: e.chegada.lat, lng: e.chegada.lng }
+                                    }))
                                 .map((r) => this.GetGoogleRoute(r))
 
-       const directions = await Promise.all(directionsPromises)
-                   
-       console.log(directions)
-       this.setState({directions})
+            const googleRoute =  await Promise.all(directionsPromises)
+            directions.push(googleRoute)
+        }
+
+        const center = routes[this.props.currentIndex].rotas[0].saida
+        this.setState({directions, center})
     }
+
 
     GetGoogleRoute = (points) => new Promise((resolve, reject) => {
         const DirectionsService = new google.maps.DirectionsService()
@@ -40,13 +48,13 @@ class MapBase extends React.Component {
     })
 
     render() {
-
         const center = this.props.center || this.state.center
+        const directions = this.state.directions ? this.state.directions[this.props.currentIndex] : undefined
 
         return (<GoogleMap
                 defaultZoom={this.props.zoom}
                 center={new google.maps.LatLng(center.lat, center.lng)} > 
-                  {this.state.directions && this.state.directions.map((d,i) => <DirectionsRenderer key={i} directions={d} />)}
+                  {directions && directions.map((d,i) => <DirectionsRenderer key={i} directions={d} />)}
 
                   {this.props.markers && this.props.markers.map((m,i) => <Marker key={i} position={m}/> )}
 
