@@ -16,6 +16,9 @@ namespace PathFinder.Routes
         public DateTime DhSaida { get; set; }
         public DateTime DhChegada { get; set; }
 
+        public double Espera { get; set; }
+        public double Descarga { get; set; }
+
         public Rota()
         {
 

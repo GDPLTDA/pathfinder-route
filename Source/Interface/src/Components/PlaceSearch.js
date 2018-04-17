@@ -4,7 +4,7 @@ import PlacesAutocomplete from 'react-places-autocomplete'
 import TimePicker from 'rc-time-picker';
 import NumericInput from 'react-numeric-input';
 
-const now = moment().hour(0).minute(0);
+const now = moment();
 const cssClasses = {
   root: 'form-group',
   input: 'form-control',
@@ -25,7 +25,7 @@ const renderSuggestion =  ({ formattedSuggestion }) => (
     const inputProps = {
       value: props.address,
       onChange: props.onTextChange,
-      placeholder: 'Search Places...'
+      placeholder: 'Endereços...'
     }
     
     return (

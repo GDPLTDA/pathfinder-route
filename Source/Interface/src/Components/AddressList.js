@@ -39,7 +39,7 @@ export default class AddressList extends React.Component
         return (
             <div>
                 <div className="form-group">
-                    <button className="btn btn-success" onClick={this.addLocation}>Add</button>
+                    <button className="btn btn-success" onClick={this.addLocation}>Adicionar</button>
                     <button className="btn btn-info" onClick={this.props.Teste}>Dados de Teste</button>
                 </div>
                 <div className="form-group">

@@ -6,7 +6,7 @@ import toastr from 'toastr'
 
 import { getGeoLocation } from '../html5'
 import mockData from '../Mock/routes'
-import { Search } from '../Services/SearchService'
+import { Search, Research } from '../Services/SearchService'
 import AddressManagerPage from './AddressManagerPage'
 import RouteViewerPage from './RouteViewerPage';
 import Header from './Header'
@@ -102,6 +102,28 @@ export default class App extends React.Component {
             toastr.error(e);
         }
     }
+    research = async (index, locations) => {
+        toastr.success("Recalculo!");
+        /*
+        this.setState({ loading: true, hasResults: true })
+        window.scrollTo(0, 0)
+        this.props.history.push('/result')
+        try {
+          const response = await Research(locations);
+          
+          results.rotas[index] = response.rotas
+            this.setState({ 
+                loading: false,
+                results: results
+            })
+            
+        }
+        catch (e) {
+            this.setState({ loading: false, hasResults:false })
+            toastr.error(e);
+        }
+        */
+    }
 
     render() {
         const state = this.state;
@@ -139,7 +161,7 @@ export default class App extends React.Component {
                 lng={state.lng}
             />
         
-        const routePage = () => <RouteViewerPage loading={loading} results={results} />
+        const routePage = () => <RouteViewerPage loading={loading} results={results} research={this.research} />
 
         return (
             <div className="app">

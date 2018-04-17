@@ -24,10 +24,12 @@ namespace RouteGA.Models
                 {
                     Saida = new LocalViewModel(item.Origem),
                     Chegada = new LocalViewModel(item.Destino),
-                    DhSaida = item.DhSaida.ToString("HH:mm"),
-                    DhChegada = item.DhChegada.ToString("HH:mm"),
+                    DhSaida = item.DhSaida.ToString("HH:mm:ss"),
+                    DhChegada = item.DhChegada.ToString("HH:mm:ss"),
                     Metros = item.Metros.ToString(),
                     Km = item.Km.ToString("n3"),
+                    Espera = ConvMinutos(item.Espera),
+                    Descarga = ConvMinutos(item.Descarga),
                     Minutos = ConvMinutos(item.Segundos)
                 });
 
@@ -39,7 +41,7 @@ namespace RouteGA.Models
         {
             var span = new TimeSpan(0, 0, Convert.ToInt32(segundos));
 
-            return $"{span.Hours.ToString().PadLeft(2, '0')}:{span.Minutes.ToString().PadLeft(2, '0')}";
+            return $"{span.Hours.ToString().PadLeft(2, '0')}:{span.Minutes.ToString().PadLeft(2, '0')}:{span.Seconds.ToString().PadLeft(2, '0')}";
         }
     }
 }

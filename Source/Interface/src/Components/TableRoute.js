@@ -1,6 +1,12 @@
 import React from 'react'
+import moment from 'moment';
 import ReactTable from 'react-table'
 import MensagemErro from './MensagemErro'
+import ResearchRouteButton from './ResearchRouteButton'
+import TimePicker from 'rc-time-picker';
+
+
+const now = moment();
 
 export default class TableRoute extends React.Component {
   render() {
@@ -14,46 +20,52 @@ export default class TableRoute extends React.Component {
         Header: 'Chegada',
         accessor: 'chegada.endereco',
       }, {
+        Header: 'KM',
+        accessor: 'km',
+        className:'text-center',
+        width: 60,
+        Cell: row =>( <span className='text-center'>{row.value}</span> ),
+      }, {
         id: 'saida',
         Header: 'Saída',
-        maxWidth:90,
-        className:'text-center',    
+        className:'text-center',
+        width: 80,
         Cell: row =>( <span className='text-center'>{row.value}</span> ),
         accessor: d => {
             return d.dhSaida
           }
       }, {
-        id: 'chegada',
-        Header: 'Chegada',
-        maxWidth:90,
+        Header: 'Percurso',
+        accessor: 'minutos',
         className:'text-center',
+        width: 80,
+        Cell: row =>( <span className='text-center'>{row.value}</span> ),
+      }, {
+        Header: 'Espera',
+        accessor: 'espera',
+        className:'text-center',
+        width: 80,
+        Cell: row =>( <span className='text-center'>{row.value}</span> ),
+      }, {
+        id: 'chegada',
+        Header: 'Entrada',
+        className:'text-center',
+        width: 80,
         Cell: row =>( <span className='text-center'>{row.value}</span> ),
         accessor: d => {
             return d.dhChegada
           }
       }, {
-        Header: 'KM',
-        accessor: 'km',
+        Header: 'Descarga',
+        accessor: 'descarga',
         className:'text-center',
+        width: 80,
         Cell: row =>( <span className='text-center'>{row.value}</span> ),
-        maxWidth: 120
-      }, {
-        Header: 'Tempo',
-        accessor: 'minutos',
-        className:'text-center',
-        Cell: row =>( <span className='text-center'>{row.value}</span> ),
-        maxWidth:120
-      }, {
-        Header: 'Espera',
-        accessor: 'chegada.minutosespera',
-        className:'text-center',
-        Cell: row =>( <span className='text-center'>{row.value}</span> ),
-        maxWidth:120
       }]
 
       return this.props.listEntregador.map((item, index) => (
         <div className="div-entregador" key={index}>
-            <MensagemErro mensagem = {this.props.mensagem} /> 
+            <MensagemErro mensagem = {this.props.mensagem} />
             <ReactTable
                 data={item.rotas}
                 columns={[
@@ -64,8 +76,25 @@ export default class TableRoute extends React.Component {
                 defaultPageSize={item.rotas.length}
                 showPagination={false}
                 className="-striped -highlight"
-                resizable={false}
+                resizable={true}
+                sortable={false}
             />
+          <div className="row">
+            <div className="col-sm-4">
+              <TimePicker
+                      showSecond={false}
+                      className="form-control"
+                      defaultValue={now}
+                      format='HH:mm'/>
+            </div>
+            <div className="col-sm-8">
+              <ResearchRouteButton 
+                  Research={this.props.research}
+                  Rotas={item.rotas}
+                  Index={index}
+                  Label="Proxima Rota"/>
+            </div>
+          </div>
         </div>
     ));
   }

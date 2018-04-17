@@ -26,9 +26,15 @@ export default class RouteViewerPage extends React.Component
             return (
                 <div className="form-group row app">
                     { loading && <LoadingSpinner  />  }
-                    { !loading && <div className="col-sm-6"> <TableRoute  mensagem={results[0].mensagem} listEntregador = {results}/> </div> }
+                    { !loading && 
+                    <div className="col-sm-8"> 
+                    <TableRoute 
+                        mensagem={results[0].mensagem} 
+                        listEntregador = {results} 
+                        research={this.props.research}/> 
+                    </div> }
                     { !loading &&
-                        <div className="col-sm-6">
+                        <div className="col-sm-4">
                             <div className="form-group">
                             <label htmlFor="indexSelect">Entregador:</label>
                             <select className="form-control" name="indexSelect" value={this.state.value} onChange={this.changeIndex}>

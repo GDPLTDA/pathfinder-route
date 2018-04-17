@@ -9,6 +9,8 @@ namespace RouteGA.Models
         public string Km { get; set; }
         public string Minutos { get; set; }
         public string DhChegada { get; set; }
+        public string Espera { get; set; }
+        public string Descarga { get; set; }
         public LocalViewModel Chegada { get; set; }
 
         public RotaViewModel()

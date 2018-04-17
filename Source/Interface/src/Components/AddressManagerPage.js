@@ -26,7 +26,7 @@ const AddressManagerPage = (props) =>
             onClickButton={props.onClickButton}
             Teste={props.getDados}
         />
-        <SearchRouteButton Search={props.search}/>
+        <SearchRouteButton Search={props.search} Label="Calcular Rota"/>
     </div>
     <div className="col-sm-7">
         <Map

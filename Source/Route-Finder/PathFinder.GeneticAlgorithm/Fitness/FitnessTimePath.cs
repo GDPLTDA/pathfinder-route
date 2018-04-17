@@ -16,7 +16,10 @@ namespace PathFinder.GeneticAlgorithm
                 var date = finish.AddMinutes(item.Minutos);
                 var from = CreateDateTime(date, item.Destino.Period.From);
                 var to = CreateDateTime(date, item.Destino.Period.To);
-                
+
+                // Converte para segundos
+                item.Descarga = item.Destino.Period.Descarga * 60;
+
                 if (date > to)
                 {
                     date = date.AddDays(1);
@@ -24,7 +27,10 @@ namespace PathFinder.GeneticAlgorithm
                 }
 
                 if (date < from)
+                {
+                    item.Espera = (from - date).TotalSeconds;
                     date = date.Add(from - date);
+                }
 
                 item.DhSaida = finish;
                 item.DhChegada = date;
