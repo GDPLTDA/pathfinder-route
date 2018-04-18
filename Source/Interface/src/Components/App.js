@@ -16,7 +16,8 @@ export default class App extends React.Component {
     constructor() {
         super()
         this.state = { 
-            loading: false, 
+            loading: false,
+            reloading: [],
             address: '',
             results: [], 
             lat: 0, 
@@ -91,6 +92,7 @@ export default class App extends React.Component {
         window.scrollTo(0, 0)
         this.props.history.push('/result')
         try {
+            toastr.info("Enviado...");
           const response = await Search(this.state.listLocations);
             this.setState({ 
                 loading: false,
@@ -102,32 +104,45 @@ export default class App extends React.Component {
             toastr.error(e);
         }
     }
-    research = async (index, locations) => {
-        toastr.success("Recalculo!");
-        /*
-        this.setState({ loading: true, hasResults: true })
-        window.scrollTo(0, 0)
-        this.props.history.push('/result')
+    timeout = (ms)=> {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
+    research = async (index, locations, time) => 
+    {
+        // Não tem mais destinos para calcular
+        if(locations.length <= 1){
+            toastr.info("Não a mais destinos...");
+            return
+        }
+
+        let reloading = this.state.reloading
+        reloading[index] = true
+
+        this.setState({ reloading })
+        toastr.info("Saindo "+ time +" Entregador " + (index + 1) + "...");
+        await this.timeout(3000);
+
+        //window.scrollTo(0, 0)
+        //this.props.history.push('/result')
         try {
-          const response = await Research(locations);
+          //const response = await Research(locations);
           
-          results.rotas[index] = response.rotas
-            this.setState({ 
-                loading: false,
-                results: results
-            })
-            
+          //results.rotas[index] = response.rotas
+          reloading[index] = false
+          this.setState({ reloading })
+          toastr.info("Conluído Entregador " + (index + 1) + "...");
         }
         catch (e) {
-            this.setState({ loading: false, hasResults:false })
-            toastr.error(e);
+            reloading[index] = false
+            this.setState({ reloading })
+            toastr.info("Erro Entregador " + (index + 1) + "\n" + e);
         }
-        */
     }
 
     render() {
         const state = this.state;
-        let { results, loading } = state;
+        let { results, loading, reloading } = state;
 
         if(results.length !== 0){
             if(typeof results.mensagem !== 'undefined'){
@@ -161,7 +176,12 @@ export default class App extends React.Component {
                 lng={state.lng}
             />
         
-        const routePage = () => <RouteViewerPage loading={loading} results={results} research={this.research} />
+        const routePage = () => 
+            <RouteViewerPage 
+                loading={loading} 
+                reloading={this.state.reloading} 
+                results={results} 
+                research={this.research} />
 
         return (
             <div className="app">

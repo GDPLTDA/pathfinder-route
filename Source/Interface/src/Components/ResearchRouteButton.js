@@ -3,7 +3,7 @@ import React from 'react'
 export default class ResearchRouteButton extends React.Component {
 
     Research = () => {
-        this.props.Research(this.props.Index,this.props.Rotas)
+        this.props.Research(this.props.Index,this.props.Rotas, this.props.Time())
     }
 
     render() {

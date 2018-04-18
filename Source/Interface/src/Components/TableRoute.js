@@ -4,11 +4,18 @@ import ReactTable from 'react-table'
 import MensagemErro from './MensagemErro'
 import ResearchRouteButton from './ResearchRouteButton'
 import TimePicker from 'rc-time-picker';
-
+import LoadingSpinner from './LoadingSpinner'
 
 const now = moment();
-
+let times = []
+const format = 'HH:mm';
 export default class TableRoute extends React.Component {
+
+  onChange = (index,value) => {
+    const time =  value ? value.format(format) : "00:00"
+    times[index] = time
+}
+
   render() {
     if(this.props.listEntregador.length === 0)
         return <div/>
@@ -62,9 +69,13 @@ export default class TableRoute extends React.Component {
         width: 80,
         Cell: row =>( <span className='text-center'>{row.value}</span> ),
       }]
+      const reloading = this.props.reloading
 
-      return this.props.listEntregador.map((item, index) => (
+      return this.props.listEntregador.map((item, index) =>(
         <div className="div-entregador" key={index}>
+          { reloading[index] && <LoadingSpinner  />  }
+          { !reloading[index] &&
+          <div>
             <MensagemErro mensagem = {this.props.mensagem} />
             <ReactTable
                 data={item.rotas}
@@ -79,22 +90,25 @@ export default class TableRoute extends React.Component {
                 resizable={true}
                 sortable={false}
             />
+          
           <div className="row">
             <div className="col-sm-4">
               <TimePicker
                       showSecond={false}
                       className="form-control"
-                      defaultValue={now}
+                      onChange={(value) =>this.onChange(index, value)}
                       format='HH:mm'/>
             </div>
             <div className="col-sm-8">
               <ResearchRouteButton 
                   Research={this.props.research}
                   Rotas={item.rotas}
+                  Time={() => {return times[index] == null ? moment().format(format) : times[index]}}
                   Index={index}
                   Label="Proxima Rota"/>
             </div>
           </div>
+          </div>}
         </div>
     ));
   }
