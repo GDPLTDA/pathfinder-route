@@ -36,7 +36,7 @@ const AddressManagerPage = (props) =>
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `100%` }} />}
             mapElement={<div style={{ height: `100%` }} />}
-            googleMapURL={"https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places"}
+            googleMapURL={"https://maps.googleapis.com/maps/api/js?key=AIzaSyBm6unznpnoVDNak1s-iV_N9bQqCVpmKpE&v=3.exp&libraries=geometry,drawing,places"}
         />
     </div>
 </div>

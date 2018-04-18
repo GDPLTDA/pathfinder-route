@@ -12,6 +12,6 @@
 
         public int PopulationSize { get; set; } = 100;
         public int GenerationLimit { get; set; } = 20;
-        public int BestSolutionToPick { get; set; } = 2;
+        public int BestSolutionToPick { get; set; } = 1;
     }
 }
