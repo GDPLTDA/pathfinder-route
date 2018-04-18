@@ -38,7 +38,8 @@ const Search = async (entragador, listLocations) => {
        
           return response
     }
-const Research = async (listLocations) => {
+
+    const Research = async (listLocations) => {
         const items = listLocations
         const store = items.find( s => s.isStore)
         const listDestinos = items.filter(s => !s.isStore)

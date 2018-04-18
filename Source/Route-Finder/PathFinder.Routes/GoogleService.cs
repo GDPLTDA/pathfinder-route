@@ -64,10 +64,19 @@ namespace PathFinder.Routes
         {
 
             var url = GetRequestAddress((local.Endereco));
-            var ret = await ReadRequestPointAsync(local.Endereco, local.Name, url, local.Period);
-            Console.WriteLine($"Endereço Encontrado: {ret.Endereco} ({ret.Latitude},{ret.Longitude})");
+            try
+            {
 
-            return ret;
+                var ret = await ReadRequestPointAsync(local.Endereco, local.Name, url, local.Period);
+                Console.WriteLine($"Endereço Encontrado: {ret.Endereco} ({ret.Latitude},{ret.Longitude})");
+                return ret;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
         }
         public async Task<Local> ReadRequestPointAsync(string address, string name, string url, Period period)
         {
