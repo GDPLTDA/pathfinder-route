@@ -23,7 +23,8 @@ const Search = async (listLocations) => {
             Destinos : destinos
         }
       
-        const response =  await fetch('http://localhost:64880/api/route', {
+        // const response =  await fetch('http://localhost:64880/api/route', {
+        const response =  await fetch('https://lucasteles.azurewebsites.net/api/route', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
