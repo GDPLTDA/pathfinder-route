@@ -6,14 +6,15 @@ import ResearchRouteButton from './ResearchRouteButton'
 import TimePicker from 'rc-time-picker';
 import LoadingSpinner from './LoadingSpinner'
 
-const now = moment();
 let times = []
+let selectTimes = []
 const format = 'HH:mm';
 export default class TableRoute extends React.Component {
 
   onChange = (index,value) => {
     const time =  value ? value.format(format) : "00:00"
     times[index] = time
+    selectTimes[index] = value
 }
 
   render() {
@@ -76,7 +77,6 @@ export default class TableRoute extends React.Component {
           { reloading[index] && <LoadingSpinner  />  }
           { !reloading[index] &&
           <div>
-            <MensagemErro mensagem = {this.props.mensagem} />
             <ReactTable
                 data={item.rotas}
                 columns={[
@@ -90,16 +90,17 @@ export default class TableRoute extends React.Component {
                 resizable={true}
                 sortable={false}
             />
-          
           <div className="row">
             <div className="col-sm-4">
               <TimePicker
                       showSecond={false}
                       className="form-control"
+                      defaultValue={selectTimes[index]}
                       onChange={(value) =>this.onChange(index, value)}
                       format='HH:mm'/>
             </div>
             <div className="col-sm-8">
+            <MensagemErro mensagem = {this.props.listEntregador[index].mensagem} />
               <ResearchRouteButton 
                   Research={this.props.research}
                   Rotas={item.rotas}

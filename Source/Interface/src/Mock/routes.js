@@ -24,7 +24,7 @@ export default {
         lat:0,
         lng:0,
         from: '12:00', 
-        to: '12:00',
+        to: '20:00',
         wait: 90 
     },
     { 

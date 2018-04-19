@@ -29,7 +29,6 @@ export default class RouteViewerPage extends React.Component
                     { !loading && 
                     <div className="col-sm-8"> 
                     <TableRoute 
-                        mensagem={results[0].mensagem} 
                         listEntregador = {results}
                         reloading = {this.props.reloading}
                         research={this.props.research}/> 

@@ -82,7 +82,7 @@ export default class App extends React.Component {
             });
     };
 
-    updateStoreStatus = (locations = []) =>
+    UpdateStoreStatus = (locations = []) =>
         locations.map((entry,index) => ({...entry, isStore: (index === 0)}))
 
     getDados = () => this.setState(mockData)
@@ -91,6 +91,7 @@ export default class App extends React.Component {
         this.setState({ loading: true, hasResults: true })
         window.scrollTo(0, 0)
         this.props.history.push('/result')
+
         try {
             toastr.info("Enviado...");
           const response = await Search(this.state.listLocations);
@@ -115,23 +116,51 @@ export default class App extends React.Component {
             toastr.info("Não a mais destinos...");
             return
         }
-
+        
         let reloading = this.state.reloading
         reloading[index] = true
 
         this.setState({ reloading })
         toastr.info("Saindo "+ time +" Entregador " + (index + 1) + "...");
-        await this.timeout(3000);
 
-        //window.scrollTo(0, 0)
-        //this.props.history.push('/result')
         try {
-          //const response = await Research(locations);
-          
-          //results.rotas[index] = response.rotas
-          reloading[index] = false
-          this.setState({ reloading })
-          toastr.info("Conluído Entregador " + (index + 1) + "...");
+            const destinos = locations.map(
+                d => ({
+                    address: d.chegada.endereco,
+                    from: d.chegada.dhInicial,
+                    to: d.chegada.dhFinal,
+                    isStore: false,
+                    wait: d.chegada.minutosEspera
+               })
+            )
+
+            let results = this.state.results;
+            destinos[0].from = time;
+            destinos[0].to = locations[0].saida.dhFinal;
+            destinos[0].isStore = true;
+            
+            const response = await Research(destinos);
+
+            if(response.length !== 0){
+                if(typeof response.mensagem !== 'undefined'){
+                    results[index] = {mensagem: response.mensagem, rotas:locations}
+                }
+                else
+                {
+                    if(response.length == 1)
+                        results[index] = response[0]
+                    else
+                    results[index] = {mensagem: "Não é possível terminar a entrega, para realizar a entrega seria preciso mais de 1 entregador!", rotas:locations}
+                }
+            }
+            else 
+            {
+                results={mensagem: "", rotas:[]}
+            }
+            reloading[index] = false
+            this.setState({ reloading, results })
+
+            toastr.info("Conluído Entregador " + (index + 1) + "...");
         }
         catch (e) {
             reloading[index] = false
@@ -142,7 +171,7 @@ export default class App extends React.Component {
 
     render() {
         const state = this.state;
-        let { results, loading, reloading } = state;
+        let { results, loading } = state;
 
         if(results.length !== 0){
             if(typeof results.mensagem !== 'undefined'){
