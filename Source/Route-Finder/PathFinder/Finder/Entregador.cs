@@ -8,12 +8,12 @@ namespace PathFinder
     public class Entregador
     {
         public int Numero { get; set; }
-        public Local Saida => Map?.Storage;
+        public Local Saida => Map?.Depot;
         public List<Local> Pontos => Map?.Destinations;
         public Rota NextRoute { get; set; }
         public Roteiro Map { get; set; }
         public IGenome Genome { get; set; }
 
-        public IEnumerable<Rota> Routes => Genome.ListRoutes;
+        public IEnumerable<Rota> Routes => Genome.Trucks;
     }
 }

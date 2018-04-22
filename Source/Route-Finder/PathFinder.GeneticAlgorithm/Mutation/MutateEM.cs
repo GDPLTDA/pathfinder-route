@@ -10,17 +10,17 @@ namespace PathFinder.GeneticAlgorithm
         public override IGenome Apply(IGenome baby)
         {
             var rand = RandomFactory.Rand;
-            if (rand.NextDouble() > MutationRate || baby.ListPoints.Count < 2)
+            if (rand.NextDouble() > MutationRate || baby.Locals.Count < 2)
                 return baby;
-            var listcount = baby.ListPoints.Count;
+            var listcount = baby.Locals.Count;
             // Ignora o inicial
             var pos1 = rand.Next(0, listcount);
             var pos2 = pos1;
             while (pos1 == pos2)
                 pos2 = rand.Next(0, listcount);
-            var temp = baby.ListPoints[pos1];
-            baby.ListPoints[pos1] = baby.ListPoints[pos2];
-            baby.ListPoints[pos2] = temp;
+            var temp = baby.Locals[pos1];
+            baby.Locals[pos1] = baby.Locals[pos2];
+            baby.Locals[pos2] = temp;
             return baby;
         }
     }

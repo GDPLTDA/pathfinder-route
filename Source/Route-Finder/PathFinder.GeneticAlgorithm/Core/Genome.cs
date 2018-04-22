@@ -3,6 +3,7 @@ using PathFinder.GeneticAlgorithm.Factories;
 using PathFinder.Routes;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Threading.Tasks;
 
 namespace PathFinder.GeneticAlgorithm
@@ -10,13 +11,12 @@ namespace PathFinder.GeneticAlgorithm
     public class Genome : IGenome
     {
         public Roteiro Map { get; set; }
-        public List<Local> ListPoints { get; set; }
-        public List<Rota> ListRoutes { get; set; }
+        public IList<Local> Locals { get; set; }
+        public IList<Truck> Trucks { get; set; }
         public double Fitness { get; private set; }
 
         public Genome()
         {
-
         }
         public Genome(Roteiro map)
         {
@@ -26,12 +26,12 @@ namespace PathFinder.GeneticAlgorithm
         public Genome(IGenome genome)
         {
             Map = genome.Map;
-            ListPoints = genome.ListPoints.Select(o => o).ToList();
-            ListRoutes = genome.ListRoutes.Select(o => o).ToList();
+            Locals = genome.Locals.ToList();
+            Trucks = genome.Trucks.ToList();
         }
         void Initialize()
         {
-            ListPoints = new List<Local>();
+            Locals = new List<Local>();
             var rand = RandomFactory.Rand;
 
             var count = Map.Destinations.Count;
@@ -40,55 +40,27 @@ namespace PathFinder.GeneticAlgorithm
             {
                 var i = rand.Next(Map.Destinations.Count);
 
-                if (ListPoints.Exists(o => o.Equals(Map.Destinations[i])))
+                if (Locals.Any(o => o.Equals(Map.Destinations[i])))
                     continue;
 
-                ListPoints.Add(Map.Destinations[i]);
+                Locals.Add(Map.Destinations[i]);
 
                 count--;
             }
         }
-        public async Task CalcRoutesAsync(IRouteService routeService)
-        {
-            var point = Map.Storage;
-            ListRoutes = new List<Rota>();
-            ListPoints = Map.Destinations;
-            Rota route;
-            foreach (var item in ListPoints)
-            {
-                route = await routeService.GetRouteAsync(point, item);
-                ListRoutes.Add(route);
+        public async Task CalcRoutesAsync(IRouteService routeService) =>
+            await Trucks
+                    .Select(t => t.CalcRoutesAsync(routeService, Map.Depot, Map.Destinations))
+                    .WhenAllAsync();
 
-                point = item;
-            }
+        public bool IsEqual(IGenome genome) =>
+            Trucks.Sum(t => t.GetTotalMeters()) == genome?.Trucks.Sum(t => t.GetTotalMeters()) &&
+            Trucks.Sum(t => t.GetTotalMinutes()) == genome?.Trucks.Sum(t => t.GetTotalMinutes())
+        ;
 
-            //Local lastpoint;
-
-            //if (ListPoints.Any())
-            //    lastpoint = ListPoints.Last();
-            //else
-            //    lastpoint = point;
-
-            //route = await routeService.GetRouteAsync(lastpoint, Map.MainStorage);
-            //ListRoutes.Add(route);
-        }
-
-
-        public bool IsEqual(IGenome genome)
-        {
-            if (genome != null)
-                if (ListRoutes.Sum(o => o.Metros) == genome.ListRoutes.Sum(o => o.Metros))
-                    if (ListRoutes.Sum(o => o.Minutos) == genome.ListRoutes.Sum(o => o.Minutos))
-                        return true;
-
-            return false;
-        }
         public override string ToString() => $"F={Fitness}";
 
-        public static IGenome Generator(Roteiro map)
-        {
-            return new Genome(map);
-        }
+        public static IGenome Generator(Roteiro map) => new Genome(map);
 
         public void CalcFitness(IFitness fitness)
         {

@@ -16,8 +16,8 @@ namespace PathFinder.GeneticAlgorithm.Crossover
             var babymom = CrossoverOperation.Copy(Operation.Mom);
             var babydad = CrossoverOperation.Copy(Operation.Dad);
             var lstPositions = new List<int>();
-            var listmom = Operation.Mom.ListPoints;
-            var listdad = Operation.Dad.ListPoints;
+            var listmom = Operation.Mom.Locals;
+            var listdad = Operation.Dad.Locals;
             var minindex = Math.Min(listmom.Count, listdad.Count);
 
             var Pos = rand.Next(0, minindex - 1);
@@ -28,8 +28,8 @@ namespace PathFinder.GeneticAlgorithm.Crossover
             }
             for (int pos = 0; pos < lstPositions.Count; ++pos)
             {
-                babymom.ListPoints[lstPositions[pos]] = listmom[lstPositions[pos]];
-                babydad.ListPoints[lstPositions[pos]] = listdad[lstPositions[pos]];
+                babymom.Locals[lstPositions[pos]] = listmom[lstPositions[pos]];
+                babydad.Locals[lstPositions[pos]] = listdad[lstPositions[pos]];
             }
             int c1, c2;
             c1 = c2 = 0;
@@ -37,14 +37,14 @@ namespace PathFinder.GeneticAlgorithm.Crossover
             {
                 while (c2 < minindex)
                     ++c2;
-                if (c2 < babydad.ListPoints.Count)
-                    if (!babydad.ListPoints.Exists(i => i.Equals(listmom[pos])))
-                        babydad.ListPoints[c2] = listmom[pos];
+                if (c2 < babydad.Locals.Count)
+                    if (!babydad.Locals.Exists(i => i.Equals(listmom[pos])))
+                        babydad.Locals[c2] = listmom[pos];
                 while (c1 < minindex)
                     ++c1;
-                if (c1 < babymom.ListPoints.Count)
-                    if (!babymom.ListPoints.Exists(i => i.Equals(listdad[pos])))
-                        babymom.ListPoints[c1] = listdad[pos];
+                if (c1 < babymom.Locals.Count)
+                    if (!babymom.Locals.Exists(i => i.Equals(listdad[pos])))
+                        babymom.Locals[c1] = listdad[pos];
             }
             return new CrossoverOperation(babymom, babydad);
         }

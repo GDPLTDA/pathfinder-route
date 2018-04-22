@@ -7,8 +7,8 @@ namespace PathFinder.GeneticAlgorithm.Abstraction
     public interface IGenome
     {
         Roteiro Map { get; set; }
-        List<Local> ListPoints { get; set; }
-        List<Rota> ListRoutes { get; set; }
+        IList<Local> Locals { get; set; }
+        IList<Truck> Trucks { get; set; }
 
         double Fitness { get; }
         bool IsEqual(IGenome genome);

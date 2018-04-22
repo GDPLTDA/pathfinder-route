@@ -43,7 +43,7 @@ namespace PathFinder.GeneticAlgorithm
                 throw new System.Exception("GA cant run without all operators");
 
             var rand = RandomFactory.Rand;
-            var startNode = map.Storage;
+            var startNode = map.Depot;
 
             Populations.Clear();
 

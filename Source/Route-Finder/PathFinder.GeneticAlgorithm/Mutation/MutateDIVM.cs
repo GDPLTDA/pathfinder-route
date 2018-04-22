@@ -12,9 +12,9 @@ namespace PathFinder.GeneticAlgorithm
         public override IGenome Apply(IGenome baby)
         {
             var rand = RandomFactory.Rand;
-            if (rand.NextDouble() > MutationRate || baby.ListPoints.Count < 2)
+            if (rand.NextDouble() > MutationRate || baby.Locals.Count < 2)
                 return baby;
-            var listcount = baby.ListPoints.Count;
+            var listcount = baby.Locals.Count;
             int beg, end;
             beg = end = 0;
             var spanSize = rand.Next(0, listcount);
@@ -23,8 +23,8 @@ namespace PathFinder.GeneticAlgorithm
             var lstTemp = new List<Local>();
             for (int i = beg; i < end; i++)
             {
-                lstTemp.Add(baby.ListPoints[beg]);
-                baby.ListPoints.RemoveAt(beg);
+                lstTemp.Add(baby.Locals[beg]);
+                baby.Locals.RemoveAt(beg);
             }
             var numberOfSwaprsRequired = lstTemp.Count;
             while (numberOfSwaprsRequired != 0)
@@ -36,11 +36,11 @@ namespace PathFinder.GeneticAlgorithm
                 lstTemp[no2] = temp;
                 --numberOfSwaprsRequired;
             }
-            var insertLocation = rand.Next(0, baby.ListPoints.Count);
+            var insertLocation = rand.Next(0, baby.Locals.Count);
             var count = 0;
             for (int i = insertLocation; count < lstTemp.Count; i++)
             {
-                baby.ListPoints.Insert(i, lstTemp[count]);
+                baby.Locals.Insert(i, lstTemp[count]);
                 count++;
             }
             return baby;

@@ -46,7 +46,7 @@ namespace PathFinder
                 {
                     var best = await GaFinder.FindPathAsync(map);
 
-                    var routesInTime = best.ListRoutes.TakeWhile(e => e.DhChegada <= Config.DtLimite).ToList();
+                    var routesInTime = best.Trucks.TakeWhile(e => e.DhChegada <= Config.DtLimite).ToList();
 
                     if (!routesInTime.Any())
                         return result.Register(TipoErro.EstourouTempo);
@@ -60,7 +60,7 @@ namespace PathFinder
 
                     destinosEntrega.ForEach(async e => await mapentr.AddDestination(e));
 
-                    var g = new Genome { Map = mapentr, ListRoutes = routesInTime.Select(o => o).ToList(), ListPoints = remainingPoints.Select(o => o).ToList() };
+                    var g = new Genome { Map = mapentr, ListRoutes = routesInTime.Select(o => o).ToList(), Locals = remainingPoints.Select(o => o).ToList() };
 
                     g.CalcFitness(GaFinder.Fitness);
 
@@ -98,16 +98,16 @@ namespace PathFinder
                 if (entregador.NextRoute.DhChegada > Config.DtLimite)
                     return result.Register(TipoErro.EstourouTempoEntrega);
 
-                map.Next(entregador.Genome.ListRoutes);
+                map.Next(entregador.Genome.Trucks);
 
-                if (entregador.Genome.ListPoints.Any())
-                    entregador.Genome.ListPoints.RemoveAt(0);
+                if (entregador.Genome.Locals.Any())
+                    entregador.Genome.Locals.RemoveAt(0);
 
                 var best = await GaFinder.FindPathAsync(map, entregador.Genome);
 
                 entregador.Genome = new Genome(best);
 
-                var route = best.ListRoutes.FirstOrDefault();
+                var route = best.Trucks.FirstOrDefault();
                 if (!entregador.NextRoute.Equals(route))
                     entregador.NextRoute = route;
                 entregador.Map = map;

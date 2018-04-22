@@ -22,8 +22,8 @@ namespace PathFinder.GeneticAlgorithm.Crossover
             var babydad = CrossoverOperation.Copy(Operation.Dad);
             var lstTempCities = new List<Local>();
             var lstPositions = new List<int>();
-            var listmom = Operation.Mom.ListPoints;
-            var listdad = Operation.Dad.ListPoints;
+            var listmom = Operation.Mom.Locals;
+            var listdad = Operation.Dad.Locals;
 
             if (!listmom.Any() || !listdad.Any())
                 return Operation;
@@ -41,10 +41,10 @@ namespace PathFinder.GeneticAlgorithm.Crossover
             {
                 for (int i = 0; i < lstTempCities.Count; ++i)
                 {
-                    if (babydad.ListPoints[cit].Equals(lstTempCities[i]))
+                    if (babydad.Locals[cit].Equals(lstTempCities[i]))
                     {
                         if (lstTempCities.Count < cPos)
-                            babydad.ListPoints[cit] = lstTempCities[cPos];
+                            babydad.Locals[cit] = lstTempCities[cPos];
                         ++cPos;
                         break;
                     }
@@ -61,10 +61,10 @@ namespace PathFinder.GeneticAlgorithm.Crossover
             {
                 for (int i = 0; i < lstTempCities.Count; ++i)
                 {
-                    if (babymom.ListPoints[cit].Equals(lstTempCities[i]))
+                    if (babymom.Locals[cit].Equals(lstTempCities[i]))
                     {
                         if (lstTempCities.Count < cPos)
-                            babymom.ListPoints[cit] = lstTempCities[cPos];
+                            babymom.Locals[cit] = lstTempCities[cPos];
                         ++cPos;
                         break;
                     }
