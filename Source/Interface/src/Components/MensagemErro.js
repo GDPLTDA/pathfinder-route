@@ -1,8 +1,8 @@
 import React from 'react'
 
 const LoadingSpinner = (props) =>
-        <div className="col-sm-12">
-            <span className="badge badge-danger">{props.mensagem}</span>
+        <div class="col-sm-12 alert alert-danger" role="alert">
+            {props.mensagem}
         </div>
 
 export default LoadingSpinner

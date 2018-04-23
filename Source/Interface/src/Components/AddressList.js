@@ -1,7 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 import SortableList from './SortableList'
-
+import Select from 'react-select'
+import 'react-select/dist/react-select.css'
 
 export default class AddressList extends React.Component
 {
@@ -35,12 +36,26 @@ export default class AddressList extends React.Component
     onSortEnd = ({oldIndex, newIndex}) => {
         this.props.onSortEnd(oldIndex, newIndex)
     };
+
     render() {
         return (
             <div>
                 <div className="form-group">
                     <button className="btn btn-success" onClick={this.addLocation}>Adicionar</button>
-                    <button className="btn btn-info" onClick={this.props.Teste}>Dados de Teste</button>
+                    <div>Testes <Select
+                        name="form-field-name"
+                        value={this.props.SelectedOption}
+                        onChange={this.props.SelectTestChange}
+                        options={[
+                        { value: 0, label: 'Diversos' },
+                        { value: 1, label: 'McDonald’s' },
+                        { value: 2, label: 'Uninove' },
+                        { value: 3, label: 'Extra' },
+                        { value: 4, label: 'Senac' },
+                        { value: 5, label: 'Turismo São Paulo' },
+                        ]}
+                        />
+                    </div>
                 </div>
                 <div className="form-group">
                     <SortableList items={this.props.items} onSortEnd={this.onSortEnd} onRemove={this.onRemoveLocation} helperClass="SortableHelper" useDragHandle={true} />

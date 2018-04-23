@@ -6,7 +6,7 @@ import Map from './Map'
 
 const AddressManagerPage = (props) =>  
 <div className="form-group row app">
-    <div className="form-group col-sm-5">
+    <div className="form-group col-sm-7">
         <PlaceSearch
             onSelect={props.onSelect}
             onHandleSelect={props.onHandleSelect}
@@ -24,11 +24,12 @@ const AddressManagerPage = (props) =>
             items={props.listLocations}
             location={props.location}
             onClickButton={props.onClickButton}
-            Teste={props.getDados}
+            SelectedOption={props.SelectedOption}
+            SelectTestChange={props.SelectTestChange}
         />
         <SearchRouteButton Search={props.search} Label="Calcular Rota"/>
     </div>
-    <div className="col-sm-7">
+    <div className="col-sm-5">
         <Map
             center={{lat: props.lat,lng: props.lng}}
             markers={[{lat: props.lat,lng: props.lng}]}

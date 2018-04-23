@@ -15,7 +15,8 @@ const format = 'HH:mm';
 export default class App extends React.Component {
     constructor() {
         super()
-        this.state = { 
+        this.state = {
+            selectedOptionTest: '',
             loading: false,
             reloading: [],
             address: '',
@@ -85,7 +86,7 @@ export default class App extends React.Component {
     UpdateStoreStatus = (locations = []) =>
         locations.map((entry,index) => ({...entry, isStore: (index === 0)}))
 
-    getDados = () => this.setState(mockData)
+    
 
     search = async () => {
         this.setState({ loading: true, hasResults: true })
@@ -109,6 +110,20 @@ export default class App extends React.Component {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
     
+    SelectTestChange = (selectedOptionTest) => {
+        this.setState({ selectedOptionTest });
+        
+        if(selectedOptionTest=== null){
+            let mock = { listLocations: [] }
+            this.setState(mock)
+        }
+        else{
+            let index = selectedOptionTest.value;
+            this.setState(mockData[index])
+            console.log(`Selected: ${index}`);
+        }
+      }
+
     research = async (index, locations, time) => 
     {
         // Não tem mais destinos para calcular
@@ -147,7 +162,7 @@ export default class App extends React.Component {
                 }
                 else
                 {
-                    if(response.length == 1)
+                    if(response.length === 1)
                         results[index] = response[0]
                     else
                     results[index] = {mensagem: "Não é possível terminar a entrega, para realizar a entrega seria preciso mais de 1 entregador!", rotas:locations}
@@ -172,6 +187,7 @@ export default class App extends React.Component {
     render() {
         const state = this.state;
         let { results, loading } = state;
+        const { selectedOptionTest } = state;
 
         if(results.length !== 0){
             if(typeof results.mensagem !== 'undefined'){
@@ -190,6 +206,8 @@ export default class App extends React.Component {
                 onChangeFrom={this.onChangeFrom}
                 onChangeTo={this.onChangeTo}
                 onChangeWait={this.onChangeWait}
+                SelectTestChange={this.SelectTestChange}
+                SelectedOption={selectedOptionTest}
                 valueWait={state.wait}
                 onTextChange={this.onChange}
                 format={format}
@@ -199,7 +217,6 @@ export default class App extends React.Component {
                 listLocations={state.listLocations}
                 location={{...state}}
                 onClickButton={this.onClickButton}
-                getDados={this.getDados}
                 search={this.search}
                 lat={state.lat}
                 lng={state.lng}
