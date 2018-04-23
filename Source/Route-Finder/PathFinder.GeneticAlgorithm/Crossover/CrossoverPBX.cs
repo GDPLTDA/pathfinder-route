@@ -2,6 +2,7 @@
 using PathFinder.GeneticAlgorithm.Factories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PathFinder.GeneticAlgorithm.Crossover
 {
@@ -38,12 +39,12 @@ namespace PathFinder.GeneticAlgorithm.Crossover
                 while (c2 < minindex)
                     ++c2;
                 if (c2 < babydad.Locals.Count)
-                    if (!babydad.Locals.Exists(i => i.Equals(listmom[pos])))
+                    if (!babydad.Locals.Any(i => i.Equals(listmom[pos])))
                         babydad.Locals[c2] = listmom[pos];
                 while (c1 < minindex)
                     ++c1;
                 if (c1 < babymom.Locals.Count)
-                    if (!babymom.Locals.Exists(i => i.Equals(listdad[pos])))
+                    if (!babymom.Locals.Any(i => i.Equals(listdad[pos])))
                         babymom.Locals[c1] = listdad[pos];
             }
             return new CrossoverOperation(babymom, babydad);

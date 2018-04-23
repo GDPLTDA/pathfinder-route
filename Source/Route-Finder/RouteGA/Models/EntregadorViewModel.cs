@@ -1,4 +1,4 @@
-﻿using PathFinder;
+﻿using PathFinder.GeneticAlgorithm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +17,9 @@ namespace RouteGA.Models
 
         }
 
-        public EntregadorViewModel(Entregador entregador)
+        public EntregadorViewModel(Truck entregador)
         {
-            var rotas = entregador.Routes.Select(item =>
+            var rotas = entregador.Routes.Select((item, id) =>
                 new RotaViewModel
                 {
                     Saida = new LocalViewModel(item.Origem),
@@ -33,7 +33,7 @@ namespace RouteGA.Models
                     Minutos = ConvMinutos(item.Segundos)
                 });
 
-            Id = entregador.Numero;
+            Id = entregador.Id;
             Rotas = rotas;
         }
 

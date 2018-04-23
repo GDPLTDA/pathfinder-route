@@ -43,8 +43,9 @@ namespace PathFinder.GeneticAlgorithm.Crossover
                 {
                     if (babydad.Locals[cit].Equals(lstTempCities[i]))
                     {
-                        if (lstTempCities.Count < cPos)
+                        if (lstTempCities.Count > cPos)
                             babydad.Locals[cit] = lstTempCities[cPos];
+
                         ++cPos;
                         break;
                     }
@@ -63,7 +64,7 @@ namespace PathFinder.GeneticAlgorithm.Crossover
                 {
                     if (babymom.Locals[cit].Equals(lstTempCities[i]))
                     {
-                        if (lstTempCities.Count < cPos)
+                        if (lstTempCities.Count > cPos)
                             babymom.Locals[cit] = lstTempCities[cPos];
                         ++cPos;
                         break;

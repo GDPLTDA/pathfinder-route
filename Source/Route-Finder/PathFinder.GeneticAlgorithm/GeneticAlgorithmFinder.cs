@@ -19,6 +19,7 @@ namespace PathFinder.GeneticAlgorithm
         public int PopulationSize { get; set; }
         public int GenerationLimit { get; set; }
         public int BestSolutionToPick { get; set; }
+        private readonly GASettings Settings;
 
         private readonly IRouteService routeService;
 
@@ -36,6 +37,7 @@ namespace PathFinder.GeneticAlgorithm
             GenerationLimit = settings.GenerationLimit;
             BestSolutionToPick = settings.BestSolutionToPick;
             THROTTLE = settings.Throttle;
+            Settings = settings;
         }
         public async Task<IGenome> FindPathAsync(Roteiro map, IGenome seed = null)
         {
@@ -54,8 +56,10 @@ namespace PathFinder.GeneticAlgorithm
                 Populations.Add(seed);
                 popusize--;
             }
-            for (int i = 0; i < popusize; i++)
-                Populations.Add(Genome.Generator(map));
+
+            Populations.AddRange(
+                    Enumerable.Range(0, popusize)
+                    .Select(_ => Genome.Generator(map, Settings)));
 
             await CalcFitness();
 

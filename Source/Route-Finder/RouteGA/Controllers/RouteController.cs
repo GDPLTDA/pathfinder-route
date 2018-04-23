@@ -38,7 +38,7 @@ namespace RouteGA.Controllers
         {
             var settings = new GASettings();
             var config = await roteiro.ToPRVJTConfig(routeService);
-            var finder = new PRVJTFinder(config, routeService, settings);
+            var finder = new PRVJTFinder(config, routeService);
 
 
             var result = await finder.Run();

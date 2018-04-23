@@ -9,23 +9,35 @@ namespace PathFinder.GeneticAlgorithm
     {
         public Truck()
         {
+            Locals = new List<Local>();
+        }
+
+        public Truck(IEnumerable<Local> locals)
+        {
+            Locals = locals.ToList();
         }
 
         public int Id { get; set; }
         public IList<Rota> Routes { get; set; }
-        public async Task CalcRoutesAsync(IRouteService routeService, Local depot, IReadOnlyCollection<Local> locals)
+        public IList<Local> Locals { get; set; }
+
+        public Rota DepotBack { get; set; }
+
+        public async Task CalcRoutesAsync(IRouteService routeService, Local depot)
         {
-            var point = depot;
+            var from = depot;
             Routes = new List<Rota>();
             Rota route;
 
-            foreach (var item in locals)
+            foreach (var next in Locals)
             {
-                route = await routeService.GetRouteAsync(point, item);
+                route = await routeService.GetRouteAsync(from, next);
                 Routes.Add(route);
-
-                point = item;
+                from = next;
             }
+
+            if (Locals.Any())
+                DepotBack = await routeService.GetRouteAsync(Locals.Last(), depot);
         }
 
         public double GetTotalMeters() => Routes.Sum(o => o.Metros);

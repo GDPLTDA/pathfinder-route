@@ -20,11 +20,14 @@ namespace PathFinder.DataGenerator
             {
                 writer.WriteLine("Msg;Arquivo;Entregadores;Mutation;Cross;Fitness");
 
-                Directory
+                var itens = Directory
                  .GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Tests\"))
                  .Select(f => RunTest(f).Result)
                  .Select(r => r.ToDelimitedString(string.Empty))
-                 .ForEach(e => writer.WriteLine(e));
+                //.ForEach(writer.WriteLine)
+                ;
+
+                MoreEnumerable.ForEach(itens, e => Console.WriteLine(e));
             }
         }
         public async static Task<IEnumerable<Result>> RunTest(string filename)
@@ -43,7 +46,7 @@ namespace PathFinder.DataGenerator
                     settings.Mutation = mut;
                     settings.Crossover = cro;
                     // Carrega a configuração do roteiro
-                    var finder = new PRVJTFinder(config, routeService, settings);
+                    var finder = new PRVJTFinder(config, routeService);
                     // Executa a divisão de rotas
                     var result = await finder.Run();
 
@@ -55,7 +58,7 @@ namespace PathFinder.DataGenerator
                                  -1,
                                  mut,
                                  cro,
-                                 result.ListEntregadores.Sum(e => e.Genome.Fitness)
+                                0// result.ListEntregadores.Sum(e => e.Genome.Fitness)
                              ));
                         continue;
                     }
@@ -66,7 +69,7 @@ namespace PathFinder.DataGenerator
                             result.ListEntregadores.Count(),
                             mut,
                             cro,
-                            result.ListEntregadores.Sum(e => e.Genome.Fitness)
+                            0//result.ListEntregadores.Sum(e => e.Genome.Fitness)
                         ));
                 }
             }

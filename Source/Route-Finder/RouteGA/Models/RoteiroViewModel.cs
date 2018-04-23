@@ -31,7 +31,7 @@ namespace RouteGA.Models
             config.Map.DataSaida = dataSaida;
 
             config.DtLimite = dataLimite;
-            config.NumEntregadores = NumeroEntregadores == 0 ? int.MaxValue : NumeroEntregadores;
+            config.Settings.NumberOfTrucks = NumeroEntregadores == 0 ? int.MaxValue : NumeroEntregadores;
 
             foreach (var item in Destinos)
             {
