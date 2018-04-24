@@ -39,10 +39,10 @@ export default class AddressList extends React.Component
 
     render() {
         return (
-            <div>
-                <div className="form-group">
-                    <button className="btn btn-success" onClick={this.addLocation}>Adicionar</button>
-                    <div>Testes <Select
+            <div className="form-group search-bar">
+                <div className="row">
+                    <div className="col-md-10">
+                        Teste<Select
                         name="form-field-name"
                         value={this.props.SelectedOption}
                         onChange={this.props.SelectTestChange}
@@ -56,10 +56,15 @@ export default class AddressList extends React.Component
                         ]}
                         />
                     </div>
+                    <div className="col-md-2">
+                        <button className="btn btn-success" onClick={this.addLocation}>Adicionar</button>
+                    </div>
                 </div>
-                <div className="form-group">
-                    <SortableList items={this.props.items} onSortEnd={this.onSortEnd} onRemove={this.onRemoveLocation} helperClass="SortableHelper" useDragHandle={true} />
-                </div>  
+                <div className="row">
+                    <div className="col-sm-12">
+                        <SortableList items={this.props.items} onSortEnd={this.onSortEnd} onRemove={this.onRemoveLocation} helperClass="SortableHelper" useDragHandle={true} />
+                    </div>  
+                </div>
             </div>
         )
     }

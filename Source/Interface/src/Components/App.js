@@ -5,7 +5,7 @@ import { arrayMove } from 'react-sortable-hoc'
 import toastr from 'toastr'
 
 import { getGeoLocation } from '../html5'
-import mockData from '../Mock/routes'
+import mockData from '../Mock/DataMock'
 import { Search, Research } from '../Services/SearchService'
 import AddressManagerPage from './AddressManagerPage'
 import RouteViewerPage from './RouteViewerPage';
@@ -26,6 +26,7 @@ export default class App extends React.Component {
             isStore: true, 
             from: '00:00', to: '00:00', 
             wait: 30,
+            entregador: 1,
             hasResults: false,
             listLocations: [] 
         }
@@ -69,6 +70,10 @@ export default class App extends React.Component {
         const wait = value
         this.setState({ wait })
     }
+    onChangeEntregador = value => {
+        const entregador = value
+        this.setState({ entregador })
+    }
 
     onRemoveLocation = (item) => {
         this.setState({
@@ -95,7 +100,8 @@ export default class App extends React.Component {
 
         try {
             toastr.info("Enviado...");
-          const response = await Search(this.state.listLocations);
+            const response = await Search(this.state.entregador, this.state.listLocations);
+            
             this.setState({ 
                 loading: false,
                 results: response
@@ -206,9 +212,11 @@ export default class App extends React.Component {
                 onChangeFrom={this.onChangeFrom}
                 onChangeTo={this.onChangeTo}
                 onChangeWait={this.onChangeWait}
+                onChangeEntregador={this.onChangeEntregador}
                 SelectTestChange={this.SelectTestChange}
                 SelectedOption={selectedOptionTest}
-                valueWait={state.wait}
+                ValueWait={state.wait}
+                ValueEntregador={state.entregador}
                 onTextChange={this.onChange}
                 format={format}
                 address={state.address}
@@ -224,6 +232,7 @@ export default class App extends React.Component {
         
         const routePage = () => 
             <RouteViewerPage 
+                search={this.search}
                 loading={loading} 
                 reloading={this.state.reloading} 
                 results={results} 

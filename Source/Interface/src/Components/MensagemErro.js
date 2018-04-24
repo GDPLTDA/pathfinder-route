@@ -1,8 +1,8 @@
 import React from 'react'
 
 const LoadingSpinner = (props) =>
-        <div class="col-sm-12 alert alert-danger" role="alert">
+        <div>{ (props.mensagem !== null && props.mensagem !== "")  && <div className="col-sm-12 alert alert-danger" role="alert">
             {props.mensagem}
-        </div>
-
+        </div>}</div>
+        
 export default LoadingSpinner

@@ -100,13 +100,13 @@ export default class TableRoute extends React.Component {
                       format='HH:mm'/>
             </div>
             <div className="col-sm-8">
-            <MensagemErro mensagem = {this.props.listEntregador[index].mensagem} />
               <ResearchRouteButton 
                   Research={this.props.research}
                   Rotas={item.rotas}
                   Time={() => {return times[index] == null ? moment().format(format) : times[index]}}
                   Index={index}
                   Label="Proxima Rota"/>
+              <MensagemErro mensagem = {this.props.listEntregador[index].mensagem} />
             </div>
           </div>
           </div>}

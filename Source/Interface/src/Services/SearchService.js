@@ -1,10 +1,10 @@
 import toastr from 'toastr'
 
-const Search = async (listLocations) => {
+const Search = async (entragador, listLocations) => {
         const items = listLocations
         const store = items.find( s => s.isStore)
         const listDestinos = items.filter(s => !s.isStore)
-
+        
         const destinos = listDestinos.map(
              d => ({
                 Endereco : d.address,
@@ -15,6 +15,7 @@ const Search = async (listLocations) => {
         )
 
         const json = {
+            NumeroEntregadores: entragador,
             DhSaida : "11/12/2017 " + store.from + ":00",
             DhLimite : "11/12/2017 " + store.to + ":00",
             Origem :{

@@ -13,7 +13,9 @@ const AddressManagerPage = (props) =>
             onChangeFrom={props.onChangeFrom}
             onChangeTo={props.onChangeTo}
             onChangeWait={props.onChangeWait}
-            ValueWait={props.valueWait}
+            onChangeEntregador={props.onChangeEntregador}
+            ValueWait={props.ValueWait}
+            ValueEntregador={props.ValueEntregador}
             onTextChange={props.onTextChange}
             format={props.format}
             address={props.address}
