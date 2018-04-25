@@ -1,5 +1,10 @@
 import toastr from 'toastr'
 
+const baseUrl = "https://routega.azurewebsites.net"
+const baseDevUrl = "http://localhost:64880"
+const apiUrl = `${baseUrl}/api/route`
+
+
 const Search = async (entragador, listLocations) => {
         const items = listLocations
         const store = items.find( s => s.isStore)
@@ -24,8 +29,7 @@ const Search = async (entragador, listLocations) => {
             Destinos : destinos
         }
       
-        // const response =  await fetch('http://localhost:64880/api/route', {
-        const response =  await fetch('https://lucasteles.azurewebsites.net/api/route', {
+        const response =  await fetch(apiUrl, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -62,7 +66,7 @@ const Search = async (entragador, listLocations) => {
             Destinos : destinos
         }
       
-        const response =  await fetch('http://localhost:64880/api/route', {
+        const response =  await fetch(apiUrl, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
