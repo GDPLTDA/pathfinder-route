@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace PathFinder.Routes
 {
-    public class CachedGoogleService : GoogleService, IRouteService
+    public class CachedGoogleDirectionsService : GoogleDirectionsService, IRouteService
     {
         private ConcurrentDictionary<string, Rota> routes;
         private ConcurrentDictionary<string, Local> locals;
         public bool UseCache { get; set; } = true;
 
-        public CachedGoogleService(HttpClient httpClient) : base(httpClient)
+        public CachedGoogleDirectionsService(HttpClient httpClient) : base(httpClient)
         {
             routes = new ConcurrentDictionary<string, Rota>();
             locals = new ConcurrentDictionary<string, Local>();

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PathFinder.Routes
 {
@@ -6,5 +7,7 @@ namespace PathFinder.Routes
     {
         Task<Local> GetPointAsync(Local local);
         Task<Rota> GetRouteAsync(Local origin, Local destination);
+
+        Task Prepare(IEnumerable<Local> locals);
     }
 }

@@ -25,7 +25,7 @@ namespace PathFinder.GeneticAlgorithm
 
         IGenome Best { get; set; }
 
-        int ProcessChunk = 10; // quantidade de requests simultaneos
+        int ProcessChunk = 1; // quantidade de requests simultaneos
 
         public GeneticAlgorithmFinder(IRouteService routeService, GASettings settings)
         {
@@ -43,6 +43,10 @@ namespace PathFinder.GeneticAlgorithm
         {
             if (Mutate == null || Crossover == null || Fitness == null || Selection == null)
                 throw new System.Exception("GA cant run without all operators");
+
+            var locals = map.Destinations.ToList();
+            locals.Add(map.Depot);
+            await routeService.Prepare(locals);
 
             var rand = RandomFactory.Rand;
             var startNode = map.Depot;

@@ -15,7 +15,7 @@ namespace PathFinder.Tests
         public UnitTest()
         {
             httpClient = new HttpClient();
-            RouteService = new CachedGoogleService(httpClient);
+            RouteService = new GoogleMatrixService(httpClient);
         }
 
 

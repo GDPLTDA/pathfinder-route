@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace PathFinder.Routes
 {
-    public class GoogleService : IRouteService
+    public class GoogleDirectionsService : IRouteService
     {
-        const string Url = "https://maps.googleapis.com/maps/api/";
-        public string Key = "AIzaSyBm6unznpnoVDNak1s-iV_N9bQqCVpmKpE";
+        protected readonly string Url = "https://maps.googleapis.com/maps/api/";
+        protected readonly string Key = "AIzaSyBm6unznpnoVDNak1s-iV_N9bQqCVpmKpE";
 
-        readonly HttpClient httpClient;
+        protected readonly HttpClient httpClient;
 
-        public GoogleService(HttpClient httpClient)
+        public GoogleDirectionsService(HttpClient httpClient)
         {
             this.httpClient = httpClient;
         }
@@ -106,8 +106,8 @@ namespace PathFinder.Routes
 
         string GetRequestPointRoute(Local ori, Local des)
             => $"{Url}directions/json?" +
-                $"origin={ConvNumber(ori.Latitude)},{ConvNumber(ori.Longitude)}&" +
-                $"destination={ConvNumber(des.Latitude)},{ConvNumber(des.Longitude)}&" +
+                $"origin={ParseLocal(ori)}&" +
+                $"destination={ParseLocal(des)}&" +
                 $"sensor=false&key={Key}";
 
         string GetRequestAddress(string address)
@@ -115,7 +115,10 @@ namespace PathFinder.Routes
 
 
         string ConvNumber(double num)
-            => Math.Round(num, 6).ToString().Replace(',', '.');
+            => Math.Round(num, 13).ToString().Replace(',', '.');
 
+        protected string ParseLocal(Local local) => $"{ConvNumber(local.Latitude)},{ConvNumber(local.Longitude)}";
+
+        public virtual Task Prepare(IEnumerable<Local> locals) => Task.CompletedTask;
     }
 }
