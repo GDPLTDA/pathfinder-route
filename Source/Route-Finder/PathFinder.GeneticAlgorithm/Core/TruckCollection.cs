@@ -18,13 +18,16 @@ namespace PathFinder.GeneticAlgorithm.Core
                         .ToList()
                         .Select(e => e.ClearRoutes())
                         .OrderByDescending(t => t.Locals.Count > 0).ToList();
+
+            _count = CountLocals;
         }
 
-        public int Count => CountLocals * TruckCount;
+        private int _count = 0;
+        public int Count => _count * TruckCount;
         public int CountLocals => Trucks.SelectMany(t => t.Locals).Distinct().Count();
         public bool IsReadOnly => throw new NotImplementedException();
 
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public bool Contains(Local item) => Trucks.Any(t => t.Locals.Contains(item));
 
@@ -101,16 +104,18 @@ namespace PathFinder.GeneticAlgorithm.Core
 
             try
             {
+                var truckCount = TruckCount - 1;
+                var localCount = _count - 1;
+
                 var truckIndex = index / TruckCount;
-                var localIndex = index - (truckIndex * CountLocals);
+                var localIndex = index - (truckIndex * TruckCount);
 
-                var validTruckCount = Trucks.Count(t => t.Locals.Count > 0);
+                var validTruckCount = Trucks.Count(t => t.Locals.Count > 0) - 1;
 
-                var normalizedTruckIndex = (int)((truckIndex * validTruckCount) / ((double)TruckCount));
-                var localCount = Trucks[normalizedTruckIndex].Locals.Count;
+                var normalizedTruckIndex = (int)((truckIndex * validTruckCount) / ((double)truckCount));
+                var validLocalCount = Trucks[normalizedTruckIndex].Locals.Count - 1;
 
-                var normalizedIndex = (int)((localIndex * localCount) / (double)CountLocals);
-
+                var normalizedIndex = (int)((localIndex * validLocalCount) / (double)localCount);
                 return (normalizedTruckIndex, normalizedIndex);
             }
             catch (Exception ex)

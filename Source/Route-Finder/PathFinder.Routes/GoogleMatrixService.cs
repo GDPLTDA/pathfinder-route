@@ -10,7 +10,6 @@ namespace PathFinder.Routes
     public class GoogleMatrixService : CachedGoogleDirectionsService, IRouteService
     {
 
-
         public GoogleMatrixService(HttpClient httpClient) : base(httpClient) { }
 
         Dictionary<string, Dictionary<string, Func<Rota>>> routes;
@@ -57,9 +56,18 @@ namespace PathFinder.Routes
             if (routes == null)
                 throw new Exception("No initialized data");
 
-            var rota = routes[ParseLocal(origin)][ParseLocal(destination)]();
+            try
+            {
+                var rota = routes[ParseLocal(origin)][ParseLocal(destination)]();
 
-            return Task.FromResult(rota);
+                return Task.FromResult(rota);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
 
