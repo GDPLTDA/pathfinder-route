@@ -35,7 +35,7 @@ namespace PathFinder.DataGenerator
             var ret = new List<Result>();
             var http = new HttpClient();
             var settings = new GASettings();
-            var routeService = new CachedGoogleDirectionsService(http);
+            var routeService = new GoogleMatrixService(http);
 
             foreach (MutateEnum mut in Enum.GetValues(typeof(MutateEnum)))
             {
