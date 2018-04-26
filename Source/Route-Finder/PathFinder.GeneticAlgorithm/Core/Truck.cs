@@ -21,6 +21,12 @@ namespace PathFinder.GeneticAlgorithm
         public IList<Rota> Routes { get; set; }
         public IList<Local> Locals { get; set; }
 
+        public Truck ClearRoutes()
+        {
+            Routes = Enumerable.Empty<Rota>().ToList();
+            return this;
+        }
+
         public Rota DepotBack { get; set; }
 
         public async Task CalcRoutesAsync(IRouteService routeService, Local depot)
@@ -43,5 +49,6 @@ namespace PathFinder.GeneticAlgorithm
         public double GetTotalMeters() => Routes.Sum(o => o.Metros);
         public double GetTotalMinutes() => Routes.Sum(o => o.Minutos);
 
+        public override string ToString() => $"Id:{Id}, Locals:{Locals.Count}, Routes:{Routes.Count}";
     }
 }

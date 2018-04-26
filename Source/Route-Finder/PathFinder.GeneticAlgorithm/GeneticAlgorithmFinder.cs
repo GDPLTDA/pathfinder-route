@@ -25,7 +25,7 @@ namespace PathFinder.GeneticAlgorithm
 
         IGenome Best { get; set; }
 
-        int THROTTLE = 1; // quantidade de requests simultaneos
+        int ProcessChunk = 10; // quantidade de requests simultaneos
 
         public GeneticAlgorithmFinder(IRouteService routeService, GASettings settings)
         {
@@ -36,7 +36,7 @@ namespace PathFinder.GeneticAlgorithm
             PopulationSize = settings.PopulationSize;
             GenerationLimit = settings.GenerationLimit;
             BestSolutionToPick = settings.BestSolutionToPick;
-            THROTTLE = settings.Throttle;
+            ProcessChunk = settings.Throttle;
             Settings = settings;
         }
         public async Task<IGenome> FindPathAsync(Roteiro map, IGenome seed = null)
@@ -72,6 +72,9 @@ namespace PathFinder.GeneticAlgorithm
 
                 while (newpopulations.Count < Populations.Count)
                 {
+                    if (newpopulations.Any(e => e.Locals.CountLocals != map.Destinations.Count))
+                        throw new System.Exception();
+
                     // Selection
                     var (nodemom, nodedad) = Selection.SelectCouple(Populations);
 
@@ -83,6 +86,7 @@ namespace PathFinder.GeneticAlgorithm
                     nodedad = Mutate.Apply(crossDad);
 
                     newpopulations.AddRange(new IGenome[] { nodemom, nodedad });
+
                 }
                 Populations = newpopulations.ToList();
 
@@ -111,14 +115,14 @@ namespace PathFinder.GeneticAlgorithm
 
         async Task CalcGenomeRoutesAsync()
         {
-            if (THROTTLE == 1)
+            if (ProcessChunk == 1)
                 foreach (var item in Populations)
                     await item.CalcRoutesAsync(routeService);
             else
                 await Populations
-                         .ToObservable(NewThreadScheduler.Default)
+                         .ToObservable(ThreadPoolScheduler.Instance)
                          .Select(n => Observable.FromAsync(_ => n.CalcRoutesAsync(routeService)))
-                         .Merge(THROTTLE);
+                         .Merge(ProcessChunk);
         }
     }
 }

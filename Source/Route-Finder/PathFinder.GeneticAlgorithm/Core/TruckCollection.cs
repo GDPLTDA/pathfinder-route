@@ -12,7 +12,14 @@ namespace PathFinder.GeneticAlgorithm.Core
 
         public int TruckCount => Trucks.Count;
 
-        public TruckCollection(IEnumerable<Truck> trucks) => Trucks = trucks.OrderByDescending(t => t.Locals.Count > 0).ToList();
+        public TruckCollection(IEnumerable<Truck> trucks)
+        {
+            Trucks = trucks
+                        .ToList()
+                        .Select(e => e.ClearRoutes())
+                        .OrderByDescending(t => t.Locals.Count > 0).ToList();
+        }
+
         public int Count => CountLocals * TruckCount;
         public int CountLocals => Trucks.SelectMany(t => t.Locals).Distinct().Count();
         public bool IsReadOnly => throw new NotImplementedException();
@@ -94,7 +101,7 @@ namespace PathFinder.GeneticAlgorithm.Core
 
             try
             {
-                var truckIndex = index / CountLocals;
+                var truckIndex = index / TruckCount;
                 var localIndex = index - (truckIndex * CountLocals);
 
                 var validTruckCount = Trucks.Count(t => t.Locals.Count > 0);
