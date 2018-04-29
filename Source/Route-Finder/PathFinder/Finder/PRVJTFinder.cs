@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace PathFinder
 {
-
     public enum TipoErro
     {
         [Description("Concluído!")]
@@ -22,6 +21,7 @@ namespace PathFinder
         [Description("Tempo limite para a entrega foi excedido!")]
         EstourouTempoEntrega,
     }
+
     public class PRVJTFinder
     {
         private readonly IRouteService RouteService;
@@ -81,7 +81,7 @@ namespace PathFinder
                 //}
 
                 var route = await GaFinder.FindPathAsync(map);
-                result.ListEntregadores = route.Locals.Trucks.ToList();
+                result.ListEntregadores = route.Trucks.ToList();
             }
 
 

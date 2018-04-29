@@ -2,6 +2,6 @@
 {
     public interface IFitness
     {
-        double Calc(IGenome genome, GASettings settings);
+        double Calc(Genome genome, GASettings settings);
     }
 }

@@ -11,8 +11,8 @@ namespace PathFinder.GeneticAlgorithm
 {
     public class GeneticAlgorithmFinder
     {
-        List<IGenome> Populations { get; set; } = new List<IGenome>();
-        public IFitness Fitness { get; set; } = FitnessFactory.GetImplementation(FitnessEnum.TimePath);
+        List<Genome> Populations { get; set; } = new List<Genome>();
+        public IFitness Fitness { get; set; } = FitnessFactory.GetImplementation(FitnessEnum.DistanceAndTime);
         public IMutate Mutate { get; set; }
         public ICrossover Crossover { get; set; }
         public ISelection Selection { get; set; } = SelectionFactory.GetImplementation(SelectionEnum.RouletteWheel);
@@ -23,7 +23,7 @@ namespace PathFinder.GeneticAlgorithm
 
         private readonly IRouteService routeService;
 
-        IGenome Best { get; set; }
+        Genome Best { get; set; }
 
         int ProcessChunk = 1; // quantidade de requests simultaneos
 
@@ -32,14 +32,14 @@ namespace PathFinder.GeneticAlgorithm
             this.routeService = routeService;
 
             Mutate = MutateFactory.GetImplementation(settings.Mutation, settings);
-            Crossover = CrossoverFactory.GetImplementation(settings.Crossover, settings);
+            Crossover = CrossoverFactory.GetImplementation(settings.Crossover, settings, routeService);
             PopulationSize = settings.PopulationSize;
             GenerationLimit = settings.GenerationLimit;
             BestSolutionToPick = settings.BestSolutionToPick;
             ProcessChunk = settings.Throttle;
             Settings = settings;
         }
-        public async Task<IGenome> FindPathAsync(Roteiro map, IGenome seed = null)
+        public async Task<Genome> FindPathAsync(Roteiro map, Genome seed = null)
         {
             if (Mutate == null || Crossover == null || Fitness == null || Selection == null)
                 throw new System.Exception("GA cant run without all operators");
@@ -48,7 +48,7 @@ namespace PathFinder.GeneticAlgorithm
             locals.Add(map.Depot);
             await routeService.Prepare(locals);
 
-            var rand = RandomFactory.Rand;
+            var rand = RandomSingleton.Instance;
             var startNode = map.Depot;
 
             Populations.Clear();
@@ -69,27 +69,26 @@ namespace PathFinder.GeneticAlgorithm
 
             for (int i = 0; i < GenerationLimit; i++)
             {
-                var newpopulations = new List<IGenome>();
+                var newpopulations = new List<Genome>();
 
                 for (int j = 0; j < BestSolutionToPick; j++)
                     newpopulations.Add(Populations[j]);
 
                 while (newpopulations.Count < Populations.Count)
                 {
-                    if (newpopulations.Any(e => e.Locals.CountLocals != map.Destinations.Count))
+                    if (newpopulations.Any(e => e.Trucks.SelectMany(l => l.Locals).Count() != map.Destinations.Count))
                         throw new System.Exception();
 
                     // Selection
                     var (nodemom, nodedad) = Selection.SelectCouple(Populations);
 
                     // CrossOver
-                    var (crossMom, crossDad) = Crossover.Make(nodemom, nodedad);
+                    var sons = Crossover.Make(nodemom, nodedad);
 
                     // Mutation
-                    nodemom = Mutate.Apply(crossMom);
-                    nodedad = Mutate.Apply(crossDad);
+                    sons = sons.Select(s => Mutate.Apply(s)).ToArray();
 
-                    newpopulations.AddRange(new IGenome[] { nodemom, nodedad });
+                    newpopulations.AddRange(sons);
 
                 }
                 Populations = newpopulations.ToList();

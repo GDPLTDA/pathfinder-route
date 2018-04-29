@@ -2,8 +2,6 @@
 {
     public interface ICrossover
     {
-        CrossoverOperation Make(CrossoverOperation Operation);
-
-        CrossoverOperation Make(IGenome mon, IGenome dad);
+        Genome[] Make(Genome mon, Genome dad);
     }
 }

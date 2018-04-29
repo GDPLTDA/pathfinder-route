@@ -7,6 +7,6 @@
             MutationRate = settings.MutationRate;
         }
         public double MutationRate { get; set; }
-        public abstract IGenome Apply(IGenome baby);
+        public abstract Genome Apply(Genome baby);
     }
 }

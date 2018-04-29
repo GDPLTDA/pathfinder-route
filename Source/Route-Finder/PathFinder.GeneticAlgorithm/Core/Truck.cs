@@ -21,6 +21,7 @@ namespace PathFinder.GeneticAlgorithm
         public IList<Rota> Routes { get; set; }
         public IList<Local> Locals { get; set; }
 
+
         public Truck ClearRoutes()
         {
             Routes = Enumerable.Empty<Rota>().ToList();

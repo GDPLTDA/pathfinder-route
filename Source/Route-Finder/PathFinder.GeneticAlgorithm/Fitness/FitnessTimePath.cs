@@ -6,12 +6,12 @@ namespace PathFinder.GeneticAlgorithm
 {
     public class FitnessTimePath : IFitness
     {
-        public double Calc(IGenome genome, GASettings settings)
+        public double Calc(Genome genome, GASettings settings)
         {
             try
             {
 
-                var trucks = genome.Locals.Trucks;
+                var trucks = genome.Trucks;
                 var totalMetros = trucks.Sum(t => t.Routes.Sum(r => r.Metros) + (t.DepotBack?.Metros ?? 0D));
 
                 var totalEsperaDepois = 0D;
