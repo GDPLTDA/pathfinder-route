@@ -22,10 +22,10 @@ export default class TableRoute extends React.Component {
         return <div/>
     
     const columns = [{
-        Header: 'Saída',
+        Header: 'Endereço Saída',
         accessor: 'saida.endereco' // String-based value accessors!
       }, {
-        Header: 'Chegada',
+        Header: 'Endereço Chegada',
         accessor: 'chegada.endereco',
       }, {
         Header: 'KM',
@@ -92,7 +92,7 @@ export default class TableRoute extends React.Component {
             />
           <div className="row">
             <div className="col-sm-4">
-              <TimePicker
+              Saída <TimePicker
                       showSecond={false}
                       className="form-control"
                       defaultValue={selectTimes[index]}

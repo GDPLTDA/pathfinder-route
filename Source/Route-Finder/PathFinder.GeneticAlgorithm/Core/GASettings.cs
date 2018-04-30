@@ -10,8 +10,8 @@
         public double CrossoverRate { get; set; } = 0.5;
         public double MutationRate { get; set; } = 0.001;
 
-        public int PopulationSize { get; set; } = 100;
-        public int GenerationLimit { get; set; } = 20;
+        public int PopulationSize { get; set; } = 500;
+        public int GenerationLimit { get; set; } = 50;
         public int BestSolutionToPick { get; set; } = 2;
     }
 }
