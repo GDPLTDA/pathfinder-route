@@ -15,7 +15,7 @@ namespace PathFinder.GeneticAlgorithm.Factories
         {
             switch (option)
             {
-                case FitnessEnum.TimePath:
+                case FitnessEnum.DistanceAndTime:
                     return GetTimePathImplementation();
             }
             throw new Exception("No finder selected");

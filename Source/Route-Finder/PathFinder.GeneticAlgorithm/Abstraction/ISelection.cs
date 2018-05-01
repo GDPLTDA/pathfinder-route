@@ -4,7 +4,7 @@ namespace PathFinder.GeneticAlgorithm.Abstraction
 {
     public interface ISelection
     {
-        IGenome Select(List<IGenome> listnode);
-        (IGenome mon,IGenome dad) SelectCouple(List<IGenome> population);
+        Genome Select(List<Genome> listnode);
+        (Genome mon,Genome dad) SelectCouple(List<Genome> population);
     }
 }

@@ -1,98 +1,79 @@
 ﻿using PathFinder.GeneticAlgorithm.Abstraction;
-using PathFinder.GeneticAlgorithm.Factories;
 using PathFinder.Routes;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Threading.Tasks;
 
 namespace PathFinder.GeneticAlgorithm
 {
-    public class Genome : IGenome
+    public class Genome
     {
         public Roteiro Map { get; set; }
-        public List<Local> ListPoints { get; set; }
-        public List<Rota> ListRoutes { get; set; }
+        public IList<Truck> Trucks { get; set; }
+
         public double Fitness { get; private set; }
 
-        public Genome()
-        {
 
-        }
-        public Genome(Roteiro map)
+        public GASettings Settings { get; }
+
+        public int GetUsedTrucksCount => Trucks.Count(e => e.Locals.Any());
+
+
+        public Genome(Roteiro map, GASettings settings)
         {
             Map = map;
+            Settings = settings;
             Initialize();
         }
-        public Genome(IGenome genome)
+        public Genome(Genome genome)
         {
             Map = genome.Map;
-            ListPoints = genome.ListPoints.Select(o => o).ToList();
-            ListRoutes = genome.ListRoutes.Select(o => o).ToList();
+            Settings = genome.Settings;
+            Trucks = genome.Trucks.ToList();
+            ShrinkTruks();
         }
         void Initialize()
         {
-            ListPoints = new List<Local>();
-            var rand = RandomFactory.Rand;
+            var rand = RandomSingleton.Instance;
+            Trucks = Enumerable.Range(0, Settings.NumberOfTrucks)
+                       .Select(e => new Truck { Id = e })
+                       .ToList();
 
-            var count = Map.Destinations.Count;
+            var randomLocals =
+                    new Stack<Local>(Map.Destinations.Shuffle());
 
-            while (count > 0)
+            while (randomLocals.Any())
             {
-                var i = rand.Next(Map.Destinations.Count);
-
-                if (ListPoints.Exists(o => o.Equals(Map.Destinations[i])))
-                    continue;
-
-                ListPoints.Add(Map.Destinations[i]);
-
-                count--;
-            }
-        }
-        public async Task CalcRoutesAsync(IRouteService routeService)
-        {
-            var point = Map.Storage;
-            ListRoutes = new List<Rota>();
-            ListPoints = Map.Destinations;
-            Rota route;
-            foreach (var item in ListPoints)
-            {
-                route = await routeService.GetRouteAsync(point, item);
-                ListRoutes.Add(route);
-
-                point = item;
+                var truckId = rand.Next(0, Settings.NumberOfTrucks);
+                Trucks[truckId].Locals.Add(randomLocals.Pop());
             }
 
-            //Local lastpoint;
-
-            //if (ListPoints.Any())
-            //    lastpoint = ListPoints.Last();
-            //else
-            //    lastpoint = point;
-
-            //route = await routeService.GetRouteAsync(lastpoint, Map.MainStorage);
-            //ListRoutes.Add(route);
+            ShrinkTruks();
         }
 
+        public void ShrinkTruks() =>
+            Trucks = Trucks
+                        .OrderByDescending(t => t.Locals.Any())
+                        .ThenBy(t => t.Id)
+                        .Select((t, i) => new Truck(t.Locals) { Id = i })
+                        .ToList();
 
-        public bool IsEqual(IGenome genome)
-        {
-            if (genome != null)
-                if (ListRoutes.Sum(o => o.Metros) == genome.ListRoutes.Sum(o => o.Metros))
-                    if (ListRoutes.Sum(o => o.Minutos) == genome.ListRoutes.Sum(o => o.Minutos))
-                        return true;
 
-            return false;
-        }
+        public async Task CalcRoutesAsync(IRouteService routeService) =>
+            await Trucks
+                    .Select(t => t.CalcRoutesAsync(routeService, Map.Depot))
+                    .WhenAllAsync();
+
+        public bool IsEqual(Genome genome) =>
+            Trucks.Sum(t => t.GetTotalMeters()) == genome?.Trucks.Sum(t => t.GetTotalMeters()) &&
+            Trucks.Sum(t => t.GetTotalMinutes()) == genome?.Trucks.Sum(t => t.GetTotalMinutes())
+        ;
+
         public override string ToString() => $"F={Fitness}";
 
-        public static IGenome Generator(Roteiro map)
-        {
-            return new Genome(map);
-        }
+        public static Genome Generator(Roteiro map, GASettings settings) => new Genome(map, settings);
 
-        public void CalcFitness(IFitness fitness)
-        {
-            Fitness = fitness.Calc(this);
-        }
+        public void CalcFitness(IFitness fitness) => Fitness = fitness.Calc(this, Settings);
     }
 }

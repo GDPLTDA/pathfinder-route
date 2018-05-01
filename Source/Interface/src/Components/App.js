@@ -109,7 +109,7 @@ export default class App extends React.Component {
         }
         catch (e) {
             this.setState({ loading: false, hasResults:false })
-            toastr.error(e);
+            toastr.error("Error");
         }
     }
     timeout = (ms)=> {

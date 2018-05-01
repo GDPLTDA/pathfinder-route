@@ -8,7 +8,7 @@ namespace PathFinder.Routes
     public class Roteiro
     {
         public Local MainStorage { get; set; }
-        public Local Storage { get; set; }
+        public Local Depot { get; set; }
         public readonly IRouteService _routeService;
         public DateTime DataSaida { get; set; }
         public DateTime DataVolta { get; set; }
@@ -26,7 +26,7 @@ namespace PathFinder.Routes
         }
         public Roteiro Clone() => new Roteiro(_routeService)
         {
-            Storage = Storage,
+            Depot = Depot,
             MainStorage = MainStorage,
             DataSaida = DataSaida,
             DataVolta = DataVolta,
@@ -38,9 +38,9 @@ namespace PathFinder.Routes
 
         async Task Load(Local point)
         {
-            Storage = await _routeService.GetPointAsync(point);
-            MainStorage = Storage;
-            Storage.Period = new Period(DataSaida, DataVolta, 0);
+            Depot = await _routeService.GetPointAsync(point);
+            MainStorage = Depot;
+            Depot.Period = new Period(DataSaida, DataVolta, 0);
         }
 
         public async Task AddDestinations(params string[] param)
@@ -77,8 +77,8 @@ namespace PathFinder.Routes
         public void Next(IList<Rota> list)
         {
             //O primeiro destino das rotas
-            Storage = list.First().Destino;
-            DataSaida = list.First().DhChegada.AddMinutes(Storage.Period.Descarga);
+            Depot = list.First().Destino;
+            DataSaida = list.First().DhChegada.AddMinutes(Depot.Period.Descarga);
             //Remove o primeiro da lista
             list.RemoveAt(0);
             // remove a volta ao estoque

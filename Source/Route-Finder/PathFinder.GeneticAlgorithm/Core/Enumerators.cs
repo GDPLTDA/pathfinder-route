@@ -2,17 +2,14 @@
 {
     public enum CrossoverEnum
     {
-        OBX,
-        PBX
+        SubRouteInsertion,
     }
     public enum MutateEnum
     {
-        EM,
-        DIVM,
-        DM,
-        IM,
-        IVM,
-        SM
+        Swap,
+        Inversion,
+        //Insertion,
+        //Displacement,
     }
     public enum SelectionEnum
     {
@@ -20,6 +17,6 @@
     }
     public enum FitnessEnum
     {
-        TimePath
+        DistanceAndTime
     }
 }

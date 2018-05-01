@@ -10,10 +10,9 @@ using System.Threading.Tasks;
 
 namespace PathFinder
 {
-
     public enum TipoErro
     {
-        [Description("Concluido!")]
+        [Description("Concluído!")]
         Concluido,
         [Description("Não é possível entregar a tempo!")]
         EstourouTempo,
@@ -22,17 +21,20 @@ namespace PathFinder
         [Description("Tempo limite para a entrega foi excedido!")]
         EstourouTempoEntrega,
     }
+
     public class PRVJTFinder
     {
-        private readonly IRouteService routeService;
+        private readonly IRouteService RouteService;
         readonly GeneticAlgorithmFinder GaFinder;
         readonly PRVJTConfig Config;
+        readonly GASettings Settings;
 
-        public PRVJTFinder(PRVJTConfig config, IRouteService routeService, GASettings settings)
+        public PRVJTFinder(PRVJTConfig config, IRouteService routeService)
         {
             Config = config;
-            GaFinder = new GeneticAlgorithmFinder(routeService, settings);
-            this.routeService = routeService;
+            GaFinder = new GeneticAlgorithmFinder(routeService, config.Settings);
+            Settings = Config.Settings;
+            RouteService = routeService;
         }
 
         public async Task<FinderResult> Run()
@@ -42,80 +44,88 @@ namespace PathFinder
 
             using (TimeMeasure.Init())
             {
-                while (map.Destinations.Any())
-                {
-                    var best = await GaFinder.FindPathAsync(map);
+                //while (map.Destinations.Any())
+                //{
+                //    var best = await GaFinder.FindPathAsync(map);
 
-                    var routesInTime = best.ListRoutes.TakeWhile(e => e.DhChegada <= Config.DtLimite).ToList();
+                //    var routesInTime = best.Locals.TakeWhile(e => e.DhChegada <= Config.DtLimite).ToList();
 
-                    if (!routesInTime.Any())
-                        return result.Register(TipoErro.EstourouTempo);
+                //    if (!routesInTime.Any())
+                //        return result.Register(TipoErro.EstourouTempo);
 
-                    var remainingPoints = routesInTime.Select(o => o.Destino).ToList();
+                //    var remainingPoints = routesInTime.Select(o => o.Destino).ToList();
 
-                    var destinosEntrega = map.Destinations
-                                        .Where(o => remainingPoints.Exists(a => a.Equals(o))).ToList();
+                //    var destinosEntrega = map.Destinations
+                //                        .Where(o => remainingPoints.Exists(a => a.Equals(o))).ToList();
 
-                    var mapentr = map.Clone();
+                //    var mapentr = map.Clone();
 
-                    destinosEntrega.ForEach(async e => await mapentr.AddDestination(e));
+                //    destinosEntrega.ForEach(async e => await mapentr.AddDestination(e));
 
-                    var g = new Genome { Map = mapentr, ListRoutes = routesInTime.Select(o => o).ToList(), ListPoints = remainingPoints.Select(o => o).ToList() };
+                //    var g = new Genome { Map = mapentr, ListRoutes = routesInTime.Select(o => o).ToList(), Locals = remainingPoints.Select(o => o).ToList() };
 
-                    g.CalcFitness(GaFinder.Fitness);
+                //    g.CalcFitness(GaFinder.Fitness);
 
-                    result.ListEntregadores.Add(new Entregador
-                    {
-                        Genome = g,
-                        Numero = result.ListEntregadores.Count,
-                        Map = mapentr,
-                        NextRoute = routesInTime.First()
-                    });
+                //    result.ListEntregadores.Add(new Entregador
+                //    {
+                //        Genome = g,
+                //        Numero = result.ListEntregadores.Count,
+                //        Map = mapentr,
+                //        NextRoute = routesInTime.First()
+                //    });
 
-                    if (result.ListEntregadores.Count > Config.NumEntregadores)
-                        return result.Register(TipoErro.LimiteEntregadores);
+                //    if (result.ListEntregadores.Count > Config.NumEntregadores)
+                //        return result.Register(TipoErro.LimiteEntregadores);
 
-                    map.Destinations.RemoveAll(o => remainingPoints.Exists(a => a.Equals(o)));
-                }
+                //    map.Destinations.RemoveAll(o => remainingPoints.Exists(a => a.Equals(o)));
+                //}
+
+                var route = await GaFinder.FindPathAsync(map);
+                result.ListEntregadores = route.Trucks.Where(e => e.Locals.Any()).ToList();
+
+                result.TipoErro = (route.Trucks.SelectMany(e => e.Routes).Any(l => l.Late)) ? TipoErro.EstourouTempo : TipoErro.Concluido;
+
             }
+
 
             return result;
         }
 
-        public async Task<EntregadorResult> Step(Entregador entregador)
-        {
-            using (TimeMeasure.Init())
-            {
-                var result = new EntregadorResult(entregador);
-                var map = entregador.Map;
+        //public async Task<EntregadorResult> Step(Entregador entregador)
+        //{
+        //    using (TimeMeasure.Init())
+        //    {
+        //        var result = new EntregadorResult(entregador);
+        //        var map = entregador.Map;
 
-                if (!map.Destinations.Any())
-                {
-                    result.Entregador.NextRoute = null;
-                    return result;
-                }
+        //        if (!map.Destinations.Any())
+        //        {
+        //            result.Entregador.NextRoute = null;
+        //            return result;
+        //        }
 
-                if (entregador.NextRoute.DhChegada > Config.DtLimite)
-                    return result.Register(TipoErro.EstourouTempoEntrega);
+        //        if (entregador.NextRoute.DhChegada > Config.DtLimite)
+        //            return result.Register(TipoErro.EstourouTempoEntrega);
 
-                map.Next(entregador.Genome.ListRoutes);
+        //        map.Next(entregador.Genome.Locals);
 
-                if (entregador.Genome.ListPoints.Any())
-                    entregador.Genome.ListPoints.RemoveAt(0);
+        //        if (entregador.Genome.Locals.Any())
+        //            entregador.Genome.Locals.RemoveAt(0);
 
-                var best = await GaFinder.FindPathAsync(map, entregador.Genome);
+        //        var best = await GaFinder.FindPathAsync(map, entregador.Genome);
 
-                entregador.Genome = new Genome(best);
+        //        entregador.Genome = new Genome(best);
 
-                var route = best.ListRoutes.FirstOrDefault();
-                if (!entregador.NextRoute.Equals(route))
-                    entregador.NextRoute = route;
-                entregador.Map = map;
+        //        var route = best.Locals.FirstOrDefault();
+        //        if (!entregador.NextRoute.Equals(route))
+        //            entregador.NextRoute = route;
+        //        entregador.Map = map;
 
-                return result;
-            }
-        }
-        public static async Task<PRVJTConfig> GetConfigByFile(string fileName, IRouteService routeService)
+        //        return result;
+        //    }
+        //}
+
+        public static async Task<PRVJTConfig> GetConfigByFile(string fileName, IRouteService routeService, GASettings settings = null)
         {
             using (TimeMeasure.Init())
             {
@@ -129,12 +139,12 @@ namespace PathFinder
                     var entregadores = Convert.ToInt32(ReadConfig("Entregadores", sr));
                     var descarga = Convert.ToInt32(ReadConfig("Descarga", sr));
 
+                    config.Settings = settings ?? new GASettings();
+                    config.Settings.NumberOfTrucks = entregadores;
                     config.Map = new Roteiro(routeService, name, endereco, saida, volta);
-                    //await config
                     config.Map.DataSaida = saida;
 
                     config.DtLimite = volta;
-                    config.NumEntregadores = entregadores;
                     //Linha de titulo
                     sr.ReadLine();
 
