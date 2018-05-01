@@ -3,6 +3,7 @@ import React from 'react'
 import TableRoute from './TableRoute'
 import LoadingSpinner from './LoadingSpinner'
 import Map from './Map'
+import SearchRouteButton from './SearchRouteButton'
 
 export default class RouteViewerPage extends React.Component
 {

@@ -1,4 +1,5 @@
 ﻿using PathFinder;
+using PathFinder.GeneticAlgorithm;
 using PathFinder.Routes;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,15 @@ namespace RouteGA.Models
         public string DhLimite { get; set; }
 
 
-        async internal Task<PRVJTConfig> ToPRVJTConfig(IRouteService routeService)
+        async internal Task<PRVJTConfig> ToPRVJTConfig(IRouteService routeService, GASettings settings)
         {
             var dataLimite = DateTime.Parse(DhLimite);
             var dataSaida = DateTime.Parse(DhSaida);
 
             var config = new PRVJTConfig
             {
-                Map = new Roteiro(routeService, Origem.Endereco, Origem.Endereco, dataSaida, dataLimite)
+                Map = new Roteiro(routeService, Origem.Endereco, Origem.Endereco, dataSaida, dataLimite),
+                Settings = settings
             };
 
             config.Map.DataSaida = dataSaida;

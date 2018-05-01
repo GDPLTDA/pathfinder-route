@@ -81,7 +81,7 @@ namespace PathFinder
                 //}
 
                 var route = await GaFinder.FindPathAsync(map);
-                result.ListEntregadores = route.Trucks.ToList();
+                result.ListEntregadores = route.Trucks.Where(e => e.Locals.Any()).ToList();
 
                 result.TipoErro = (route.Trucks.SelectMany(e => e.Routes).Any(l => l.Late)) ? TipoErro.EstourouTempo : TipoErro.Concluido;
 

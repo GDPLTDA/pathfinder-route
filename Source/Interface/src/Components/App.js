@@ -5,7 +5,7 @@ import { arrayMove } from 'react-sortable-hoc'
 import toastr from 'toastr'
 
 import { getGeoLocation } from '../html5'
-import mockData from '../Mock/routes'
+import mockData from '../Mock/DataMock'
 import { Search, Research } from '../Services/SearchService'
 import AddressManagerPage from './AddressManagerPage'
 import RouteViewerPage from './RouteViewerPage';
@@ -15,7 +15,8 @@ const format = 'HH:mm';
 export default class App extends React.Component {
     constructor() {
         super()
-        this.state = { 
+        this.state = {
+            selectedOptionTest: '',
             loading: false,
             reloading: [],
             address: '',
@@ -25,6 +26,7 @@ export default class App extends React.Component {
             isStore: true, 
             from: '00:00', to: '00:00', 
             wait: 30,
+            entregador: 1,
             hasResults: false,
             listLocations: [] 
         }
@@ -68,6 +70,10 @@ export default class App extends React.Component {
         const wait = value
         this.setState({ wait })
     }
+    onChangeEntregador = value => {
+        const entregador = value
+        this.setState({ entregador })
+    }
 
     onRemoveLocation = (item) => {
         this.setState({
@@ -85,7 +91,7 @@ export default class App extends React.Component {
     UpdateStoreStatus = (locations = []) =>
         locations.map((entry,index) => ({...entry, isStore: (index === 0)}))
 
-    getDados = () => this.setState(mockData)
+    
 
     search = async () => {
         this.setState({ loading: true, hasResults: true })
@@ -94,7 +100,8 @@ export default class App extends React.Component {
 
         try {
             toastr.info("Enviado...");
-          const response = await Search(this.state.listLocations);
+            const response = await Search(this.state.entregador, this.state.listLocations);
+            
             this.setState({ 
                 loading: false,
                 results: response
@@ -102,13 +109,27 @@ export default class App extends React.Component {
         }
         catch (e) {
             this.setState({ loading: false, hasResults:false })
-            toastr.error(e);
+            toastr.error("Error");
         }
     }
     timeout = (ms)=> {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
     
+    SelectTestChange = (selectedOptionTest) => {
+        this.setState({ selectedOptionTest });
+        
+        if(selectedOptionTest=== null){
+            let mock = { listLocations: [] }
+            this.setState(mock)
+        }
+        else{
+            let index = selectedOptionTest.value;
+            this.setState(mockData[index])
+            console.log(`Selected: ${index}`);
+        }
+      }
+
     research = async (index, locations, time) => 
     {
         // Não tem mais destinos para calcular
@@ -147,7 +168,7 @@ export default class App extends React.Component {
                 }
                 else
                 {
-                    if(response.length == 1)
+                    if(response.length === 1)
                         results[index] = response[0]
                     else
                     results[index] = {mensagem: "Não é possível terminar a entrega, para realizar a entrega seria preciso mais de 1 entregador!", rotas:locations}
@@ -172,6 +193,7 @@ export default class App extends React.Component {
     render() {
         const state = this.state;
         let { results, loading } = state;
+        const { selectedOptionTest } = state;
 
         if(results.length !== 0){
             if(typeof results.mensagem !== 'undefined'){
@@ -190,7 +212,11 @@ export default class App extends React.Component {
                 onChangeFrom={this.onChangeFrom}
                 onChangeTo={this.onChangeTo}
                 onChangeWait={this.onChangeWait}
-                valueWait={state.wait}
+                onChangeEntregador={this.onChangeEntregador}
+                SelectTestChange={this.SelectTestChange}
+                SelectedOption={selectedOptionTest}
+                ValueWait={state.wait}
+                ValueEntregador={state.entregador}
                 onTextChange={this.onChange}
                 format={format}
                 address={state.address}
@@ -199,7 +225,6 @@ export default class App extends React.Component {
                 listLocations={state.listLocations}
                 location={{...state}}
                 onClickButton={this.onClickButton}
-                getDados={this.getDados}
                 search={this.search}
                 lat={state.lat}
                 lng={state.lng}
@@ -207,6 +232,7 @@ export default class App extends React.Component {
         
         const routePage = () => 
             <RouteViewerPage 
+                search={this.search}
                 loading={loading} 
                 reloading={this.state.reloading} 
                 results={results} 

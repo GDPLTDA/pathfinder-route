@@ -19,7 +19,7 @@ namespace RouteGA.Models
 
         public EntregadorViewModel(Truck entregador)
         {
-            var rotas = entregador.Routes.Select((item, id) =>
+            var rotas = entregador.Routes.Concat(new[] { entregador.DepotBack }).Select((item, id) =>
                 new RotaViewModel
                 {
                     Saida = new LocalViewModel(item.Origem),

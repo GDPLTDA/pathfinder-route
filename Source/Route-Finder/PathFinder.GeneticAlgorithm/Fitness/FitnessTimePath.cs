@@ -10,7 +10,6 @@ namespace PathFinder.GeneticAlgorithm
         {
             try
             {
-
                 var trucks = genome.Trucks;
                 var totalMetros = trucks.Sum(t => t.Routes.Sum(r => r.Metros) + (t.DepotBack?.Metros ?? 0D));
 
