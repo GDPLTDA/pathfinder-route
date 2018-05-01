@@ -40,7 +40,6 @@ namespace RouteGA.Controllers
             var config = await roteiro.ToPRVJTConfig(routeService);
             var finder = new PRVJTFinder(config, routeService);
 
-
             var result = await finder.Run();
 
             if (result.Erro)

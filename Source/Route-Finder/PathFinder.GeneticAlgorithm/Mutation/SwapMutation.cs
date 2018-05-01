@@ -2,11 +2,11 @@
 
 namespace PathFinder.GeneticAlgorithm.Mutation
 {
-    public class SwapMutattion : AbstractMutate
+    public class SwapMutation : AbstractMutate
     {
         private readonly IRandom random;
 
-        public SwapMutattion(GASettings settings, IRandom random) : base(settings)
+        public SwapMutation(GASettings settings, IRandom random) : base(settings)
         {
             this.random = random;
         }
@@ -17,17 +17,19 @@ namespace PathFinder.GeneticAlgorithm.Mutation
             if (random.NextDouble() > MutationRate)
                 return baby;
 
-            var indexTruck1 = random.Next(0, baby.GetUsedTrucksCount);
-            var indexTruck2 = random.Next(0, baby.GetUsedTrucksCount);
+            var newBaby = new Genome(baby);
 
-            var localIndex1 = random.Next(0, baby.Trucks[indexTruck1].Locals.Count);
-            var localIndex2 = random.Next(0, baby.Trucks[indexTruck2].Locals.Count);
+            var indexTruck1 = random.Next(0, newBaby.GetUsedTrucksCount);
+            var indexTruck2 = random.Next(0, newBaby.GetUsedTrucksCount);
 
-            var temp = baby.Trucks[indexTruck1].Locals[localIndex1];
+            var localIndex1 = random.Next(0, newBaby.Trucks[indexTruck1].Locals.Count);
+            var localIndex2 = random.Next(0, newBaby.Trucks[indexTruck2].Locals.Count);
 
-            baby.Trucks[indexTruck1].Locals[localIndex1] = baby.Trucks[indexTruck2].Locals[localIndex2];
-            baby.Trucks[indexTruck2].Locals[localIndex2] = temp;
-            return baby;
+            var temp = newBaby.Trucks[indexTruck1].Locals[localIndex1];
+
+            newBaby.Trucks[indexTruck1].Locals[localIndex1] = newBaby.Trucks[indexTruck2].Locals[localIndex2];
+            newBaby.Trucks[indexTruck2].Locals[localIndex2] = temp;
+            return newBaby;
         }
     }
 }

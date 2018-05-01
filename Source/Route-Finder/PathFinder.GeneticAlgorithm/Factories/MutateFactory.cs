@@ -13,7 +13,9 @@ namespace PathFinder.GeneticAlgorithm.Factories
             switch (option)
             {
                 case MutateEnum.Swap:
-                    return new SwapMutattion(settings, RandomSingleton.Instance);
+                    return new SwapMutation(settings, RandomSingleton.Instance);
+                case MutateEnum.Inversion:
+                    return new InversionMutation(settings, RandomSingleton.Instance);
             }
             throw new Exception("No mutate passed");
         }

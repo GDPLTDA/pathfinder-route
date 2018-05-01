@@ -8,8 +8,8 @@
     {
         Swap,
         Inversion,
-        Insertion,
-        Displacement,
+        //Insertion,
+        //Displacement,
     }
     public enum SelectionEnum
     {

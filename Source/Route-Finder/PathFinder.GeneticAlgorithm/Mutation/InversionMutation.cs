@@ -18,7 +18,9 @@ namespace PathFinder.GeneticAlgorithm.Mutation
             if (random.NextDouble() > MutationRate)
                 return baby;
 
-            var truck = baby.Trucks[random.Next(0, baby.GetUsedTrucksCount)];
+            var newBaby = new Genome(baby);
+
+            var truck = newBaby.Trucks[random.Next(0, newBaby.GetUsedTrucksCount)];
             var localIndex = random.Next(0, truck.Locals.Count);
 
             var count = random.Next(0, truck.Locals.Count - localIndex);
@@ -31,7 +33,7 @@ namespace PathFinder.GeneticAlgorithm.Mutation
                                 .Concat(truck.Locals.Skip(localIndex + count))
                                 .ToList();
 
-            return baby;
+            return newBaby;
         }
     }
 }

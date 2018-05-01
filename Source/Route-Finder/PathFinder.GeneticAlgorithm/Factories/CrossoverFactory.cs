@@ -7,7 +7,6 @@ namespace PathFinder.GeneticAlgorithm.Factories
 {
     public class CrossoverFactory
     {
-
         public static ICrossover GetImplementation(CrossoverEnum option, GASettings settings, IRouteService service)
             => Decide(option, settings, service);
 

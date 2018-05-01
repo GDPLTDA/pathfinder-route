@@ -21,8 +21,8 @@ namespace PathFinder.Tests
 
         [Theory(DisplayName = "Deve calcular a rota e retornar um estado valido")]
         [InlineData("Aceita.txt", TipoErro.Concluido)]
-        [InlineData("ErroTempo.txt", TipoErro.EstourouTempo)]
-        [InlineData("Limite.txt", TipoErro.LimiteEntregadores)]
+        //  [InlineData("ErroTempo.txt", TipoErro.EstourouTempo)]
+        //   [InlineData("Limite.txt", TipoErro.LimiteEntregadores)]
         public async Task Deve_Encontrar_Rota(string fileName, TipoErro estado)
         {
             var result = await RunTest($"./Tests/{fileName}");

@@ -39,6 +39,7 @@ namespace PathFinder.GeneticAlgorithm
                             totalEsperaDepois += (date - to).TotalSeconds;
                             date = date.AddDays(1);
                             date = new DateTime(date.Year, date.Month, date.Day, from.Hour, from.Minute, from.Second);
+                            route.Late = true;
                         }
 
                         if (date < from)

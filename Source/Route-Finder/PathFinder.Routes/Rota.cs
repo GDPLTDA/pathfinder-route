@@ -6,6 +6,7 @@ namespace PathFinder.Routes
         public int Ordem { get; set; }
         public Local Origem { get; set; }
         public Local Destino { get; set; }
+        public bool Late { get; set; }
 
         public double Metros { get; set; }
         public double Km { get { return Metros / 1000; } }
@@ -24,9 +25,8 @@ namespace PathFinder.Routes
 
         }
 
-        public bool Equals(Rota obj)
-        {
-            return Origem.Equals(obj.Origem) && Destino.Equals(obj.Destino);
-        }
+        public bool Equals(Rota obj) => Origem.Equals(obj.Origem) && Destino.Equals(obj.Destino);
+
+        public override string ToString() => $"({Late }){Origem.ToString()}->{Destino.ToString()}";
     }
 }

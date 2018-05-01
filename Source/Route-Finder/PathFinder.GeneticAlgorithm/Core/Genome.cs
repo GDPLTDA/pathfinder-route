@@ -55,6 +55,7 @@ namespace PathFinder.GeneticAlgorithm
         public void ShrinkTruks() =>
             Trucks = Trucks
                         .OrderByDescending(t => t.Locals.Any())
+                        .ThenBy(t => t.Id)
                         .Select((t, i) => new Truck(t.Locals) { Id = i })
                         .ToList();
 

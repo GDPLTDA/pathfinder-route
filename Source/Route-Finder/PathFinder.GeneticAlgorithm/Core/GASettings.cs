@@ -4,7 +4,7 @@
     {
 
         public int Throttle { get; set; } = 1;  // quantidade de requests simultaneos
-        public MutateEnum Mutation { get; set; } = MutateEnum.Insertion;
+        public MutateEnum Mutation { get; set; } = MutateEnum.Swap;
         public CrossoverEnum Crossover { get; set; } = CrossoverEnum.SubRouteInsertion;
 
         public double CrossoverRate { get; set; } = 0.5;
