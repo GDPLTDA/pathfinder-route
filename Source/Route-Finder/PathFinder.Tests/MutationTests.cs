@@ -146,6 +146,11 @@ namespace PathFinder.Tests
             A.CallTo(() => random.Next(0, 0)).MustHaveHappenedOnceExactly();
 
             newGen.Trucks[0].Locals.Should().HaveCount(2);
+            newGen.Trucks[0].Locals.Should().NotContain(locals[1]);
+
+
+            newGen.Trucks[1].Locals.Should().HaveCount(3);
+
             expectLocals.Should().ContainSingle();
             expectLocals.Should().Contain(locals[1]);
 
@@ -201,6 +206,136 @@ namespace PathFinder.Tests
             newGen.Trucks[indexTruckDestination].Locals.Should().HaveCount(4);
             newGen.Trucks[indexTruckDestination].Locals[indexLocalTo].Should().Be(locals[1]);
             newGen.Trucks[2].Locals.Should().BeEmpty();
+
+        }
+
+        [Fact]
+        public void DisplacementMutationShouldCreateANewRoute()
+        {
+
+            var settings = new GASettings();
+            var random = A.Fake<IRandom>();
+            var map = A.Dummy<Roteiro>();
+            var locals = GetLocals(8);
+
+            const int
+                indexTruck = 0,
+                indexLocalFrom = 1,
+                length = 2,
+                indexLocalTo = 0;
+
+            A.CallTo(() => random.NextDouble())
+                .ReturnsNextFromSequence(0, 0);
+
+            A.CallTo(() => random.Next(A<int>._, A<int>._))
+                .ReturnsNextFromSequence(
+                    indexTruck,
+                    indexLocalFrom,
+                    length,
+                    indexLocalTo
+                );
+
+            var gen = new Genome(map, settings)
+            {
+                Trucks = new[] {
+                    new Truck {
+                        Locals = locals.Take(4).ToArray()
+                    },
+                    new Truck {
+                        Locals = locals.Skip(4).ToArray()
+                    },
+                    new Truck {
+                        Locals = Enumerable.Empty<Local>().ToArray()
+                    }
+
+
+                }
+            };
+
+            var mutate = new DisplacementMutation(settings, random);
+            var newGen = mutate.Apply(gen);
+
+            var expectLocals = newGen.Trucks[2].Locals;
+            var changedLocations = new[] { locals[1], locals[2] };
+
+            A.CallTo(() => random.Next(0, 0)).MustHaveHappenedOnceExactly();
+
+            newGen.Trucks[0].Locals.Should().HaveCount(2);
+            changedLocations.Should().NotBeSubsetOf(newGen.Trucks[0].Locals);
+
+            newGen.Trucks[1].Locals.Should().HaveCount(4);
+
+            expectLocals.Should().HaveCount(2);
+            expectLocals.Should().BeEquivalentTo(changedLocations,
+                                    option => option.WithStrictOrdering()
+                                 );
+
+        }
+
+
+
+        [Fact]
+        public void DisplacemenMutationShouldNotCreateANewRoute()
+        {
+
+            var settings = new GASettings();
+            var random = A.Fake<IRandom>();
+            var map = A.Dummy<Roteiro>();
+            var locals = GetLocals(8);
+
+            const int
+                indexTruck = 1,
+                indexTruckDestination = 0,
+                indexLocalFrom = 1,
+                length = 2,
+                indexLocalTo = 1;
+
+            A.CallTo(() => random.NextDouble())
+                .ReturnsNextFromSequence(0, 1);
+
+            A.CallTo(() => random.Next(A<int>._, A<int>._))
+                .ReturnsNextFromSequence(
+                    indexTruck,
+                    indexTruckDestination,
+                    indexLocalFrom,
+                    length,
+                    indexLocalTo
+                );
+
+            var gen = new Genome(map, settings)
+            {
+                Trucks = new[] {
+                    new Truck {
+                        Locals = locals.Take(4).ToArray()
+                    },
+                    new Truck {
+                        Locals = locals.Skip(4).ToArray()
+                    },
+                    new Truck {
+                        Locals = Enumerable.Empty<Local>().ToArray()
+                    }
+
+
+                }
+            };
+
+            var mutate = new DisplacementMutation(settings, random);
+            var newGen = mutate.Apply(gen);
+
+
+            var changedLocations = new[] { locals[5], locals[6] };
+
+            newGen.Trucks[indexTruck].Locals.Should().HaveCount(2);
+            changedLocations.Should().NotBeSubsetOf(newGen.Trucks[indexTruck].Locals);
+
+            newGen.Trucks[indexTruckDestination].Locals.Should().HaveCount(6);
+            changedLocations.Should().BeSubsetOf(newGen.Trucks[indexTruckDestination].Locals);
+
+            newGen.Trucks[indexTruckDestination].Locals[1].Should().Be(changedLocations[0]);
+            newGen.Trucks[indexTruckDestination].Locals[2].Should().Be(changedLocations[1]);
+
+            newGen.Trucks[2].Locals.Should().BeEmpty();
+
 
         }
 

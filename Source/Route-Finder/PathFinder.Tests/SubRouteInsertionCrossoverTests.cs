@@ -11,7 +11,6 @@ namespace PathFinder.Tests
 {
     public class SubRouteInsertionCrossoverTests
     {
-
         [Fact]
         public void Should_Transfer_subroutes()
         {
@@ -45,8 +44,6 @@ namespace PathFinder.Tests
                 , 1 // quantidade de locais a extrais da rota
                 , 0 // indice do primeiro local da subrota
                 );
-
-
 
             var mon = new Genome(map, settings)
             {
@@ -83,7 +80,6 @@ namespace PathFinder.Tests
 
             result.Last().Trucks[0].Locals.Should()
                     .BeEquivalentTo(new[] { locals[0], locals[1], locals[2], locals[3] });
-
 
         }
 

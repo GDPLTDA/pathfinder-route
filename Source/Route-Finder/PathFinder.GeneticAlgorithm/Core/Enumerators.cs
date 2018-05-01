@@ -9,7 +9,7 @@
         Swap,
         Inversion,
         Insertion,
-        //Displacement,
+        Displacement,
     }
     public enum SelectionEnum
     {

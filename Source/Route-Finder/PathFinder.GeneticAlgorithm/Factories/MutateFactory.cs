@@ -18,6 +18,8 @@ namespace PathFinder.GeneticAlgorithm.Factories
                     return new InversionMutation(settings, RandomSingleton.Instance);
                 case MutateEnum.Insertion:
                     return new InsertionMutation(settings, RandomSingleton.Instance);
+                case MutateEnum.Displacement:
+                    return new DisplacementMutation(settings, RandomSingleton.Instance);
             }
             throw new Exception("No mutate passed");
         }
