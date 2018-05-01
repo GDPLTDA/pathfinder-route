@@ -98,6 +98,112 @@ namespace PathFinder.Tests
 
         }
 
+        [Fact]
+        public void InsertionMutationShouldCreateANewRoute()
+        {
+            var settings = new GASettings();
+            var random = A.Fake<IRandom>();
+            var map = A.Dummy<Roteiro>();
+            var locals = GetLocals(6);
+
+            const int
+                indexTruck = 0,
+                indexLocalFrom = 1,
+                indexLocalTo = 0;
+
+            A.CallTo(() => random.NextDouble())
+                .ReturnsNextFromSequence(0, 0);
+
+            A.CallTo(() => random.Next(A<int>._, A<int>._))
+                .ReturnsNextFromSequence(
+                    indexTruck,
+                    indexLocalFrom,
+                    indexLocalTo
+                );
+
+            var gen = new Genome(map, settings)
+            {
+                Trucks = new[] {
+                    new Truck {
+                        Locals = locals.Take(3).ToArray()
+                    },
+                    new Truck {
+                        Locals = locals.Skip(3).ToArray()
+                    },
+                    new Truck {
+                        Locals = Enumerable.Empty<Local>().ToArray()
+                    }
+
+
+                }
+            };
+
+            var mutate = new InsertionMutation(settings, random);
+            var newGen = mutate.Apply(gen);
+
+            var expectLocals = newGen.Trucks[2].Locals;
+
+            A.CallTo(() => random.Next(0, 0)).MustHaveHappenedOnceExactly();
+
+            newGen.Trucks[0].Locals.Should().HaveCount(2);
+            expectLocals.Should().ContainSingle();
+            expectLocals.Should().Contain(locals[1]);
+
+        }
+
+
+        [Fact]
+        public void InsertionMutationShouldNotCreateANewRoute()
+        {
+            var settings = new GASettings();
+            var random = A.Fake<IRandom>();
+            var map = A.Dummy<Roteiro>();
+            var locals = GetLocals(6);
+
+            const int
+                indexTruck = 0,
+                indexTruckDestination = 1,
+                indexLocalFrom = 1,
+                indexLocalTo = 2;
+
+            A.CallTo(() => random.NextDouble())
+                .ReturnsNextFromSequence(0, 1);
+
+            A.CallTo(() => random.Next(A<int>._, A<int>._))
+                .ReturnsNextFromSequence(
+                    indexTruck,
+                    indexTruckDestination,
+                    indexLocalFrom,
+                    indexLocalTo
+                );
+
+            var gen = new Genome(map, settings)
+            {
+                Trucks = new[] {
+                    new Truck {
+                        Locals = locals.Take(3).ToArray()
+                    },
+                    new Truck {
+                        Locals = locals.Skip(3).ToArray()
+                    },
+                    new Truck {
+                        Locals = Enumerable.Empty<Local>().ToArray()
+                    }
+
+
+                }
+            };
+
+            var mutate = new InsertionMutation(settings, random);
+            var newGen = mutate.Apply(gen);
+
+            newGen.Trucks[indexTruck].Locals.Should().HaveCount(2);
+            newGen.Trucks[indexTruckDestination].Locals.Should().HaveCount(4);
+            newGen.Trucks[indexTruckDestination].Locals[indexLocalTo].Should().Be(locals[1]);
+            newGen.Trucks[2].Locals.Should().BeEmpty();
+
+        }
+
         static IList<Local> GetLocals(int qtd) =>
              Enumerable.Range(0, qtd)
              .Select(e => new Local(e.ToString()) { Latitude = e, Longitude = e })
