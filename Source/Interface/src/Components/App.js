@@ -181,12 +181,15 @@ export default class App extends React.Component {
             reloading[index] = false
             this.setState({ reloading, results })
 
-            toastr.info("Conluído Entregador " + (index + 1) + "...");
+            if(typeof response.mensagem !== 'undefined')
+                toastr.error(response.mensagem + ", Entregador " + (index + 1) + "...");
+            else
+                toastr.info("Conluído Entregador " + (index + 1) + "...");
         }
         catch (e) {
             reloading[index] = false
             this.setState({ reloading })
-            toastr.info("Erro Entregador " + (index + 1) + "\n" + e);
+            toastr.error("Erro Entregador " + (index + 1) + "\n" + e);
         }
     }
 
