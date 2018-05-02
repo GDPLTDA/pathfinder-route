@@ -262,7 +262,7 @@ export default [
 
 // Extras
 {
-    entregador: 10,
+    entregador: 4,
     listLocations: [
     { 
         address: 'Av. das Nações Unidas, 16741 - Santo Amaro',
@@ -473,7 +473,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '23:00',
-        wait: 60
+        wait: 30
     },
     { 
         address: 'Praça da Sé - Sé, São Paulo - SP',
@@ -482,7 +482,7 @@ export default [
         lng:0,
         from: '00:00', 
         to: '23:59',
-        wait: 60
+        wait: 30
     },
     { 
         address: 'Av. Jorn. Roberto Marinho, 85 - Cidade Monções, São Paulo - SP',
@@ -491,7 +491,7 @@ export default [
         lng:0,
         from: '00:00', 
         to: '23:59',
-        wait: 60
+        wait: 30
     },
     { 
         address: 'Pq. Dom Pedro II - Av. Mercúrio, s/n - Brás, São Paulo - SP',
@@ -500,7 +500,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '16:00',
-        wait: 60
+        wait: 30
     },
     { 
         address: 'R. Huet Bacelar, 407 - Ipiranga, São Paulo - SP',
@@ -509,7 +509,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '17:00',
-        wait: 60
+        wait: 30
     },
     { 
         address: 'Parque da Independência - s/n - Ipiranga, São Paulo - SP',
@@ -518,7 +518,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '17:00',
-        wait: 60
+        wait: 30
     },
     { 
         address: 'Av. Pedro Álvares Cabral - Vila Mariana, São Paulo - SP',
@@ -527,7 +527,7 @@ export default [
         lng:0,
         from: '05:00', 
         to: '23:59',
-        wait: 60
+        wait: 30
     },
     { 
         address: 'Av. Miguel Estefno, 4241 - Vila Santo Estefano, São Paulo - SP',
@@ -536,7 +536,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '19:00',
-        wait: 60
+        wait: 30
     },
     { 
         address: 'Av. Miguel Estefno, 3031 - Vila Água Funda, São Paulo - SP',
@@ -545,7 +545,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '17:00',
-        wait: 60
+        wait: 30
     },
     { 
         address: 'Pç. Pateo do Collegio, 2 - Centro, São Paulo - SP',
@@ -554,7 +554,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '16:30',
-        wait: 60
+        wait: 30
     },
     { 
         address: 'R. do Horto, 931 - Horto Florestal, São Paulo - SP',
@@ -563,7 +563,7 @@ export default [
         lng:0,
         from: '06:00', 
         to: '18:00',
-        wait: 60
+        wait: 30
     },
     { 
         address: 'R. Antônio Cardoso Nogueira, 539 - Vila Chica Luisa, São Paulo - SP',
@@ -572,7 +572,7 @@ export default [
         lng:0,
         from: '07:00', 
         to: '17:00',
-        wait: 60
+        wait: 30
     },
     { 
         address: 'Av. Sen. Teotônio Vilela, 261 - Interlagos, São Paulo - SP',
@@ -581,7 +581,7 @@ export default [
         lng:0,
         from: '07:00', 
         to: '17:00',
-        wait: 60
+        wait: 30
     },
     { 
         address: 'Av. Olavo Fontoura, 1209 - Santana, São Paulo - SP',
@@ -590,7 +590,7 @@ export default [
         lng:0,
         from: '07:00', 
         to: '17:00',
-        wait: 60
+        wait: 30
     }
 ]}
 

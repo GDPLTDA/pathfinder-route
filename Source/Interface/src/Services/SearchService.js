@@ -2,7 +2,7 @@ import toastr from 'toastr'
 
 const baseUrl = "https://routega.azurewebsites.net"
 const baseDevUrl = "http://localhost:64880"
-const apiUrl = `${baseUrl}/api/route`
+const apiUrl = `${baseDevUrl}/api/route`
 
 
 const Search = async (entragador, listLocations) => {
