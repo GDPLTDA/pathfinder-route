@@ -1,5 +1,4 @@
 ﻿using PathFinder.GeneticAlgorithm.Abstraction;
-using PathFinder.GeneticAlgorithm.Factories;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +6,7 @@ namespace PathFinder.GeneticAlgorithm
 {
     public class SelectionRouletteWheel : ISelection
     {
-        public IGenome Select(List<IGenome> listnode)
+        public Genome Select(List<Genome> listnode)
         {
             var maxFitness = listnode.Max(e => e.Fitness);
             var weight = new List<double>();
@@ -19,7 +18,7 @@ namespace PathFinder.GeneticAlgorithm
             var weight_sum = weight.Sum();
 
             // get a random value
-            var value = RandomFactory.Rand
+            var value = RandomSingleton.Instance
                             .NextDouble() * weight_sum;
 
             // locate the random value based on the weights
@@ -37,7 +36,7 @@ namespace PathFinder.GeneticAlgorithm
                 index = weight.Count - 1;
             return new Genome(listnode[index]);
         }
-        public (IGenome mon, IGenome dad) SelectCouple(List<IGenome> population)
+        public (Genome mon, Genome dad) SelectCouple(List<Genome> population)
         {
             var mon = Select(population);
             var dad = Select(population);

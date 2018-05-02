@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using PathFinder.GeneticAlgorithm;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PathFinder
@@ -11,7 +12,7 @@ namespace PathFinder
 
         public PRVJTResult Register(string msg)
         {
-            
+
             Erro = true;
             Messagem = msg;
 
@@ -27,11 +28,9 @@ namespace PathFinder
     }
     public class FinderResult : PRVJTResult
     {
-        public List<Entregador> ListEntregadores { get; set; } = new List<Entregador>();
+        public List<Truck> ListEntregadores { get; set; }
 
-        public bool Concluido => !ListEntregadores.Any(o => o.NextRoute != null);
-
-        public string JpgMap { get; set; }
+        public bool Concluido => !ListEntregadores.Any(o => o.Routes.Any(r => r.DhChegada > o.DepotBack.DhChegada));
 
         public new FinderResult Register(string msg)
         {
@@ -46,25 +45,26 @@ namespace PathFinder
             return this;
         }
     }
-    public class EntregadorResult : PRVJTResult
-    {
-        public EntregadorResult(Entregador entregador)
-        {
-            Entregador = entregador;
-        }
-        public Entregador Entregador { get; set; }
 
-        public new EntregadorResult Register(string msg)
-        {
-            base.Register(msg);
+    //public class EntregadorResult : PRVJTResult
+    //{
+    //    public EntregadorResult(Entregador entregador)
+    //    {
+    //        Entregador = entregador;
+    //    }
+    //    public Entregador Entregador { get; set; }
 
-            return this;
-        }
-        public new EntregadorResult Register(TipoErro erro)
-        {
-            base.Register(erro);
+    //    public new EntregadorResult Register(string msg)
+    //    {
+    //        base.Register(msg);
 
-            return this;
-        }
-    }
+    //        return this;
+    //    }
+    //    public new EntregadorResult Register(TipoErro erro)
+    //    {
+    //        base.Register(erro);
+
+    //        return this;
+    //    }
+    //}
 }

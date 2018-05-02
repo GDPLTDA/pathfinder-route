@@ -21,7 +21,7 @@ namespace RouteGA
         {
 
             services.AddSingleton<HttpClient>();
-            services.AddTransient<IRouteService, CachedGoogleService>();
+            services.AddTransient<IRouteService, GoogleMatrixService>();
             services.AddCors();
             services.AddMvc();
         }

@@ -37,9 +37,8 @@ namespace RouteGA.Controllers
         public async Task<IActionResult> Post([FromBody]RoteiroViewModel roteiro)
         {
             var settings = new GASettings();
-            var config = await roteiro.ToPRVJTConfig(routeService);
-            var finder = new PRVJTFinder(config, routeService, settings);
-
+            var config = await roteiro.ToPRVJTConfig(routeService, settings);
+            var finder = new PRVJTFinder(config, routeService);
 
             var result = await finder.Run();
 
