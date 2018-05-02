@@ -6,23 +6,13 @@ namespace PathFinder
 {
     public class PRVJTResult
     {
-        public bool Erro { get; set; }
+        public bool Erro => TipoErro != TipoErro.Concluido;
         public TipoErro TipoErro { get; set; }
-        public string Messagem { get; set; }
+        public string Messagem => TipoErro.GetDescription();
 
-        public PRVJTResult Register(string msg)
-        {
-
-            Erro = true;
-            Messagem = msg;
-
-            return this;
-        }
         public PRVJTResult Register(TipoErro erro)
         {
             TipoErro = erro;
-            Erro = true;
-            Messagem = erro.GetDescription();
             return this;
         }
     }
@@ -32,12 +22,6 @@ namespace PathFinder
 
         public bool Concluido => !ListEntregadores.Any(o => o.Routes.Any(r => r.DhChegada > o.DepotBack.DhChegada));
 
-        public new FinderResult Register(string msg)
-        {
-            base.Register(msg);
-
-            return this;
-        }
         public new FinderResult Register(TipoErro erro)
         {
             base.Register(erro);

@@ -44,41 +44,6 @@ namespace PathFinder
 
             using (TimeMeasure.Init())
             {
-                //while (map.Destinations.Any())
-                //{
-                //    var best = await GaFinder.FindPathAsync(map);
-
-                //    var routesInTime = best.Locals.TakeWhile(e => e.DhChegada <= Config.DtLimite).ToList();
-
-                //    if (!routesInTime.Any())
-                //        return result.Register(TipoErro.EstourouTempo);
-
-                //    var remainingPoints = routesInTime.Select(o => o.Destino).ToList();
-
-                //    var destinosEntrega = map.Destinations
-                //                        .Where(o => remainingPoints.Exists(a => a.Equals(o))).ToList();
-
-                //    var mapentr = map.Clone();
-
-                //    destinosEntrega.ForEach(async e => await mapentr.AddDestination(e));
-
-                //    var g = new Genome { Map = mapentr, ListRoutes = routesInTime.Select(o => o).ToList(), Locals = remainingPoints.Select(o => o).ToList() };
-
-                //    g.CalcFitness(GaFinder.Fitness);
-
-                //    result.ListEntregadores.Add(new Entregador
-                //    {
-                //        Genome = g,
-                //        Numero = result.ListEntregadores.Count,
-                //        Map = mapentr,
-                //        NextRoute = routesInTime.First()
-                //    });
-
-                //    if (result.ListEntregadores.Count > Config.NumEntregadores)
-                //        return result.Register(TipoErro.LimiteEntregadores);
-
-                //    map.Destinations.RemoveAll(o => remainingPoints.Exists(a => a.Equals(o)));
-                //}
 
                 var route = await GaFinder.FindPathAsync(map);
                 result.ListEntregadores = route.Trucks.Where(e => e.Locals.Any()).ToList();
