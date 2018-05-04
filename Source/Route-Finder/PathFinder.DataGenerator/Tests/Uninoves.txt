@@ -1,0 +1,15 @@
+Nome=Uninove Vergueiro
+Endereco=Rua Vergueiro, 235/249 - Liberdade, São Paulo - SP
+Saida=22/11/2017 08:00:00
+Volta=22/11/2017 23:00:00
+Entregadores=5
+Descarga=90
+Nome							|Endereço																		|Abertura	|Fechamento	|
+Uninove Osasco					|R. Dante Batiston, 87 - Centro, Osasco - SP									|08:00		|23:00		|
+Uninove Santo Amaro				|R. Amador Bueno - Santo Amaro, São Paulo - SP									|08:00		|23:00		|
+Uninove São Bernardo do Campo	|Av. Dom Jaime de Barros Câmara, 90 - Planalto, São Bernardo do Campo - SP		|08:00		|23:00		|
+Uninove Vila Prudente			|Av. Professor Luiz Ignácio Anhaia Mello, 1363 - Vila Prudente, São Paulo - SP	|08:00		|23:00		|
+Uninove Vila Maria Baixa		|R. Itauna, 74 - Vila Maria Baixa, São Paulo - SP								|08:00		|23:00		|
+Uninove Barra Funda				|Av. Dr. Adolpho Pinto, 109 - Barra Funda, São Paulo - SP						|08:00		|23:00		|
+Uninove Mauá					|R. Álvares Machado, 48 - Vila Bocaina, Mauá - SP								|08:00		|23:00		|
+Uninove Santo André				|R. Princesa Isabel - Vila Guiomar, Santo André - SP							|08:00		|23:00		|

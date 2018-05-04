@@ -41,36 +41,42 @@ namespace PathFinder.DataGenerator
             {
                 foreach (CrossoverEnum cro in Enum.GetValues(typeof(CrossoverEnum)))
                 {
-                    var config = await PRVJTFinder.GetConfigByFile(filename, routeService);
                     // Altera a configuração do GA
                     settings.Mutation = mut;
                     settings.Crossover = cro;
-                    // Carrega a configuração do roteiro
-                    var finder = new PRVJTFinder(config, routeService);
-                    // Executa a divisão de rotas
-                    var result = await finder.Run();
 
-                    if (result.Erro)
+                    for (int i = 0; i < 10; i++)
                     {
-                        ret.Add(new Result(
-                                 result.TipoErro,
-                                 filename,
-                                 -1,
-                                 mut,
-                                 cro,
-                                0// result.ListEntregadores.Sum(e => e.Genome.Fitness)
-                             ));
-                        continue;
-                    }
+                        var file = Path.GetFileName(filename);
+                        Console.WriteLine($"A:{file} M:{mut} C:{cro} I:{i}");
+                        var config = await PRVJTFinder.GetConfigByFile(filename, routeService);
+                        // Carrega a configuração do roteiro
+                        var finder = new PRVJTFinder(config, routeService);
+                        // Executa a divisão de rotas
+                        var result = await finder.Run();
 
-                    ret.Add(new Result(
-                            result.TipoErro,
-                            filename,
-                            result.ListEntregadores.Count(),
-                            mut,
-                            cro,
-                            0//result.ListEntregadores.Sum(e => e.Genome.Fitness)
-                        ));
+                        if (result.Erro)
+                        {
+                            ret.Add(new Result(
+                                     result.TipoErro,
+                                     filename,
+                                     -1,
+                                     mut,
+                                     cro,
+                                    0// result.ListEntregadores.Sum(e => e.Genome.Fitness)
+                                 ));
+                            continue;
+                        }
+
+                        ret.Add(new Result(
+                                result.TipoErro,
+                                filename,
+                                result.ListEntregadores.Count(),
+                                mut,
+                                cro,
+                                0//result.ListEntregadores.Sum(e => e.Genome.Fitness)
+                            ));
+                    }
                 }
             }
             http.Dispose();
