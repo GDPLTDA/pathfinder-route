@@ -1,8 +1,8 @@
-﻿using PathFinder.GeneticAlgorithm.Abstraction;
+﻿using CalcRoute.GeneticAlgorithm.Abstraction;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PathFinder.GeneticAlgorithm
+namespace CalcRoute.GeneticAlgorithm
 {
     public class SelectionRouletteWheel : ISelection
     {

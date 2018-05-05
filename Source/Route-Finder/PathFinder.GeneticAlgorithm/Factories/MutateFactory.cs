@@ -1,8 +1,8 @@
-﻿using PathFinder.GeneticAlgorithm.Abstraction;
-using PathFinder.GeneticAlgorithm.Mutation;
+﻿using CalcRoute.GeneticAlgorithm.Abstraction;
+using CalcRoute.GeneticAlgorithm.Mutation;
 using System;
 
-namespace PathFinder.GeneticAlgorithm.Factories
+namespace CalcRoute.GeneticAlgorithm.Factories
 {
     public class MutateFactory
     {

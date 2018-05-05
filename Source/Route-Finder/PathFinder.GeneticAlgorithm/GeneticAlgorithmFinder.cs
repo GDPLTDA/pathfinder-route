@@ -1,13 +1,13 @@
-﻿using PathFinder.GeneticAlgorithm.Abstraction;
-using PathFinder.GeneticAlgorithm.Factories;
-using PathFinder.Routes;
+﻿using CalcRoute.GeneticAlgorithm.Abstraction;
+using CalcRoute.GeneticAlgorithm.Factories;
+using CalcRoute.Routes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
-namespace PathFinder.GeneticAlgorithm
+namespace CalcRoute.GeneticAlgorithm
 {
     public class GeneticAlgorithmFinder
     {

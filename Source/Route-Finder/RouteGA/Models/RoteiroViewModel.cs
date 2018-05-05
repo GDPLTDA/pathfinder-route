@@ -1,6 +1,6 @@
-﻿using PathFinder;
-using PathFinder.GeneticAlgorithm;
-using PathFinder.Routes;
+﻿using CalcRoute;
+using CalcRoute.GeneticAlgorithm;
+using CalcRoute.Routes;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

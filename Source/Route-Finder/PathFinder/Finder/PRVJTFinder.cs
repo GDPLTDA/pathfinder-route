@@ -1,5 +1,5 @@
-﻿using PathFinder.GeneticAlgorithm;
-using PathFinder.Routes;
+﻿using CalcRoute.GeneticAlgorithm;
+using CalcRoute.Routes;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace PathFinder
+namespace CalcRoute
 {
     public enum TipoErro
     {
@@ -47,49 +47,13 @@ namespace PathFinder
 
                 var route = await GaFinder.FindPathAsync(map);
                 result.ListEntregadores = route.Trucks.Where(e => e.Locals.Any()).ToList();
-
                 result.TipoErro = (route.Trucks.SelectMany(e => e.Routes).Any(l => l.Late)) ? TipoErro.EstourouTempo : TipoErro.Concluido;
-
+                result.BestGenome = route;
             }
-
 
             return result;
         }
-
-        //public async Task<EntregadorResult> Step(Entregador entregador)
-        //{
-        //    using (TimeMeasure.Init())
-        //    {
-        //        var result = new EntregadorResult(entregador);
-        //        var map = entregador.Map;
-
-        //        if (!map.Destinations.Any())
-        //        {
-        //            result.Entregador.NextRoute = null;
-        //            return result;
-        //        }
-
-        //        if (entregador.NextRoute.DhChegada > Config.DtLimite)
-        //            return result.Register(TipoErro.EstourouTempoEntrega);
-
-        //        map.Next(entregador.Genome.Locals);
-
-        //        if (entregador.Genome.Locals.Any())
-        //            entregador.Genome.Locals.RemoveAt(0);
-
-        //        var best = await GaFinder.FindPathAsync(map, entregador.Genome);
-
-        //        entregador.Genome = new Genome(best);
-
-        //        var route = best.Locals.FirstOrDefault();
-        //        if (!entregador.NextRoute.Equals(route))
-        //            entregador.NextRoute = route;
-        //        entregador.Map = map;
-
-        //        return result;
-        //    }
-        //}
-
+        
         public static async Task<PRVJTConfig> GetConfigByFile(string fileName, IRouteService routeService, GASettings settings = null)
         {
             using (TimeMeasure.Init())

@@ -1,4 +1,4 @@
-﻿namespace PathFinder.GeneticAlgorithm
+﻿namespace CalcRoute.GeneticAlgorithm
 {
     public class GASettings
     {

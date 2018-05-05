@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PathFinder;
-using PathFinder.GeneticAlgorithm;
-using PathFinder.Routes;
+using CalcRoute;
+using CalcRoute.GeneticAlgorithm;
+using CalcRoute.Routes;
 using RouteGA.Models;
 using System.Linq;
 using System.Threading.Tasks;

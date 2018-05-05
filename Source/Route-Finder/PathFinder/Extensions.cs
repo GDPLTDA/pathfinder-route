@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 
-namespace PathFinder
+namespace CalcRoute
 {
     public static class Extensions
     {

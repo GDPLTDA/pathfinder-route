@@ -1,8 +1,8 @@
-﻿using PathFinder.GeneticAlgorithm;
-using PathFinder.Routes;
+﻿using CalcRoute.GeneticAlgorithm;
+using CalcRoute.Routes;
 using System;
 
-namespace PathFinder
+namespace CalcRoute
 {
     public class PRVJTConfig
     {

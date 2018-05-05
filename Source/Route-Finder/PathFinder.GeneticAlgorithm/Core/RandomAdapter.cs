@@ -1,7 +1,7 @@
-﻿using PathFinder.GeneticAlgorithm.Abstraction;
+﻿using CalcRoute.GeneticAlgorithm.Abstraction;
 using System;
 
-namespace PathFinder
+namespace CalcRoute
 {
     public class RandomAdapter : IRandom
     {

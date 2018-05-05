@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace PathFinder.Routes
+namespace CalcRoute.Routes
 {
     public interface IRouteService
     {

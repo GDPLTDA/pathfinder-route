@@ -1,9 +1,9 @@
-﻿using PathFinder.GeneticAlgorithm.Abstraction;
-using PathFinder.GeneticAlgorithm.Crossover;
-using PathFinder.Routes;
+﻿using CalcRoute.GeneticAlgorithm.Abstraction;
+using CalcRoute.GeneticAlgorithm.Crossover;
+using CalcRoute.Routes;
 using System;
 
-namespace PathFinder.GeneticAlgorithm.Factories
+namespace CalcRoute.GeneticAlgorithm.Factories
 {
     public class CrossoverFactory
     {

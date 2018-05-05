@@ -1,4 +1,4 @@
-﻿namespace PathFinder.GeneticAlgorithm.Abstraction
+﻿namespace CalcRoute.GeneticAlgorithm.Abstraction
 {
     public abstract class AbstractMutate : IMutate
     {

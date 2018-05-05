@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PathFinder.Routes\PathFinder.Routes.csproj" />
+    <ProjectReference Include="..\PathFinder.Routes\CalcRoute.Routes.csproj" />
   </ItemGroup>
 
 </Project>

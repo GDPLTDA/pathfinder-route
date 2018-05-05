@@ -1,11 +1,11 @@
-﻿using PathFinder.GeneticAlgorithm.Abstraction;
-using PathFinder.Routes;
+﻿using CalcRoute.GeneticAlgorithm.Abstraction;
+using CalcRoute.Routes;
 using System.Collections.Generic;
 using System.Linq;
 
 using System.Threading.Tasks;
 
-namespace PathFinder.GeneticAlgorithm
+namespace CalcRoute.GeneticAlgorithm
 {
     public class Genome
     {

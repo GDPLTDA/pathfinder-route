@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-namespace PathFinder.Routes
+namespace CalcRoute.Routes
 {
     public class GoogleMatrixService : CachedGoogleDirectionsService, IRouteService
     {

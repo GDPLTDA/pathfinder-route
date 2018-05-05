@@ -1,6 +1,6 @@
 ﻿using MoreLinq;
-using PathFinder.GeneticAlgorithm;
-using PathFinder.Routes;
+using CalcRoute.GeneticAlgorithm;
+using CalcRoute.Routes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace PathFinder.DataGenerator
+namespace CalcRoute.DataGenerator
 {
     class Program
     {
@@ -24,7 +24,6 @@ namespace PathFinder.DataGenerator
                  .GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Tests\"))
                  .Select(f => RunTest(f).Result)
                  .Select(r => r.ToDelimitedString(string.Empty))
-                //.ForEach(writer.WriteLine)
                 ;
 
                 MoreEnumerable.ForEach(itens, e => Console.WriteLine(e));
@@ -48,7 +47,7 @@ namespace PathFinder.DataGenerator
                     for (int i = 0; i < 10; i++)
                     {
                         var file = Path.GetFileName(filename);
-                        Console.WriteLine($"A:{file} M:{mut} C:{cro} I:{i}");
+                        Console.WriteLine($"A:{file} I{i} M:{mut} C:{cro}");
                         var config = await PRVJTFinder.GetConfigByFile(filename, routeService);
                         // Carrega a configuração do roteiro
                         var finder = new PRVJTFinder(config, routeService);
@@ -63,7 +62,7 @@ namespace PathFinder.DataGenerator
                                      -1,
                                      mut,
                                      cro,
-                                    0// result.ListEntregadores.Sum(e => e.Genome.Fitness)
+                                    0
                                  ));
                             continue;
                         }
@@ -74,7 +73,7 @@ namespace PathFinder.DataGenerator
                                 result.ListEntregadores.Count(),
                                 mut,
                                 cro,
-                                0//result.ListEntregadores.Sum(e => e.Genome.Fitness)
+                                result.BestGenome.Fitness
                             ));
                     }
                 }

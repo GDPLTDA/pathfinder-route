@@ -1,7 +1,7 @@
-﻿using PathFinder.GeneticAlgorithm.Abstraction;
-using PathFinder.Routes;
+﻿using CalcRoute.GeneticAlgorithm.Abstraction;
+using CalcRoute.Routes;
 using System.Linq;
-namespace PathFinder.GeneticAlgorithm.Crossover
+namespace CalcRoute.GeneticAlgorithm.Crossover
 {
     public class SubRouteInsertionCrossover : AbstractCrossover, ICrossover
     {

@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27128.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder", "PathFinder\PathFinder.csproj", "{7C5084E0-79E9-419D-B3F8-59A7186190F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalcRoute", "PathFinder\CalcRoute.csproj", "{7C5084E0-79E9-419D-B3F8-59A7186190F6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder.Routes", "PathFinder.Routes\PathFinder.Routes.csproj", "{A4041902-9E61-478B-A654-49BF17A1B685}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalcRoute.Routes", "PathFinder.Routes\CalcRoute.Routes.csproj", "{A4041902-9E61-478B-A654-49BF17A1B685}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder.GeneticAlgorithm", "PathFinder.GeneticAlgorithm\PathFinder.GeneticAlgorithm.csproj", "{BD082D95-1AC1-4B25-AEA3-EC9AB9F1B7F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalcRoute.GeneticAlgorithm", "PathFinder.GeneticAlgorithm\CalcRoute.GeneticAlgorithm.csproj", "{BD082D95-1AC1-4B25-AEA3-EC9AB9F1B7F8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder.Tests", "PathFinder.Tests\PathFinder.Tests.csproj", "{8DE6C08F-06C2-415E-B92B-AAE7B3978B25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathFinder.DataGenerator", "PathFinder.DataGenerator\PathFinder.DataGenerator.csproj", "{78FE8393-D885-41E7-8445-9D72D17EE1BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalcRoute.DataGenerator", "PathFinder.DataGenerator\CalcRoute.DataGenerator.csproj", "{78FE8393-D885-41E7-8445-9D72D17EE1BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteGA", "RouteGA\RouteGA.csproj", "{311334C4-D5A1-4541-B678-F4BA878C3DEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalcRoute.API", "RouteGA\CalcRoute.API.csproj", "{311334C4-D5A1-4541-B678-F4BA878C3DEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,6 @@
-﻿using PathFinder.GeneticAlgorithm.Abstraction;
+﻿using CalcRoute.GeneticAlgorithm.Abstraction;
 
-namespace PathFinder.GeneticAlgorithm.Mutation
+namespace CalcRoute.GeneticAlgorithm.Mutation
 {
     public class SwapMutation : AbstractMutate
     {

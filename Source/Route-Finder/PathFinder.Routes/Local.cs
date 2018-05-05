@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PathFinder.Routes
+namespace CalcRoute.Routes
 {
     public class Local
     {

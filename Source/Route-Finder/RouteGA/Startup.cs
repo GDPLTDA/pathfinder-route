@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PathFinder.Routes;
+using CalcRoute.Routes;
 using System.Net.Http;
 
 namespace RouteGA

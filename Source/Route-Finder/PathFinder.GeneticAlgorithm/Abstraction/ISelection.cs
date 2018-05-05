@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PathFinder.GeneticAlgorithm.Abstraction
+namespace CalcRoute.GeneticAlgorithm.Abstraction
 {
     public interface ISelection
     {

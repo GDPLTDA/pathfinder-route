@@ -1,8 +1,8 @@
-﻿using PathFinder.GeneticAlgorithm;
+﻿using CalcRoute.GeneticAlgorithm;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PathFinder
+namespace CalcRoute
 {
     public class PRVJTResult
     {
@@ -18,6 +18,7 @@ namespace PathFinder
     }
     public class FinderResult : PRVJTResult
     {
+        public Genome BestGenome { get; set; }
         public List<Truck> ListEntregadores { get; set; }
 
         public bool Concluido => !ListEntregadores.Any(o => o.Routes.Any(r => r.DhChegada > o.DepotBack.DhChegada));
@@ -29,26 +30,4 @@ namespace PathFinder
             return this;
         }
     }
-
-    //public class EntregadorResult : PRVJTResult
-    //{
-    //    public EntregadorResult(Entregador entregador)
-    //    {
-    //        Entregador = entregador;
-    //    }
-    //    public Entregador Entregador { get; set; }
-
-    //    public new EntregadorResult Register(string msg)
-    //    {
-    //        base.Register(msg);
-
-    //        return this;
-    //    }
-    //    public new EntregadorResult Register(TipoErro erro)
-    //    {
-    //        base.Register(erro);
-
-    //        return this;
-    //    }
-    //}
 }

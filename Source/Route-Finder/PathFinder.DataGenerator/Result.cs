@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 
-namespace PathFinder.DataGenerator
+namespace CalcRoute.DataGenerator
 {
     public class Result
     {

@@ -52,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PathFinder.GeneticAlgorithm\PathFinder.GeneticAlgorithm.csproj" />
+    <ProjectReference Include="..\PathFinder.GeneticAlgorithm\CalcRoute.GeneticAlgorithm.csproj" />
   </ItemGroup>
 
   <ItemGroup>

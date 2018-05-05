@@ -1,7 +1,7 @@
-﻿using PathFinder.GeneticAlgorithm.Abstraction;
+﻿using CalcRoute.GeneticAlgorithm.Abstraction;
 using System;
 
-namespace PathFinder.GeneticAlgorithm.Factories
+namespace CalcRoute.GeneticAlgorithm.Factories
 {
     public class FitnessFactory
     {

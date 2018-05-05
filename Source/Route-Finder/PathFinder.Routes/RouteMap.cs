@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PathFinder.Routes
+namespace CalcRoute.Routes
 {
     public class Roteiro
     {

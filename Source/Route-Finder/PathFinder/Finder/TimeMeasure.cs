@@ -2,7 +2,7 @@
 using System;
 using System.Diagnostics;
 
-namespace PathFinder
+namespace CalcRoute
 {
     public class TimeMeasure : IDisposable
     {
