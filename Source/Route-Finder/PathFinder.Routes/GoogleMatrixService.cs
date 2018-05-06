@@ -1,27 +1,30 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 namespace CalcRoute.Routes
 {
-    public class GoogleMatrixService : CachedGoogleDirectionsService, IRouteService
+    public class GoogleMatrixService : IRouteService
     {
 
-        public GoogleMatrixService(HttpClient httpClient) : base(httpClient) { }
+        protected readonly string Url = "https://maps.googleapis.com/maps/api/";
+        protected readonly string Key = "AIzaSyBm6unznpnoVDNak1s-iV_N9bQqCVpmKpE";
 
-        Dictionary<string, Dictionary<string, Rota>> _routes;
+        protected readonly HttpClient httpClient;
+        protected Dictionary<string, Dictionary<string, Rota>> routeMatrix;
 
-        public override async Task Prepare(IEnumerable<Local> locals)
+        public GoogleMatrixService(HttpClient httpClient)
         {
+            this.httpClient = httpClient;
+        }
 
-            if (UseCache && _routes != null && _routes.Any())
-                return;
 
-            _routes = new Dictionary<string, Dictionary<string, Rota>>();
+        public virtual async Task Prepare(IEnumerable<Local> locals)
+        {
+            routeMatrix = new Dictionary<string, Dictionary<string, Rota>>();
             var bufferedLocals = locals.Buffer(5).ToArray();
 
             for (int b = 0; b < bufferedLocals.Length; b++)
@@ -61,28 +64,28 @@ namespace CalcRoute.Routes
                         }
 
                         var key = ParseLocal(bufferOrigin[i]);
-                        if (_routes.ContainsKey(key))
+                        if (routeMatrix.ContainsKey(key))
                         {
-                            var dict = _routes[key];
+                            var dict = routeMatrix[key];
                             foreach (var r in destinos)
                                 dict.Add(r.Key, r.Value);
                         }
                         else
-                            _routes.Add(key, destinos);
+                            routeMatrix.Add(key, destinos);
                     }
 
                 }
         }
 
 
-        public override Task<Rota> GetRouteAsync(Local origin, Local destination)
+        public virtual Task<Rota> GetRouteAsync(Local origin, Local destination)
         {
-            if (_routes == null || _routes.Count == 0)
+            if (routeMatrix == null || routeMatrix.Count == 0)
                 throw new Exception("No initialized data");
 
             try
             {
-                var rota = _routes[ParseLocal(origin)][ParseLocal(destination)];
+                var rota = routeMatrix[ParseLocal(origin)][ParseLocal(destination)];
 
                 return Task.FromResult(new Rota
                 {
@@ -100,32 +103,40 @@ namespace CalcRoute.Routes
 
         }
 
-        public override void SaveCache()
+        public virtual async Task<Local> GetPointAsync(Local local)
         {
-            if (!UseCache)
-                return;
 
-            var jsonMatrix = JsonConvert.SerializeObject(_routes);
+            var url = GetRequestAddress((local.Endereco));
+            var ret = await ReadRequestPointAsync(local.Endereco, local.Name, url, local.Period);
+            //Console.WriteLine($"Endereço Encontrado: {ret.Endereco} ({ret.Latitude},{ret.Longitude})");
+            return ret;
 
-            File.WriteAllText($"MatrixCache", jsonMatrix);
-
-
-            base.SaveCache();
         }
 
-        public override void LoadCache()
+        public virtual async Task<Local> ReadRequestPointAsync(string address, string name, string url, Period period)
         {
-            if (!UseCache)
-                return;
+            var json = await httpClient.GetStringAsync(url);
+            dynamic data = JsonConvert.DeserializeObject(json);
 
-            var routeFile = $"MatrixCache.txt";
-            if (File.Exists(routeFile))
-            {
-                var jsonRoutes = File.ReadAllText(routeFile);
-                _routes = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Rota>>>(jsonRoutes);
-            }
-            base.LoadCache();
+            if (data == null || data.status == "ZERO_RESULTS")
+                throw new Exception("Dados nao encontrados");
+
+            var results = data.results as IEnumerable<dynamic>;
+
+            if (!results.Any())
+                Console.WriteLine($"{data.status}: {address}");
+
+            var r = results.LastOrDefault();
+            double lat = r.geometry.location.lat;
+            double lon = r.geometry.location.lng;
+
+
+            return new Local(name, address) { Latitude = lat, Longitude = lon, Period = period };
         }
+
+        string GetRequestAddress(string address)
+                   => $"{Url}geocode/json?address={(address)}&sensor=false&key={Key}";
+
 
         string GetRequestMatrixUrl(IEnumerable<Local> ori, IEnumerable<Local> des)
            => $"{Url}distancematrix/json?" +
@@ -133,7 +144,14 @@ namespace CalcRoute.Routes
                $"destinations=enc:{Encode(des)}:&" +
                $"sensor=false&key={Key}";
 
-        static string Encode(IEnumerable<Local> points)
+
+
+        string ConvNumber(double num)
+            => Math.Round(num, 13).ToString().Replace(',', '.');
+
+        protected string ParseLocal(Local local) => $"{ConvNumber(local.Latitude)},{ConvNumber(local.Longitude)}";
+
+        protected static string Encode(IEnumerable<Local> points)
         {
             var str = new StringBuilder();
 
@@ -164,5 +182,7 @@ namespace CalcRoute.Routes
             }
             return str.ToString();
         }
+
+
     }
 }

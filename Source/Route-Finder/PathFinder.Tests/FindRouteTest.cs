@@ -12,11 +12,11 @@ namespace PathFinder.Tests
     {
 
         static HttpClient httpClient;
-        IRouteService RouteService;
+        CachedGoogleMatrixService RouteService;
         public UnitTest()
         {
             httpClient = new HttpClient();
-            RouteService = new GoogleMatrixService(httpClient);
+            RouteService = new CachedGoogleMatrixService(httpClient);
         }
 
         [Theory(DisplayName = "Deve calcular a rota e retornar um estado valido")]
@@ -32,6 +32,7 @@ namespace PathFinder.Tests
 
         public async Task<TipoErro> RunTest(string filename)
         {
+            RouteService.LoadCache();
             var config = await PRVJTFinder.GetConfigByFile(filename, RouteService);
 
             foreach (MutateEnum mut in Enum.GetValues(typeof(MutateEnum)))
@@ -44,7 +45,9 @@ namespace PathFinder.Tests
                     // Carrega a configuração do roteiro
                     var finder = new PRVJTFinder(config, RouteService);
                     // Executa a divisão de rotas
+                    RouteService.LoadCache();
                     var result = await finder.Run();
+                    RouteService.SaveCache();
 
                     if (result.Erro)
                         return result.TipoErro;

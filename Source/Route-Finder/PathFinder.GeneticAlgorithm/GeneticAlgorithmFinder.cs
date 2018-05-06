@@ -46,7 +46,6 @@ namespace CalcRoute.GeneticAlgorithm
 
             var locals = map.Destinations.ToList();
             locals.Add(map.Depot);
-            routeService.LoadCache();
             await routeService.Prepare(locals);
 
             var rand = RandomSingleton.Instance;
@@ -99,7 +98,6 @@ namespace CalcRoute.GeneticAlgorithm
                 Best = Populations.First();
             }
 
-            routeService.SaveCache();
             return Best;
         }
 

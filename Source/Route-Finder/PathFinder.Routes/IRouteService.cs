@@ -10,7 +10,5 @@ namespace CalcRoute.Routes
 
         Task Prepare(IEnumerable<Local> locals);
 
-        void LoadCache();
-        void SaveCache();
     }
 }

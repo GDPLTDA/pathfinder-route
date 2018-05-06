@@ -37,7 +37,7 @@ namespace CalcRoute.DataGenerator
             var ret = new List<Result>();
             var http = new HttpClient();
             var settings = new GASettings();
-            var routeService = new GoogleMatrixService(http);
+            var routeService = new CachedGoogleMatrixService(http);
 
             foreach (MutateEnum mut in Enum.GetValues(typeof(MutateEnum)))
             {
@@ -55,7 +55,10 @@ namespace CalcRoute.DataGenerator
                         // Carrega a configuração do roteiro
                         var finder = new PRVJTFinder(config, routeService);
                         // Executa a divisão de rotas
+
+                        routeService.LoadCache();
                         var result = await finder.Run();
+                        routeService.SaveCache();
 
                         if (result.Erro)
                         {

@@ -1,36 +1,39 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using RouteMatrix = System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, CalcRoute.Routes.Rota>>;
 
 namespace CalcRoute.Routes
 {
-    public class CachedGoogleDirectionsService : GoogleDirectionsService, IRouteService
+    public class CachedGoogleMatrixService : GoogleMatrixService, IRouteService
     {
-        private ConcurrentDictionary<string, Rota> routes;
+        private ConcurrentDictionary<string, RouteMatrix> routes;
         private ConcurrentDictionary<string, Local> locals;
         public bool UseCache { get; set; } = true;
 
-        public CachedGoogleDirectionsService(HttpClient httpClient) : base(httpClient)
+        public CachedGoogleMatrixService(HttpClient httpClient) : base(httpClient)
         {
-            routes = new ConcurrentDictionary<string, Rota>();
+            routes = new ConcurrentDictionary<string, RouteMatrix>();
             locals = new ConcurrentDictionary<string, Local>();
         }
 
-        public async override Task<Rota> GetRouteAsync(Local origin, Local destination)
+        public async override Task Prepare(IEnumerable<Local> locals)
         {
-            var key = $"{origin.Latitude},{origin.Longitude}->{destination.Latitude},{destination.Longitude}";
+            var keyOfLocals = Encode(locals);
 
-            if (routes.TryGetValue(key, out var route))
-                return route;
+            if (UseCache && routes.TryGetValue(keyOfLocals, out var temp))
+                routeMatrix = temp;
+            else
+            {
+                await base.Prepare(locals);
+                routes.AddOrUpdate(keyOfLocals, routeMatrix, (_, v) => routeMatrix);
+            }
 
-
-            var value = await base.GetRouteAsync(origin, destination);
-            routes.AddOrUpdate(key, value, (_, v) => value);
-
-            return value;
         }
+
         public async override Task<Local> GetPointAsync(Local local)
         {
             if (locals.TryGetValue(local.Endereco, out var _local))
@@ -42,7 +45,7 @@ namespace CalcRoute.Routes
             return point;
         }
 
-        public override void SaveCache()
+        public virtual void SaveCache()
         {
             if (!UseCache)
                 return;
@@ -56,7 +59,7 @@ namespace CalcRoute.Routes
 
         }
 
-        public override void LoadCache()
+        public virtual void LoadCache()
         {
             if (!UseCache)
                 return;
@@ -65,7 +68,7 @@ namespace CalcRoute.Routes
             if (File.Exists(routeFile))
             {
                 var jsonRoutes = File.ReadAllText(routeFile);
-                routes = JsonConvert.DeserializeObject<ConcurrentDictionary<string, Rota>>(jsonRoutes);
+                routes = JsonConvert.DeserializeObject<ConcurrentDictionary<string, RouteMatrix>>(jsonRoutes);
             }
 
             var localFile = $"PointCache.txt";

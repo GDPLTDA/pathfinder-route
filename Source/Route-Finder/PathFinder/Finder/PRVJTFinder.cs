@@ -53,7 +53,7 @@ namespace CalcRoute
 
             return result;
         }
-        
+
         public static async Task<PRVJTConfig> GetConfigByFile(string fileName, IRouteService routeService, GASettings settings = null)
         {
             var config = new PRVJTConfig();
@@ -88,7 +88,7 @@ namespace CalcRoute
                 }
             }
             return config;
-            
+
         }
         public static string ReadConfig(string configname, StreamReader st)
         {

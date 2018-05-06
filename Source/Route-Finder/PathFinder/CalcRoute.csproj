@@ -55,13 +55,4 @@
     <ProjectReference Include="..\PathFinder.GeneticAlgorithm\CalcRoute.GeneticAlgorithm.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="PointCache.Txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="RouteCache.Txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
