@@ -42,7 +42,7 @@ namespace CalcRoute.Routes
             return point;
         }
 
-        public void SaveCache()
+        public override void SaveCache()
         {
             if (!UseCache)
                 return;
@@ -51,12 +51,12 @@ namespace CalcRoute.Routes
             var jsonRoutes = JsonConvert.SerializeObject(routes);
             var jsonLocals = JsonConvert.SerializeObject(locals);
 
-            File.WriteAllText($"RouteCache", jsonRoutes);
-            File.WriteAllText($"PointCache", jsonLocals);
+            File.WriteAllText($"RouteCache.txt", jsonRoutes);
+            File.WriteAllText($"PointCache.txt", jsonLocals);
 
         }
 
-        public void LoadCache()
+        public override void LoadCache()
         {
             if (!UseCache)
                 return;

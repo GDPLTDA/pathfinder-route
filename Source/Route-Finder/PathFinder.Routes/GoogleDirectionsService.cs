@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CalcRoute.Routes
 {
-    public class GoogleDirectionsService : IRouteService
+    public abstract class GoogleDirectionsService : IRouteService
     {
         protected readonly string Url = "https://maps.googleapis.com/maps/api/";
         protected readonly string Key = "AIzaSyBm6unznpnoVDNak1s-iV_N9bQqCVpmKpE";
@@ -68,7 +68,7 @@ namespace CalcRoute.Routes
             {
 
                 var ret = await ReadRequestPointAsync(local.Endereco, local.Name, url, local.Period);
-                Console.WriteLine($"Endereço Encontrado: {ret.Endereco} ({ret.Latitude},{ret.Longitude})");
+                //Console.WriteLine($"Endereço Encontrado: {ret.Endereco} ({ret.Latitude},{ret.Longitude})");
                 return ret;
             }
             catch (Exception ex)
@@ -120,5 +120,10 @@ namespace CalcRoute.Routes
         protected string ParseLocal(Local local) => $"{ConvNumber(local.Latitude)},{ConvNumber(local.Longitude)}";
 
         public virtual Task Prepare(IEnumerable<Local> locals) => Task.CompletedTask;
+
+
+        public abstract void SaveCache();
+
+        public abstract void LoadCache();
     }
 }

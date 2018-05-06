@@ -6,7 +6,7 @@ namespace CalcRoute
 {
     public class TimeMeasure : IDisposable
     {
-        readonly Stopwatch _stopwatch;
+        private readonly Stopwatch _stopwatch;
 
         public static TimeMeasure Init() => new TimeMeasure();
 

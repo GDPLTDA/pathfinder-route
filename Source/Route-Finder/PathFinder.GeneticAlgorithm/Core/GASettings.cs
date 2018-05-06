@@ -2,7 +2,6 @@
 {
     public class GASettings
     {
-
         public int Throttle { get; set; } = 1;  // quantidade de requests simultaneos
         public MutateEnum Mutation { get; set; } = MutateEnum.Swap;
         public CrossoverEnum Crossover { get; set; } = CrossoverEnum.SubRouteInsertion;

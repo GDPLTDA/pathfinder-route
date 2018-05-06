@@ -1,6 +1,6 @@
-﻿using MoreLinq;
-using CalcRoute.GeneticAlgorithm;
+﻿using CalcRoute.GeneticAlgorithm;
 using CalcRoute.Routes;
+using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace CalcRoute.DataGenerator
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             var arquivoDados = new FileStream("resultados.csv", FileMode.Create, FileAccess.Write, FileShare.None, 4096, FileOptions.WriteThrough);
 
@@ -20,15 +20,18 @@ namespace CalcRoute.DataGenerator
             {
                 writer.WriteLine("Msg;Arquivo;Entregadores;Mutation;Cross;Fitness");
 
-                var itens = Directory
-                 .GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Tests\"))
-                 .Select(f => RunTest(f).Result)
-                 .Select(r => r.ToDelimitedString(string.Empty))
-                ;
+                var files = Directory
+                 .GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Tests\"));
 
-                MoreEnumerable.ForEach(itens, e => Console.WriteLine(e));
+                foreach (var file in files)
+                {
+                    var itens = RunTest(file).Result.ToDelimitedString(string.Empty);
+
+                    MoreEnumerable.ForEach(itens, e => writer.WriteLine(e));
+                }
             }
         }
+
         public async static Task<IEnumerable<Result>> RunTest(string filename)
         {
             var ret = new List<Result>();
@@ -47,7 +50,7 @@ namespace CalcRoute.DataGenerator
                     for (int i = 0; i < 10; i++)
                     {
                         var file = Path.GetFileName(filename);
-                        Console.WriteLine($"A:{file} I{i} M:{mut} C:{cro}");
+                        Console.WriteLine($"A:{file} I:{i} M:{mut} C:{cro}");
                         var config = await PRVJTFinder.GetConfigByFile(filename, routeService);
                         // Carrega a configuração do roteiro
                         var finder = new PRVJTFinder(config, routeService);

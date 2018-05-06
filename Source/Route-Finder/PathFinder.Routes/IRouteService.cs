@@ -9,5 +9,8 @@ namespace CalcRoute.Routes
         Task<Rota> GetRouteAsync(Local origin, Local destination);
 
         Task Prepare(IEnumerable<Local> locals);
+
+        void LoadCache();
+        void SaveCache();
     }
 }

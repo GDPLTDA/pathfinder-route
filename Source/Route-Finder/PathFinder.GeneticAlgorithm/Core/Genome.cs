@@ -14,11 +14,9 @@ namespace CalcRoute.GeneticAlgorithm
 
         public double Fitness { get; private set; }
 
-
         public GASettings Settings { get; }
 
         public int GetUsedTrucksCount => Trucks.Count(e => e.Locals.Any());
-
 
         public Genome(Roteiro map, GASettings settings)
         {
@@ -26,6 +24,7 @@ namespace CalcRoute.GeneticAlgorithm
             Settings = settings;
             Initialize();
         }
+
         public Genome(Genome genome)
         {
             Map = genome.Map;
@@ -33,7 +32,8 @@ namespace CalcRoute.GeneticAlgorithm
             Trucks = genome.Trucks.ToList();
             ShrinkTruks();
         }
-        void Initialize()
+
+        private void Initialize()
         {
             var rand = RandomSingleton.Instance;
             Trucks = Enumerable.Range(0, Settings.NumberOfTrucks)
@@ -58,7 +58,6 @@ namespace CalcRoute.GeneticAlgorithm
                         .ThenBy(t => t.Id)
                         .Select((t, i) => new Truck(t.Locals) { Id = i })
                         .ToList();
-
 
         public async Task CalcRoutesAsync(IRouteService routeService) =>
             await Trucks

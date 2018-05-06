@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CalcRoute;
+﻿using CalcRoute;
 using CalcRoute.GeneticAlgorithm;
 using CalcRoute.Routes;
+using Microsoft.AspNetCore.Mvc;
 using RouteGA.Models;
 using System.Linq;
 using System.Threading.Tasks;
@@ -46,7 +46,6 @@ namespace RouteGA.Controllers
                 return Ok(new EntregadorViewModel { Mensagem = result.Messagem });
 
             var viewmodel = result.ListEntregadores.Select(o => new EntregadorViewModel(o)).ToList();
-
 
             return Ok(viewmodel);
         }

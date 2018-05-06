@@ -56,41 +56,39 @@ namespace CalcRoute
         
         public static async Task<PRVJTConfig> GetConfigByFile(string fileName, IRouteService routeService, GASettings settings = null)
         {
-            using (TimeMeasure.Init())
+            var config = new PRVJTConfig();
+            using (var sr = new StreamReader(fileName, Encoding.GetEncoding("ISO-8859-1")))
             {
-                var config = new PRVJTConfig();
-                using (var sr = new StreamReader(fileName, Encoding.GetEncoding("ISO-8859-1")))
+                var name = ReadConfig("Nome", sr);
+                var endereco = ReadConfig("Endereco", sr);
+                var saida = DateTime.Parse(ReadConfig("Saida", sr));
+                var volta = DateTime.Parse(ReadConfig("Volta", sr));
+                var entregadores = Convert.ToInt32(ReadConfig("Entregadores", sr));
+                var descarga = Convert.ToInt32(ReadConfig("Descarga", sr));
+
+                config.Settings = settings ?? new GASettings();
+                config.Settings.NumberOfTrucks = entregadores;
+                config.Map = new Roteiro(routeService, name, endereco, saida, volta);
+                config.Map.DataSaida = saida;
+
+                config.DtLimite = volta;
+                //Linha de titulo
+                sr.ReadLine();
+
+                while (sr.Peek() >= 0)
                 {
-                    var name = ReadConfig("Nome", sr);
-                    var endereco = ReadConfig("Endereco", sr);
-                    var saida = DateTime.Parse(ReadConfig("Saida", sr));
-                    var volta = DateTime.Parse(ReadConfig("Volta", sr));
-                    var entregadores = Convert.ToInt32(ReadConfig("Entregadores", sr));
-                    var descarga = Convert.ToInt32(ReadConfig("Descarga", sr));
+                    var line = sr.ReadLine().Split("|").Select(o => o.Replace("\t", "")).ToList();
 
-                    config.Settings = settings ?? new GASettings();
-                    config.Settings.NumberOfTrucks = entregadores;
-                    config.Map = new Roteiro(routeService, name, endereco, saida, volta);
-                    config.Map.DataSaida = saida;
-
-                    config.DtLimite = volta;
-                    //Linha de titulo
-                    sr.ReadLine();
-
-                    while (sr.Peek() >= 0)
+                    var map = new Local(line[0], line[1])
                     {
-                        var line = sr.ReadLine().Split("|").Select(o => o.Replace("\t", "")).ToList();
+                        Period = new Period(line[2], line[3], descarga)
+                    };
 
-                        var map = new Local(line[0], line[1])
-                        {
-                            Period = new Period(line[2], line[3], descarga)
-                        };
-
-                        await config.Map.AddDestination(map);
-                    }
+                    await config.Map.AddDestination(map);
                 }
-                return config;
             }
+            return config;
+            
         }
         public static string ReadConfig(string configname, StreamReader st)
         {

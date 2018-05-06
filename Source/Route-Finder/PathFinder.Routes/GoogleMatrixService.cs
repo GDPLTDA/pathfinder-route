@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -18,7 +19,6 @@ namespace CalcRoute.Routes
         {
             routes = new Dictionary<string, Dictionary<string, Func<Rota>>>();
             var bufferedLocals = locals.Buffer(5).ToArray();
-
 
             for (int b = 0; b < bufferedLocals.Length; b++)
                 for (int c = 0; c < bufferedLocals.Length; c++)
@@ -47,7 +47,6 @@ namespace CalcRoute.Routes
                             var rotaFactory = Unclocure(bufferOrigin[i], bufferDest[j], metros, segundos);
 
                             destinos.Add(ParseLocal(bufferDest[j]), rotaFactory);
-
                         }
 
                         var key = ParseLocal(bufferOrigin[i]);
@@ -98,10 +97,6 @@ namespace CalcRoute.Routes
                $"origins=enc:{Encode(ori)}:&" +
                $"destinations=enc:{Encode(des)}:&" +
                $"sensor=false&key={Key}";
-
-        //$"origins={string.Join("|", ori.Select(ParseLocal))}&" +
-        //$"destinations={string.Join("|", des.Select(ParseLocal))}&" +
-        //$"sensor=false&key={Key}";
 
         static string Encode(IEnumerable<Local> points)
         {
