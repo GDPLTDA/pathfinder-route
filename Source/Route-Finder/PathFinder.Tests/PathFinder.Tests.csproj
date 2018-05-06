@@ -43,4 +43,13 @@
     <ProjectReference Include="..\RouteGA\CalcRoute.API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="PointCache.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="RouteCache.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
