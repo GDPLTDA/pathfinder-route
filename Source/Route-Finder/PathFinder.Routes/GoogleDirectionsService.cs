@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CalcRoute.Routes
 {
-    public abstract class GoogleDirectionsService : IRouteService
+    public class GoogleDirectionsService : IRouteService
     {
         protected readonly string Url = "https://maps.googleapis.com/maps/api/";
         protected readonly string Key = "AIzaSyBm6unznpnoVDNak1s-iV_N9bQqCVpmKpE";
@@ -122,8 +122,8 @@ namespace CalcRoute.Routes
         public virtual Task Prepare(IEnumerable<Local> locals) => Task.CompletedTask;
 
 
-        public abstract void SaveCache();
+        public virtual void SaveCache() { }
 
-        public abstract void LoadCache();
+        public virtual void LoadCache() { }
     }
 }

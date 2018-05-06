@@ -1,9 +1,9 @@
-﻿using FakeItEasy;
+﻿using CalcRoute.GeneticAlgorithm;
+using CalcRoute.GeneticAlgorithm.Abstraction;
+using CalcRoute.GeneticAlgorithm.Crossover;
+using CalcRoute.Routes;
+using FakeItEasy;
 using FluentAssertions;
-using PathFinder.GeneticAlgorithm;
-using PathFinder.GeneticAlgorithm.Abstraction;
-using PathFinder.GeneticAlgorithm.Crossover;
-using PathFinder.Routes;
 using System.Linq;
 using Xunit;
 

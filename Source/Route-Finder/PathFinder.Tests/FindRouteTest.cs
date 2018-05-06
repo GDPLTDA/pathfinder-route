@@ -1,5 +1,6 @@
+using CalcRoute;
+using CalcRoute.Routes;
 using FluentAssertions;
-using PathFinder.Routes;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,7 +18,6 @@ namespace PathFinder.Tests
             httpClient = new HttpClient();
             RouteService = new GoogleMatrixService(httpClient);
         }
-
 
         [Theory(DisplayName = "Deve calcular a rota e retornar um estado valido")]
         [InlineData("Aceita.txt", TipoErro.Concluido)]

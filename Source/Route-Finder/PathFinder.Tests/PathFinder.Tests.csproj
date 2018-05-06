@@ -36,9 +36,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PathFinder.GeneticAlgorithm\PathFinder.GeneticAlgorithm.csproj" />
-    <ProjectReference Include="..\PathFinder.Routes\PathFinder.Routes.csproj" />
-    <ProjectReference Include="..\PathFinder\PathFinder.csproj" />
+    <ProjectReference Include="..\PathFinder.DataGenerator\CalcRoute.DataGenerator.csproj" />
+    <ProjectReference Include="..\PathFinder.GeneticAlgorithm\CalcRoute.GeneticAlgorithm.csproj" />
+    <ProjectReference Include="..\PathFinder.Routes\CalcRoute.Routes.csproj" />
+    <ProjectReference Include="..\PathFinder\CalcRoute.csproj" />
+    <ProjectReference Include="..\RouteGA\CalcRoute.API.csproj" />
   </ItemGroup>
 
 </Project>

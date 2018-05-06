@@ -13,11 +13,15 @@ namespace CalcRoute.Routes
 
         public GoogleMatrixService(HttpClient httpClient) : base(httpClient) { }
 
-        Dictionary<string, Dictionary<string, Func<Rota>>> routes;
+        Dictionary<string, Dictionary<string, Rota>> _routes;
 
         public override async Task Prepare(IEnumerable<Local> locals)
         {
-            routes = new Dictionary<string, Dictionary<string, Func<Rota>>>();
+
+            if (UseCache && _routes != null && _routes.Any())
+                return;
+
+            _routes = new Dictionary<string, Dictionary<string, Rota>>();
             var bufferedLocals = locals.Buffer(5).ToArray();
 
             for (int b = 0; b < bufferedLocals.Length; b++)
@@ -37,51 +41,56 @@ namespace CalcRoute.Routes
                     for (int i = 0; i < rows.Count; i++)
                     {
                         var cols = rows[i].elements;
-                        var destinos = new Dictionary<string, Func<Rota>>();
+                        var destinos = new Dictionary<string, Rota>();
                         for (int j = 0; j < cols.Count; j++)
                         {
                             var col = cols[j];
                             double metros = col.distance.value;
                             double segundos = col.duration.value;
 
-                            var rotaFactory = Unclocure(bufferOrigin[i], bufferDest[j], metros, segundos);
+                            var rotaBase = new Rota
+                            {
+                                Origem = bufferOrigin[i],
+                                Destino = bufferDest[j],
+                                Metros = metros,
+                                Segundos = segundos
+                            };
 
-                            destinos.Add(ParseLocal(bufferDest[j]), rotaFactory);
+                            destinos.Add(ParseLocal(bufferDest[j]), rotaBase);
+
                         }
 
                         var key = ParseLocal(bufferOrigin[i]);
-                        if (routes.ContainsKey(key))
+                        if (_routes.ContainsKey(key))
                         {
-                            var dict = routes[key];
+                            var dict = _routes[key];
                             foreach (var r in destinos)
                                 dict.Add(r.Key, r.Value);
                         }
                         else
-                            routes.Add(key, destinos);
+                            _routes.Add(key, destinos);
                     }
 
                 }
         }
 
-        static Func<Rota> Unclocure(Local origem, Local destino, double metros, double segundos) =>
-            () => new Rota
-            {
-                Origem = origem,
-                Destino = destino,
-                Metros = metros,
-                Segundos = segundos,
-            };
 
         public override Task<Rota> GetRouteAsync(Local origin, Local destination)
         {
-            if (routes == null || routes.Count == 0)
+            if (_routes == null || _routes.Count == 0)
                 throw new Exception("No initialized data");
 
             try
             {
-                var rota = routes[ParseLocal(origin)][ParseLocal(destination)]();
+                var rota = _routes[ParseLocal(origin)][ParseLocal(destination)];
 
-                return Task.FromResult(rota);
+                return Task.FromResult(new Rota
+                {
+                    Origem = rota.Origem,
+                    Destino = rota.Destino,
+                    Metros = rota.Metros,
+                    Segundos = rota.Segundos
+                });
             }
             catch (Exception)
             {
@@ -91,6 +100,32 @@ namespace CalcRoute.Routes
 
         }
 
+        public override void SaveCache()
+        {
+            if (!UseCache)
+                return;
+
+            var jsonMatrix = JsonConvert.SerializeObject(_routes);
+
+            File.WriteAllText($"MatrixCache", jsonMatrix);
+
+
+            base.SaveCache();
+        }
+
+        public override void LoadCache()
+        {
+            if (!UseCache)
+                return;
+
+            var routeFile = $"MatrixCache.txt";
+            if (File.Exists(routeFile))
+            {
+                var jsonRoutes = File.ReadAllText(routeFile);
+                _routes = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Rota>>>(jsonRoutes);
+            }
+            base.LoadCache();
+        }
 
         string GetRequestMatrixUrl(IEnumerable<Local> ori, IEnumerable<Local> des)
            => $"{Url}distancematrix/json?" +
