@@ -3,7 +3,7 @@ Endereco=Av. Paulista, 2355 - Bela Vista, São Paulo - SP
 Saida=09:00:00
 Volta=23:00:00
 Entregadores=1
-Descarga=60
+Descarga=30
 Nome								|Endereço															|Abertura	|Fechamento	|
 Catedral Metropolitana de São Paulo	|Praça da Sé - Sé, São Paulo - SP									|00:00		|23:59		|
 Autódromo de Interlagos				|Av. Sen. Teotônio Vilela, 261 - Interlagos, São Paulo - SP			|07:00		|17:00		|

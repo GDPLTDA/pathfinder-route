@@ -18,7 +18,7 @@ namespace CalcRoute.DataGenerator
 
             using (var writer = new StreamWriter(arquivoDados))
             {
-                writer.WriteLine("Msg;Arquivo;Entregadores;Mutation;Cross;Fitness");
+                writer.WriteLine("Msg;Indice;Arquivo;Entregadores;Mutation;Cross;Fitness");
 
                 var files = Directory
                  .GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Tests\"));
@@ -67,6 +67,7 @@ namespace CalcRoute.DataGenerator
                         {
                             ret.Add(new Result(
                                      result.TipoErro,
+                                     i,
                                      filename,
                                      result.ListEntregadores.Count(),
                                      mut,
@@ -78,6 +79,7 @@ namespace CalcRoute.DataGenerator
 
                         ret.Add(new Result(
                                 result.TipoErro,
+                                i,
                                 filename,
                                 result.ListEntregadores.Count(),
                                 mut,

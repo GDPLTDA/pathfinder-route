@@ -6,6 +6,7 @@ namespace CalcRoute.DataGenerator
     public class Result
     {
         public TipoErro TipoErro { get; set; }
+        public int Indice { get; set; }
         public string FileName { get; set; }
         public int QtdEntregadores { get; set; }
         public MutateEnum Mutation { get; set; }
@@ -14,6 +15,7 @@ namespace CalcRoute.DataGenerator
 
         public Result(
             TipoErro TipoErro,
+            int Indice,
             string FileName,
             int QtdEntregadores,
             MutateEnum Mutation,
@@ -22,6 +24,7 @@ namespace CalcRoute.DataGenerator
           )
         {
             this.TipoErro = TipoErro;
+            this.Indice = Indice;
             this.FileName = new FileInfo(FileName).Name;
             this.QtdEntregadores = QtdEntregadores;
             this.Mutation = Mutation;
