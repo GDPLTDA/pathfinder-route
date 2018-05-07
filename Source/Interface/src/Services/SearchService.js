@@ -21,8 +21,8 @@ const Search = async (entragador, listLocations) => {
 
         const json = {
             NumeroEntregadores: entragador,
-            DhSaida : "11/12/2017 " + store.from + ":00",
-            DhLimite : "11/12/2017 " + store.to + ":00",
+            DhSaida : store.from + ":00",
+            DhLimite : store.to + ":00",
             Origem :{
                 Endereco : store.address
             },
@@ -59,8 +59,8 @@ const Search = async (entragador, listLocations) => {
 
         const json = {
             NumeroEntregadores: 1,
-            DhSaida : "11/12/2017 " + store.from + ":00",
-            DhLimite : "11/12/2017 " + store.to + ":00",
+            DhSaida : store.from + ":00",
+            DhLimite : store.to + ":00",
             Origem :{
                 Endereco : store.address
             },
