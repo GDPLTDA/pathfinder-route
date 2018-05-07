@@ -26,8 +26,7 @@ namespace CalcRoute.DataGenerator
                 foreach (var file in files)
                 {
                     var itens = RunTest(file).Result.ToDelimitedString(string.Empty);
-
-                    MoreEnumerable.ForEach(itens, e => writer.WriteLine(e));
+                    writer.WriteLine(itens);
                 }
             }
         }
