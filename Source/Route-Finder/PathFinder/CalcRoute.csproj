@@ -18,32 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Tests\Extras.txt" />
-    <None Remove="Tests\MacDonalts.txt" />
-    <None Remove="Tests\Senacs.txt" />
-    <None Remove="Tests\Turisticos.txt" />
-    <None Remove="Tests\Uninoves.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Tests\Extras.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tests\Uninoves.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tests\MacDonalts.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tests\Senacs.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tests\Turisticos.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Finder\Entregador.cs" />
   </ItemGroup>
 
@@ -53,6 +27,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PathFinder.GeneticAlgorithm\CalcRoute.GeneticAlgorithm.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="PointCache.Txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="RouteCache.Txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

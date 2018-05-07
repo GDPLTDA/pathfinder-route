@@ -1,7 +1,7 @@
 Nome=Senac Nacões Unidas
 Endereco=Av. Eng. Eusébio Stevaux, 823 - Santo Amaro
-Saida=06/05/2018 09:00:00
-Volta=06/05/2018 20:00:00
+Saida=09:00:00
+Volta=20:00:00
 Entregadores=3
 Descarga=20
 Nome					|Endereço															|Abertura	|Fechamento	|

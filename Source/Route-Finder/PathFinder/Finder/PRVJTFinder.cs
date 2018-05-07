@@ -61,17 +61,20 @@ namespace CalcRoute
             {
                 var name = ReadConfig("Nome", sr);
                 var endereco = ReadConfig("Endereco", sr);
-                var saida = DateTime.Parse(ReadConfig("Saida", sr));
-                var volta = DateTime.Parse(ReadConfig("Volta", sr));
+                var saida = $"{DateTime.Now.Date.ToString("dd/MM/yyyy")} {ReadConfig("Saida", sr)}";
+                var volta = $"{DateTime.Now.Date.ToString("dd/MM/yyyy")} {ReadConfig("Volta", sr)}";
+
+                var dtsaida = DateTime.Parse(saida);
+                var dtvolta = DateTime.Parse(volta);
                 var entregadores = Convert.ToInt32(ReadConfig("Entregadores", sr));
                 var descarga = Convert.ToInt32(ReadConfig("Descarga", sr));
 
                 config.Settings = settings ?? new GASettings();
                 config.Settings.NumberOfTrucks = entregadores;
-                config.Map = new Roteiro(routeService, name, endereco, saida, volta);
-                config.Map.DataSaida = saida;
+                config.Map = new Roteiro(routeService, name, endereco, dtsaida, dtvolta);
+                config.Map.DataSaida = dtsaida;
 
-                config.DtLimite = volta;
+                config.DtLimite = dtvolta;
                 //Linha de titulo
                 sr.ReadLine();
 
