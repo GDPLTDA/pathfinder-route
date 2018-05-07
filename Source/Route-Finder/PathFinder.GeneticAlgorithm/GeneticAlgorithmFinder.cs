@@ -105,7 +105,11 @@ namespace CalcRoute.GeneticAlgorithm
         {
             await CalcGenomeRoutesAsync();
             Populations.ForEach(e => e.CalcFitness(Fitness));
-            Populations = Populations.OrderBy(o => o.Fitness).ToList();
+            Populations = Populations
+                            .OrderBy(o => o.Fitness).ToList();
+            /*.OrderBy(e =>
+                e.Trucks.Any(t => t.Routes.Any(r => r.Late)))
+                .ThenBy(o => o.Fitness).ToList();*/
         }
 
         public void Configure(IFitness fItness, IMutate mutate, ICrossover crossover, ISelection selection)

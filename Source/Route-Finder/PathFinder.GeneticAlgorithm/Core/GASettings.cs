@@ -9,11 +9,11 @@
         public double CrossoverRate { get; set; } = 0.7;
         public double MutationRate { get; set; } = 0.05;
 
-        public int PopulationSize { get; set; } = 1000;
-        public int GenerationLimit { get; set; } = 200;
+        public int PopulationSize { get; set; } = 200;
+        public int GenerationLimit { get; set; } = 1000;
         public int BestSolutionToPick { get; set; } = 2;
         public int NumberOfTrucks { get; set; } = 1;
-        public double ArriveBeforePenalty { get; set; } = 100;
-        public double ArriveAfterPenalty { get; set; } = 500;
+        public double ArriveBeforePenalty { get; set; } = 1;
+        public double ArriveAfterPenalty { get; set; } = 50000;
     }
 }
