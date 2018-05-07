@@ -35,22 +35,24 @@ namespace CalcRoute.DataGenerator
         {
             var ret = new List<Result>();
             var http = new HttpClient();
-            var settings = new GASettings();
             var routeService = new CachedGoogleMatrixService(http);
 
             foreach (MutateEnum mut in Enum.GetValues(typeof(MutateEnum)))
             {
                 foreach (CrossoverEnum cro in Enum.GetValues(typeof(CrossoverEnum)))
                 {
-                    // Altera a configuração do GA
-                    settings.Mutation = mut;
-                    settings.Crossover = cro;
+                    var settings = new GASettings
+                    {
+                        // Altera a configuração do GA
+                        Mutation = mut,
+                        Crossover = cro
+                    };
 
                     for (int i = 0; i < 10; i++)
                     {
                         var file = Path.GetFileName(filename);
                         Console.WriteLine($"A:{file} I:{i} M:{mut} C:{cro}");
-                        var config = await PRVJTFinder.GetConfigByFile(filename, routeService);
+                        var config = await PRVJTFinder.GetConfigByFile(filename, routeService, settings);
                         // Carrega a configuração do roteiro
                         var finder = new PRVJTFinder(config, routeService);
                         // Executa a divisão de rotas
@@ -64,10 +66,10 @@ namespace CalcRoute.DataGenerator
                             ret.Add(new Result(
                                      result.TipoErro,
                                      filename,
-                                     -1,
+                                     result.ListEntregadores.Count(),
                                      mut,
                                      cro,
-                                    0
+                                    result.BestGenome.Fitness
                                  ));
                             continue;
                         }
