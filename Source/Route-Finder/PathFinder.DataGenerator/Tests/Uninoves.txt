@@ -1,7 +1,7 @@
 Nome=Uninove Vergueiro
 Endereco=Rua Vergueiro, 235/249 - Liberdade, São Paulo - SP
-Saida=06/05/2018 08:00:00
-Volta=06/05/2018 23:00:00
+Saida=08:00:00
+Volta=23:00:00
 Entregadores=5
 Descarga=90
 Nome							|Endereço																		|Abertura	|Fechamento	|

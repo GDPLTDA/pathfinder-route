@@ -1,7 +1,7 @@
 Nome=Extra Morumbi
 Endereco=Av. das Nações Unidas, 16741 - Santo Amaro
-Saida=06/05/2018 06:00:00
-Volta=06/05/2018 22:00:00
+Saida=06:00:00
+Volta=22:00:00
 Entregadores=10
 Descarga=60
 Nome					|Endereço															|Abertura	|Fechamento	|

@@ -1,7 +1,7 @@
 Nome=Hotel Ibis São Paulo Paulista
 Endereco=Av. Paulista, 2355 - Bela Vista, São Paulo - SP
-Saida=06/05/2018 09:00:00
-Volta=06/05/2018 23:00:00
+Saida=09:00:00
+Volta=23:00:00
 Entregadores=1
 Descarga=60
 Nome								|Endereço															|Abertura	|Fechamento	|

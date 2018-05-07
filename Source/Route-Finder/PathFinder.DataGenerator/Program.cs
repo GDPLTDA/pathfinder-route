@@ -14,7 +14,7 @@ namespace CalcRoute.DataGenerator
     {
         private static void Main()
         {
-            var arquivoDados = new FileStream("resultados.csv", FileMode.Create, FileAccess.Write, FileShare.None, 4096, FileOptions.WriteThrough);
+            var arquivoDados = new FileStream("resultados.csv", FileMode.Create, FileAccess.Write, FileShare.Read, 4096, FileOptions.WriteThrough);
 
             using (var writer = new StreamWriter(arquivoDados))
             {
@@ -25,8 +25,10 @@ namespace CalcRoute.DataGenerator
 
                 foreach (var file in files)
                 {
-                    var itens = RunTest(file).Result.ToDelimitedString(string.Empty);
-                    writer.WriteLine(itens);
+                    var result = RunTest(file).Result;
+                    var csv = result.ToDelimitedString(";");
+
+                    writer.WriteLine(csv);
                 }
             }
         }
@@ -48,7 +50,7 @@ namespace CalcRoute.DataGenerator
                         Crossover = cro
                     };
 
-                    for (int i = 0; i < 10; i++)
+                    for (int i = 0; i < 1; i++)
                     {
                         var file = Path.GetFileName(filename);
                         Console.WriteLine($"A:{file} I:{i} M:{mut} C:{cro}");
