@@ -9,6 +9,10 @@ namespace RouteGA.Models
 {
     public class RoteiroViewModel
     {
+        public string Name { get; set; }
+        public int Generations { get; set; }
+        public int Population { get; set; }
+        public MutateEnum Mutation { get; set; }
         public LocalViewModel Origem { get; set; }
 
         public IList<LocalViewModel> Destinos { get; set; }
@@ -31,10 +35,13 @@ namespace RouteGA.Models
             };
 
             config.Map.DataSaida = dataSaida;
-
+            
             config.DtLimite = dataLimite;
             config.Settings.NumberOfTrucks = NumeroEntregadores == 0 ? int.MaxValue : NumeroEntregadores;
-
+            config.Settings.Mutation = Mutation;
+            config.Settings.GenerationLimit = Generations;
+            config.Settings.PopulationSize = Population;
+            
             foreach (var item in Destinos)
             {
                 var map = new Local(item.Endereco, item.Endereco)

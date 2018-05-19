@@ -45,21 +45,20 @@ namespace CalcRoute.Routes
             return point;
         }
 
-        public virtual void SaveCache()
+        public override void SaveCache(string name = "Cache")
         {
             if (!UseCache)
                 return;
 
-
             var jsonRoutes = JsonConvert.SerializeObject(routes);
             var jsonLocals = JsonConvert.SerializeObject(locals);
 
-            File.WriteAllText($"RouteCache.txt", jsonRoutes);
-            File.WriteAllText($"PointCache.txt", jsonLocals);
+            File.WriteAllText($"Cache\\{name}_Route.txt", jsonRoutes);
+            File.WriteAllText($"Cache\\{name}_Point.txt", jsonLocals);
 
         }
 
-        public virtual void LoadCache()
+        public override void LoadCache()
         {
             if (!UseCache)
                 return;
@@ -79,7 +78,6 @@ namespace CalcRoute.Routes
             }
 
         }
-
-
+        public override string GetRouteCache() => JsonConvert.SerializeObject(routes);
     }
 }

@@ -47,6 +47,9 @@ namespace RouteGA.Controllers
 
             var viewmodel = result.ListEntregadores.Select(o => new EntregadorViewModel(o)).ToList();
 
+            if(!string.IsNullOrEmpty(roteiro.Name))
+                this.routeService.SaveCache(roteiro.Name);
+
             return Ok(viewmodel);
         }
     }

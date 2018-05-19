@@ -4,8 +4,15 @@ const baseUrl = "https://routega.azurewebsites.net"
 const baseDevUrl = "http://localhost:64880"
 const apiUrl = `${baseDevUrl}/api/route`
 
+const Geracao = 100;
+const Populacao = 10;
+const Mutacao = 0;
+//Swap = 0
+//Inversion = 1
+//Insertion = 2
+//Displacement = 3
 
-const Search = async (entragador, listLocations) => {
+const Search = async (name, entragador, listLocations) => {
         const items = listLocations
         const store = items.find( s => s.isStore)
         const listDestinos = items.filter(s => !s.isStore)
@@ -20,6 +27,10 @@ const Search = async (entragador, listLocations) => {
         )
 
         const json = {
+            Name: name,
+            Generations: Geracao,
+            Population: Populacao,
+            Mutation: Mutacao,
             NumeroEntregadores: entragador,
             DhSaida : store.from + ":00",
             DhLimite : store.to + ":00",
@@ -58,6 +69,9 @@ const Search = async (entragador, listLocations) => {
         )
 
         const json = {
+            Generations: Geracao,
+            Population: Populacao,
+            Mutation: Mutacao,
             NumeroEntregadores: 1,
             DhSaida : store.from + ":00",
             DhLimite : store.to + ":00",

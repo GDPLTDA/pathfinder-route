@@ -99,8 +99,8 @@ export default class App extends React.Component {
         this.props.history.push('/result')
 
         try {
-            toastr.info("Enviado...");
-            const response = await Search(this.state.entregador, this.state.listLocations);
+            toastr.info("Enviado..." + this.state.selectedOptionTest.label);
+            const response = await Search(this.state.selectedOptionTest.label, this.state.entregador, this.state.listLocations);
             
             this.setState({ 
                 loading: false,
@@ -109,7 +109,7 @@ export default class App extends React.Component {
         }
         catch (e) {
             this.setState({ loading: false, hasResults:false })
-            toastr.error("Error");
+            toastr.error("Error" + e);
         }
     }
     timeout = (ms)=> {

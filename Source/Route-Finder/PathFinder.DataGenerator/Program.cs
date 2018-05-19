@@ -19,7 +19,7 @@ namespace CalcRoute.DataGenerator
             using (var writer = new StreamWriter(arquivoDados))
             {
                 writer.WriteLine("Msg;Indice;Arquivo;Entregadores;Mutation;Cross;Fitness");
-
+                writer.Flush();
                 var files = Directory
                  .GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Tests\"));
 
@@ -29,6 +29,7 @@ namespace CalcRoute.DataGenerator
                     var csv = result.ToDelimitedString(";");
 
                     writer.WriteLine(csv);
+                    writer.Flush();
                 }
             }
         }
@@ -50,7 +51,7 @@ namespace CalcRoute.DataGenerator
                         Crossover = cro
                     };
 
-                    for (int i = 0; i < 1; i++)
+                    for (int i = 0; i < 10; i++)
                     {
                         var file = Path.GetFileName(filename);
                         Console.WriteLine($"A:{file} I:{i} M:{mut} C:{cro}");

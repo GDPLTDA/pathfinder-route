@@ -1,7 +1,7 @@
 Nome=Extra Morumbi
 Endereco=Av. das Nações Unidas, 16741 - Santo Amaro
 Saida=06:00:00
-Volta=22:00:00
+Volta=23:00:00
 Entregadores=3
 Descarga=60
 Nome					|Endereço															|Abertura	|Fechamento	|
