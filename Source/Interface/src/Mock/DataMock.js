@@ -9,8 +9,8 @@ export default [
             lat:0,
             lng:0,
             from: '09:00', 
-            to: '23:00',
-            wait: 40
+            to: '19:00',
+            wait: 0
         },
         { 
             address: 'R. Augusta, 1856 - Cerqueira César, São Paulo - SP',
@@ -19,7 +19,7 @@ export default [
             lng:0,
             from: '08:00', 
             to: '23:00',
-            wait: 40
+            wait: 30
         },
         {
             address: 'Av. Brigadeiro Luís Antônio, 3477/3481 - Jardim Paulista, São Paulo - SP',
@@ -28,7 +28,7 @@ export default [
             lng:0,
             from: '09:00', 
             to: '19:00',
-            wait: 40 
+            wait: 90 
         },
         { 
             address: 'Av. José Maria Whitaker, 81 - Jardim Paulista, São Paulo - SP',
@@ -37,7 +37,7 @@ export default [
             lng:0,
             from: '09:00', 
             to: '21:00',
-            wait: 40 
+            wait: 45 
         },
         { 
             address: 'Av. das Nações Unidas, 12555 - Pinheiros, São Paulo - SP',
@@ -46,7 +46,7 @@ export default [
             lng:0,
             from: '06:00', 
             to: '21:00',
-            wait: 40 
+            wait: 95 
         },
         { 
             address: 'Av. Eliseu de Almeida, 2700 - Jardim Peri Peri, São Paulo - SP',
@@ -55,7 +55,7 @@ export default [
             lng:0,
             from: '09:00', 
             to: '18:00',
-            wait: 40 
+            wait: 20 
         },
         { 
             address: 'Av. Vital Brasil, 1256 - Butantã, São Paulo - SP',
@@ -63,7 +63,7 @@ export default [
             lat:0,
             lng:0,
             from: '09:00', 
-            to: '18:00',
+            to: '16:00',
             wait: 40 
         },
         { 
@@ -73,7 +73,7 @@ export default [
             lng:0,
             from: '09:00', 
             to: '23:00',
-            wait: 40 
+            wait: 60 
         },
         { 
             address: 'Av. Roque Petroni Júnior, 1089 - Chácara Santo Antônio (Zona Sul), São Paulo - SP',
@@ -81,8 +81,8 @@ export default [
             lat:0,
             lng:0,
             from: '09:00', 
-            to: '23:00',
-            wait: 40 
+            to: '21:00',
+            wait: 80 
         }
 ]},
 // 2 Entregadores
@@ -96,7 +96,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '20:00',
-        wait: 20
+        wait: 0
     },
     { 
         address: 'R. Dr. Antônio Bento, 393 - Santo Amaro',
@@ -105,7 +105,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '12:00',
-        wait: 20
+        wait: 10
     },
     { 
         address: 'Rua Salvador Branco de Andrade, 182 - Jardim Sao Miguel',
@@ -114,7 +114,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '18:00',
-        wait: 20
+        wait: 60
     },
     { 
         address: 'Av. do Café, 298 - Jabaquara',
@@ -123,7 +123,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '11:00',
-        wait: 20
+        wait: 40
     },
     { 
         address: 'R. Dante Batiston, 248 - Centro',
@@ -132,7 +132,7 @@ export default [
         lng:0,
         from: '12:00', 
         to: '15:00',
-        wait: 20
+        wait: 50
     },
     { 
         address: 'R. Voluntários da Pátria, 3167 - Santana',
@@ -150,7 +150,7 @@ export default [
         lng:0,
         from: '15:00', 
         to: '19:00',
-        wait: 20
+        wait: 30
     },
     { 
         address: 'Rua do Orfanato, 316 - Vila Prudente',
@@ -183,7 +183,7 @@ export default [
         lng:0,
         from: '06:00', 
         to: '23:00',
-        wait: 60
+        wait: 0
     },
     { 
         address: 'R. João Batista de Oliveira, 47 - Centro, Taboão da Serra - SP',
@@ -192,7 +192,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 60
+        wait: 320
     },
     { 
         address: 'Av. Guido Caloi, 25 - Jardim São Luís, São Paulo - SP',
@@ -201,7 +201,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 60
+        wait: 200
     },
     { 
         address: 'Avenida Washignton Luís, 5859 - Jd. Aeroporto, São Paulo - SP',
@@ -210,7 +210,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 60
+        wait: 360
     },
     { 
         address: 'R. João Cachoeira, 899 - Itaim Bibi, São Paulo - SP',
@@ -219,7 +219,7 @@ export default [
         lng:0,
         from: '06:00', 
         to: '22:00',
-        wait: 60
+        wait: 150
     },
     { 
         address: 'Av. Dr. Ricardo Jafet, 1501 - Vila Mariana, São Paulo - SP',
@@ -228,7 +228,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 60
+        wait: 300
     },
     { 
         address: 'R. Nossa Sra. das Mercês, 29 - Vila das Merces, São Paulo - SP',
@@ -237,7 +237,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 60
+        wait: 140
     },
     { 
         address: 'Av. Brigadeiro Luís Antônio, 2013 - Bela Vista, São Paulo - SP',
@@ -246,7 +246,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 60
+        wait: 200
     },
     { 
         address: 'Rua Três Rios, 282 - Bom Retiro, São Paulo - SP',
@@ -255,7 +255,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 60
+        wait: 500
     },
     { 
         address: 'Av. Guarapiranga, 752 - Socorro, São Paulo - SP',
@@ -264,7 +264,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 60
+        wait: 180
     },
     { 
         address: 'Estrada Velha do M’Boi Mirim, 4374 - Jardim Angela, São Paulo - SP',
@@ -273,7 +273,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 60
+        wait: 160
     },
     { 
         address: 'Av. Sen. Teotônio Vilela, 2926 - Jardim Iporanga, São Paulo - SP',
@@ -282,7 +282,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 60
+        wait: 120
     }
 ]},
 
@@ -297,79 +297,88 @@ export default [
             lng:0,
             from: '08:00', 
             to: '23:00',
+            wait: 0
+        },
+        { 
+            address: 'Americana - SP, Brasil',
+            isStore: false, 
+            lat:0,
+            lng:0,
+            from: '12:00', 
+            to: '18:00',
+            wait: 120
+        },
+        { 
+            address: 'Jundiaí, SP, Brasil',
+            isStore: false, 
+            lat:0,
+            lng:0,
+            from: '15:00', 
+            to: '22:00',
             wait: 90
         },
         { 
-            address: 'R. Dante Batiston, 87 - Centro, Osasco - SP',
+            address: 'Praia Grande, SP, Brasil',
+            isStore: false, 
+            lat:0,
+            lng:0,
+            from: '08:00', 
+            to: '14:00',
+            wait: 90
+        },
+        { 
+            address: 'Campinas, SP, Brasil',
+            isStore: false, 
+            lat:0,
+            lng:0,
+            from: '11:00', 
+            to: '16:00',
+            wait: 120
+        },
+        { 
+            address: 'Olímpia, SP, Brasil',
+            isStore: false, 
+            lat:0,
+            lng:0,
+            from: '08:00', 
+            to: '14:00',
+            wait: 90
+        },
+        { 
+            address: 'São Roque, SP, Brasil',
+            isStore: false, 
+            lat:0,
+            lng:0,
+            from: '07:00', 
+            to: '23:00',
+            wait: 120
+        },
+        { 
+            address: 'Mogi das Cruzes - SP, Brasil',
+            isStore: false, 
+            lat:0,
+            lng:0,
+            from: '14:00', 
+            to: '21:00',
+            wait: 90
+        },
+        { 
+            address: 'Campos do Jordão, SP, Brasil',
+            isStore: false, 
+            lat:0,
+            lng:0,
+            from: '15:00', 
+            to: '21:00',
+            wait: 50
+        },
+        { 
+            address: 'Bertioga, SP, Brasil',
             isStore: false, 
             lat:0,
             lng:0,
             from: '08:00', 
             to: '23:00',
-            wait: 90
-        },
-        { 
-            address: 'R. Amador Bueno - Santo Amaro, São Paulo - SP',
-            isStore: false, 
-            lat:0,
-            lng:0,
-            from: '08:00', 
-            to: '23:00',
-            wait: 90
-        },
-        { 
-            address: 'Av. Dom Jaime de Barros Câmara, 90 - Planalto, São Bernardo do Campo - SP',
-            isStore: false, 
-            lat:0,
-            lng:0,
-            from: '08:00', 
-            to: '23:00',
-            wait: 90
-        },
-        { 
-            address: 'Av. Professor Luiz Ignácio Anhaia Mello, 1363 - Vila Prudente, São Paulo - SP',
-            isStore: false, 
-            lat:0,
-            lng:0,
-            from: '08:00', 
-            to: '23:00',
-            wait: 90
-        },
-        { 
-            address: 'R. Itauna, 74 - Vila Maria Baixa, São Paulo - SP',
-            isStore: false, 
-            lat:0,
-            lng:0,
-            from: '08:00', 
-            to: '23:00',
-            wait: 90
-        },
-        { 
-            address: 'Av. Dr. Adolpho Pinto, 109 - Barra Funda, São Paulo - SP',
-            isStore: false, 
-            lat:0,
-            lng:0,
-            from: '08:00', 
-            to: '23:00',
-            wait: 90
-        },
-        { 
-            address: 'R. Álvares Machado, 48 - Vila Bocaina, Mauá - SP',
-            isStore: false, 
-            lat:0,
-            lng:0,
-            from: '08:00', 
-            to: '23:00',
-            wait: 90
-        },
-        { 
-            address: 'R. Princesa Isabel - Vila Guiomar, Santo André - SP',
-            isStore: false, 
-            lat:0,
-            lng:0,
-            from: '08:00', 
-            to: '23:00',
-            wait: 90
+            wait: 150
         }
 ]},
 
