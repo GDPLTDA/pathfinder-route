@@ -28,8 +28,8 @@ namespace CalcRoute.GeneticAlgorithm
                             continue;
 
                         var date = finish.AddMinutes(route.Minutos);
-                        var from = CreateDateTime(date, route.Destino.Period.From);
-                        var to = CreateDateTime(date, route.Destino.Period.To);
+                        var from = CreateDateTime(start, route.Destino.Period.From);
+                        var to = CreateDateTime(start, route.Destino.Period.To);
 
                         route.Descarga = route.Destino.Period.Descarga * 60;
 

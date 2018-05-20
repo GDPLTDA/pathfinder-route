@@ -96,6 +96,7 @@ namespace CalcRoute.GeneticAlgorithm
                 await CalcFitness();
 
                 Best = Populations.First();
+
             }
 
             return Best;

@@ -3,6 +3,7 @@ using CalcRoute.GeneticAlgorithm;
 using CalcRoute.Routes;
 using Microsoft.AspNetCore.Mvc;
 using RouteGA.Models;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,11 +12,24 @@ namespace RouteGA.Controllers
     [Route("api/[controller]")]
     public class RouteController : Controller
     {
-        private readonly IRouteService routeService;
+        private readonly ICachedRouteService routeService;
 
-        public RouteController(IRouteService routeService)
+        public RouteController(ICachedRouteService routeService)
         {
             this.routeService = routeService;
+        }
+
+        void EnsureLoadCaches()
+        {
+            if (routeService.HasCache)
+                return;
+
+            Directory
+                .GetFiles("Cache")
+                .Select(Path.GetFileNameWithoutExtension)
+                .Select(f => f.Split("_").First())
+                .Distinct()
+                .ForEach(routeService.LoadCache);
         }
 
         public async Task<IActionResult> Get(string name, string endereco, string abertura, string fechamento, int espera)
@@ -36,6 +50,8 @@ namespace RouteGA.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]RoteiroViewModel roteiro)
         {
+            EnsureLoadCaches();
+
             var settings = new GASettings();
             var config = await roteiro.ToPRVJTConfig(routeService, settings);
             var finder = new PRVJTFinder(config, routeService);
@@ -47,7 +63,7 @@ namespace RouteGA.Controllers
 
             var viewmodel = result.ListEntregadores.Select(o => new EntregadorViewModel(o)).ToList();
 
-            if(!string.IsNullOrEmpty(roteiro.Name))
+            if (!string.IsNullOrEmpty(roteiro.Name))
                 this.routeService.SaveCache(roteiro.Name);
 
             return Ok(viewmodel);

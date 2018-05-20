@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CalcRoute.Routes;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CalcRoute.Routes;
 using System.Net.Http;
 
 namespace RouteGA
@@ -21,7 +21,7 @@ namespace RouteGA
         {
 
             services.AddSingleton<HttpClient>();
-            services.AddSingleton<IRouteService, CachedGoogleMatrixService>();
+            services.AddSingleton<ICachedRouteService, CachedGoogleMatrixService>();
             services.AddCors();
             services.AddMvc();
         }

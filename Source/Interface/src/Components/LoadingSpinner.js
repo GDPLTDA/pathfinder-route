@@ -5,4 +5,4 @@ const LoadingSpinner = () =>
             <i className="fa fa-spinner fa-spin" /> Carregando...
         </div>
 
-export default LoadingSpinner;
+export default LoadingSpinner

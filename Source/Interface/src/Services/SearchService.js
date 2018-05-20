@@ -4,8 +4,8 @@ const baseUrl = "https://routega.azurewebsites.net"
 const baseDevUrl = "http://localhost:64880"
 const apiUrl = `${baseDevUrl}/api/route`
 
-const Geracao = 100;
-const Populacao = 10;
+const Geracao = 1000;
+const Populacao = 100;
 const Mutacao = 0;
 //Swap = 0
 //Inversion = 1

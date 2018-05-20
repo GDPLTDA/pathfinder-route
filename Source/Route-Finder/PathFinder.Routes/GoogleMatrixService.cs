@@ -183,17 +183,5 @@ namespace CalcRoute.Routes
             return str.ToString();
         }
 
-        public virtual void SaveCache(string name)
-        {
-        }
-
-        public virtual void LoadCache()
-        {
-        }
-
-        public virtual string GetRouteCache()
-        {
-            return "";
-        }
     }
 }

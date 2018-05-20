@@ -8,11 +8,12 @@ using RouteMatrix = System.Collections.Generic.Dictionary<string, System.Collect
 
 namespace CalcRoute.Routes
 {
-    public class CachedGoogleMatrixService : GoogleMatrixService, IRouteService
+    public class CachedGoogleMatrixService : GoogleMatrixService, ICachedRouteService
     {
         private ConcurrentDictionary<string, RouteMatrix> routes;
         private ConcurrentDictionary<string, Local> locals;
         public bool UseCache { get; set; } = true;
+        public bool HasCache => !routes.IsEmpty;
 
         public CachedGoogleMatrixService(HttpClient httpClient) : base(httpClient)
         {
@@ -45,7 +46,7 @@ namespace CalcRoute.Routes
             return point;
         }
 
-        public override void SaveCache(string name = "Cache")
+        public void SaveCache(string name = "Cache")
         {
             if (!UseCache)
                 return;
@@ -58,19 +59,19 @@ namespace CalcRoute.Routes
 
         }
 
-        public override void LoadCache()
+        public void LoadCache(string name = "Cache")
         {
             if (!UseCache)
                 return;
 
-            var routeFile = $"RouteCache.txt";
+            var routeFile = $"Cache\\{name}_Route.txt";
             if (File.Exists(routeFile))
             {
                 var jsonRoutes = File.ReadAllText(routeFile);
                 routes = JsonConvert.DeserializeObject<ConcurrentDictionary<string, RouteMatrix>>(jsonRoutes);
             }
 
-            var localFile = $"PointCache.txt";
+            var localFile = $"Cache\\{name}_Point.txt";
             if (File.Exists(localFile))
             {
                 var jsonLocals = File.ReadAllText(localFile);
@@ -78,6 +79,6 @@ namespace CalcRoute.Routes
             }
 
         }
-        public override string GetRouteCache() => JsonConvert.SerializeObject(routes);
+        public string GetRouteCache() => JsonConvert.SerializeObject(routes);
     }
 }
