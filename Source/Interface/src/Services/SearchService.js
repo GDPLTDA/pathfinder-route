@@ -4,15 +4,8 @@ const baseUrl = "https://routega.azurewebsites.net"
 const baseDevUrl = "http://localhost:64880"
 const apiUrl = `${baseDevUrl}/api/route`
 
-const Geracao = 1000;
-const Populacao = 100;
-const Mutacao = 0;
-//Swap = 0
-//Inversion = 1
-//Insertion = 2
-//Displacement = 3
 
-const Search = async (name, entragador, listLocations) => {
+const Search = async (name, entragador, listLocations, config) => {
         const items = listLocations
         const store = items.find( s => s.isStore)
         const listDestinos = items.filter(s => !s.isStore)
@@ -26,11 +19,14 @@ const Search = async (name, entragador, listLocations) => {
             })
         )
 
+
         const json = {
             Name: name,
-            Generations: Geracao,
-            Population: Populacao,
-            Mutation: Mutacao,
+            Generations: config.generations,
+            Population: config.population,
+            Mutation: config.mutation,
+            Traffic : config.traffic,
+            UseCache: config.useCache,
             NumeroEntregadores: entragador,
             DhSaida : store.from + ":00",
             DhLimite : store.to + ":00",
@@ -54,7 +50,7 @@ const Search = async (name, entragador, listLocations) => {
           return response
     }
 
-    const Research = async (listLocations) => {
+    const Research = async (listLocations, config) => {
         const items = listLocations
         const store = items.find( s => s.isStore)
         const listDestinos = items.filter(s => !s.isStore)
@@ -69,9 +65,11 @@ const Search = async (name, entragador, listLocations) => {
         )
 
         const json = {
-            Generations: Geracao,
-            Population: Populacao,
-            Mutation: Mutacao,
+            Generations: config.generations,
+            Population: config.population,
+            Mutation: config.mutation,
+            Traffic : config.traffic,
+            UseCache: config.useCache,
             NumeroEntregadores: 1,
             DhSaida : store.from + ":00",
             DhLimite : store.to + ":00",

@@ -16,6 +16,8 @@ namespace CalcRoute.Routes
         protected readonly HttpClient httpClient;
         protected Dictionary<string, Dictionary<string, Rota>> routeMatrix;
 
+        public TrafficEnum Traffic { get; set; } = TrafficEnum.NO_TRAFFIC;
+
         public GoogleMatrixService(HttpClient httpClient)
         {
             this.httpClient = httpClient;
@@ -26,6 +28,7 @@ namespace CalcRoute.Routes
         {
             routeMatrix = new Dictionary<string, Dictionary<string, Rota>>();
             var bufferedLocals = locals.Buffer(5).ToArray();
+            var depot = locals.First();
 
             for (int b = 0; b < bufferedLocals.Length; b++)
                 for (int c = 0; c < bufferedLocals.Length; c++)
@@ -33,7 +36,7 @@ namespace CalcRoute.Routes
                     var bufferOrigin = bufferedLocals[b];
                     var bufferDest = bufferedLocals[c];
 
-                    var url = GetRequestMatrixUrl(bufferOrigin, bufferDest);
+                    var url = GetRequestMatrixUrl(bufferOrigin, bufferDest, depot);
                     dynamic data = JsonConvert.DeserializeObject(await httpClient.GetStringAsync(url));
 
                     if (data.status == "OVER_QUERY_LIMIT")
@@ -49,7 +52,10 @@ namespace CalcRoute.Routes
                         {
                             var col = cols[j];
                             double metros = col.distance.value;
-                            double segundos = col.duration.value;
+                            double segundos =
+                                Traffic == TrafficEnum.NO_TRAFFIC
+                                ? col.duration.value
+                                : col.duration_in_traffic.value;
 
                             var rotaBase = new Rota
                             {
@@ -77,6 +83,19 @@ namespace CalcRoute.Routes
                 }
         }
 
+        int GetDepartureTime(TimeSpan time)
+        {
+            var now = DateTime.UtcNow;
+            var date = new DateTime(now.Year, now.Month, now.Day, time.Hours, time.Minutes, time.Seconds, DateTimeKind.Utc);
+
+            // so posso calcular com transito baseado no futuro
+            if (date < now)
+                date = now;
+
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            int s = (int)(date - epoch).TotalSeconds;
+            return s + 60;
+        }
 
         public virtual Task<Rota> GetRouteAsync(Local origin, Local destination)
         {
@@ -138,12 +157,13 @@ namespace CalcRoute.Routes
                    => $"{Url}geocode/json?address={(address)}&sensor=false&key={Key}";
 
 
-        string GetRequestMatrixUrl(IEnumerable<Local> ori, IEnumerable<Local> des)
+        string GetRequestMatrixUrl(IEnumerable<Local> ori, IEnumerable<Local> des, Local depot)
            => $"{Url}distancematrix/json?" +
                $"origins=enc:{Encode(ori)}:&" +
                $"destinations=enc:{Encode(des)}:&" +
+               (Traffic == TrafficEnum.NO_TRAFFIC ? "" : $"traffic_model={Traffic.ToString().ToLower()}&") +
+               $"departure_time={GetDepartureTime(depot.Period.From)}&" +
                $"sensor=false&key={Key}";
-
 
 
         string ConvNumber(double num)

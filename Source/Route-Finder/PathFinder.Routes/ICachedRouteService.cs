@@ -9,6 +9,7 @@
         string GetRouteCache();
 
         bool HasCache { get; }
+        bool UseCache { get; set; }
 
     }
 }

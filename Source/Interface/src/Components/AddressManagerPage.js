@@ -25,6 +25,7 @@ const AddressManagerPage = (props) =>
             onSortEnd={props.onSortEnd}
             items={props.listLocations}
             location={props.location}
+            setConfig={props.setConfig}
             onClickButton={props.onClickButton}
             SelectedOption={props.SelectedOption}
             SelectTestChange={props.SelectTestChange}

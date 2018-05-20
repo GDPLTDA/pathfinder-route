@@ -28,7 +28,13 @@ export default class App extends React.Component {
             wait: 30,
             entregador: 1,
             hasResults: false,
-            listLocations: [] 
+            listLocations: [],
+
+                generations: 1000,
+                population: 100,
+                mutation:   0,
+                traffic :   0,
+                useCache:   true
         }
     }
 
@@ -36,6 +42,14 @@ export default class App extends React.Component {
     {
        this.setToCurrentLocation()
     }
+
+    getGaConfig = () => ({
+        generations: this.state.generations,
+        population: this.state.population,
+        mutation: this.state.mutation,
+        traffic: this.state.traffic,
+        useCache: this.state.useCache,
+    })
 
     setToCurrentLocation = () => 
         getGeoLocation()
@@ -91,8 +105,6 @@ export default class App extends React.Component {
     UpdateStoreStatus = (locations = []) =>
         locations.map((entry,index) => ({...entry, isStore: (index === 0)}))
 
-    
-
     search = async () => {
         this.setState({ loading: true, hasResults: true })
         window.scrollTo(0, 0)
@@ -100,7 +112,7 @@ export default class App extends React.Component {
 
         try {
             toastr.info("Enviado..." + this.state.selectedOptionTest.label);
-            const response = await Search(this.state.selectedOptionTest.label, this.state.entregador, this.state.listLocations);
+            const response = await Search(this.state.selectedOptionTest.label, this.state.entregador, this.state.listLocations, this.getGaConfig());
             
             this.setState({ 
                 loading: false,
@@ -129,6 +141,33 @@ export default class App extends React.Component {
             console.log(`Selected: ${index}`);
         }
       }
+
+    setConfig = (name) => (e) => 
+    {
+        switch (name) {
+            case 'useCache':
+                this.setState({useCache: e.target.checked})
+                break;
+        
+            case 'traffic':
+                this.setState({traffic: e && e.value})
+                break;
+
+            case 'mutation':
+                this.setState({mutation: e && e.value})
+                break;
+
+            case 'generations':
+                this.setState({generations: e.target.value})
+                break;
+
+            case 'population':
+                this.setState({population: e.target.value})
+                break;
+            default:
+                break;
+        }
+    }
 
     research = async (index, locations, time) => 
     {
@@ -160,7 +199,7 @@ export default class App extends React.Component {
             destinos[0].to = locations[0].saida.dhFinal;
             destinos[0].isStore = true;
             
-            const response = await Research(destinos);
+            const response = await Research(destinos, this.getGaConfig());
 
             if(response.length !== 0){
                 if(typeof response.mensagem !== 'undefined'){
@@ -227,6 +266,7 @@ export default class App extends React.Component {
                 onSortEnd={this.onSortEnd}
                 listLocations={state.listLocations}
                 location={{...state}}
+                setConfig={this.setConfig}
                 onClickButton={this.onClickButton}
                 search={this.search}
                 lat={state.lat}

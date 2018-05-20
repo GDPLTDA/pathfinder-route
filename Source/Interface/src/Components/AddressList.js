@@ -6,6 +6,16 @@ import 'react-select/dist/react-select.css'
 
 export default class AddressList extends React.Component
 {
+    constructor()
+    {
+        super()
+        this.state = {
+            showConfig:false,
+
+        }
+
+    }
+
     addLocation = () => {
         const locations = this.props.items
         const newLocation = {...this.props.location}
@@ -37,13 +47,15 @@ export default class AddressList extends React.Component
         this.props.onSortEnd(oldIndex, newIndex)
     };
 
+    showConfig = ({target}) =>  this.setState({showConfig:target.checked})
+
+
     render() {
         return (
             <div className="form-group search-bar">
                 <div className="row">
                     <div className="col-md-10">
                         Teste<Select
-                        name="form-field-name"
                         value={this.props.SelectedOption}
                         onChange={this.props.SelectTestChange}
                         options={[
@@ -56,8 +68,60 @@ export default class AddressList extends React.Component
                         ]}
                         />
                     </div>
+
                     <div className="col-md-2">
                         <button className="btn btn-success" onClick={this.addLocation}>Adicionar</button>
+                    </div>
+                </div>
+                <div className="row" >
+                    <div className="checkbox col-md-5">
+                        <label>
+                            <input type="checkbox" onChange={this.showConfig} /> Configuração avançada
+                        </label>
+                    </div>
+                </div>
+                <div className="row form-group" hidden={!this.state.showConfig}>
+                    <div className=" checkbox col-md-2">
+                       <label><input type="checkbox" onChange={this.props.setConfig('useCache')} checked={this.props.location.useCache}/>Usar cache</label>
+                    </div>
+                    <div className="col-md-3">
+                        <label>Trafico:</label>
+                        <Select
+                        onChange={this.props.setConfig('traffic')}
+                        value={this.props.location.traffic}
+                        options={[
+                        { value: 0, label: 'Sem Trafico' },
+                        { value: 1, label: 'Adivinhar' },
+                        { value: 2, label: 'Pessimista' },
+                        { value: 3, label: 'Otimista' },
+                        ]}
+                        />
+                    </div>
+                    <div className="col-md-3">
+                        <label>Mutação</label>
+                        <Select
+                        onChange={this.props.setConfig('mutation')}
+                        value={this.props.location.mutation}
+                        options={[
+                        { value: 0, label: 'Swap' },
+                        { value: 1, label: 'Inversion' },
+                        { value: 2, label: 'Insertion' },
+                        { value: 3, label: 'Displacement' },
+                        ]}
+                        />
+                    </div>
+                    <div className="col-md-2">
+                        <label>Gerações:</label>
+                        <input type="text" 
+                            className="form-control"
+                            value={this.props.location.generations}
+                             onChange={this.props.setConfig('generations')} />
+                    </div>
+                    <div className="col-md-2">
+                        <label>População tamanho:</label>
+                        <input type="text" className="form-control"
+                            value={this.props.location.population}
+                         onChange={this.props.setConfig('population')} />
                     </div>
                 </div>
                 <div className="row">
@@ -65,6 +129,7 @@ export default class AddressList extends React.Component
                         <SortableList items={this.props.items} onSortEnd={this.onSortEnd} onRemove={this.onRemoveLocation} helperClass="SortableHelper" useDragHandle={true} />
                     </div>  
                 </div>
+
             </div>
         )
     }
