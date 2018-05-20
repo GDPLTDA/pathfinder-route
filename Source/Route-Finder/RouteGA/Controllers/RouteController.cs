@@ -24,6 +24,9 @@ namespace RouteGA.Controllers
             if (routeService.HasCache)
                 return;
 
+            if (!Directory.Exists("Cache"))
+                return;
+
             Directory
                 .GetFiles("Cache")
                 .Select(Path.GetFileNameWithoutExtension)
@@ -67,8 +70,16 @@ namespace RouteGA.Controllers
 
             var viewmodel = result.ListEntregadores.Select(o => new EntregadorViewModel(o)).ToList();
 
-            if (!string.IsNullOrEmpty(roteiro.Name))
-                this.routeService.SaveCache(roteiro.Name);
+            try
+            {
+                if (!string.IsNullOrEmpty(roteiro.Name))
+                    this.routeService.SaveCache(roteiro.Name);
+
+            }
+            catch
+            {
+
+            }
 
             return Ok(viewmodel);
         }
