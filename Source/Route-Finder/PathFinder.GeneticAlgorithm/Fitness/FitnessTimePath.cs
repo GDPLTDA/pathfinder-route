@@ -15,6 +15,7 @@ namespace CalcRoute.GeneticAlgorithm
 
                 var totalEsperaDepois = 0D;
                 var totalEsperaAntes = 0D;
+                var today = genome.Map.DataSaida;
 
                 foreach (var truck in trucks)
                 {
@@ -28,15 +29,15 @@ namespace CalcRoute.GeneticAlgorithm
                             continue;
 
                         var date = finish.AddMinutes(route.Minutos);
-                        var from = CreateDateTime(start, route.Destino.Period.From);
-                        var to = CreateDateTime(start, route.Destino.Period.To);
+                        var from = CreateDateTime(today, route.Destino.Period.From);
+                        var to = CreateDateTime(today, route.Destino.Period.To);
 
                         route.Descarga = route.Destino.Period.Descarga * 60;
 
                         if (date > to)
                         {
-                            totalEsperaDepois += (date - to).TotalSeconds;
                             date = date.AddDays(1);
+                            totalEsperaDepois += (date - to).TotalSeconds;
                             date = new DateTime(date.Year, date.Month, date.Day, from.Hour, from.Minute, from.Second);
                             route.Late = true;
                         }
