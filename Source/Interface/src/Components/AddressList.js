@@ -85,12 +85,12 @@ export default class AddressList extends React.Component
                        <label><input type="checkbox" onChange={this.props.setConfig('useCache')} checked={this.props.location.useCache}/>Usar cache</label>
                     </div>
                     <div className="col-md-3">
-                        <label>Trafico:</label>
+                        <label>Tráfego:</label>
                         <Select
                         onChange={this.props.setConfig('traffic')}
                         value={this.props.location.traffic}
                         options={[
-                        { value: 0, label: 'Sem Trafico' },
+                        { value: 0, label: 'Sem tráfego' },
                         { value: 1, label: 'Adivinhar' },
                         { value: 2, label: 'Pessimista' },
                         { value: 3, label: 'Otimista' },
@@ -118,7 +118,7 @@ export default class AddressList extends React.Component
                              onChange={this.props.setConfig('generations')} />
                     </div>
                     <div className="col-md-2">
-                        <label>População tamanho:</label>
+                        <label>População:</label>
                         <input type="text" className="form-control"
                             value={this.props.location.population}
                          onChange={this.props.setConfig('population')} />
