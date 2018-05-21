@@ -296,7 +296,7 @@ export default [
             lat:0,
             lng:0,
             from: '08:00', 
-            to: '23:00',
+            to: '20:00',
             wait: 0
         },
         { 
