@@ -60,9 +60,9 @@ export default class AddressList extends React.Component
                         onChange={this.props.SelectTestChange}
                         options={[
                         { value: 0, label: 'Teste para 1 Entregador' },
-                        { value: 1, label: 'Teste para 2 Entregador' },
-                        { value: 2, label: 'Teste para 3 Entregador' },
-                        { value: 3, label: 'Teste para 4 Entregador' },
+                        { value: 1, label: 'Teste para 2 Entregadores' },
+                        { value: 2, label: 'Teste para 3 Entregadores' },
+                        { value: 3, label: 'Teste para 4 Entregadores' },
                         { value: 4, label: 'Teste não é possível' },
                         { value: 5, label: 'Teste não é possível com apenas 1' },
                         ]}
