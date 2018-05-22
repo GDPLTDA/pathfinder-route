@@ -16,7 +16,7 @@ namespace CalcRoute.Routes
         protected readonly HttpClient httpClient;
         protected Dictionary<string, Dictionary<string, Rota>> routeMatrix;
 
-        public TrafficEnum Traffic { get; set; } = TrafficEnum.NO_TRAFFIC;
+        public TrafficEnum Traffic { get; set; } = TrafficEnum.BEST_GUESS;
 
         public GoogleMatrixService(HttpClient httpClient)
         {
@@ -52,10 +52,7 @@ namespace CalcRoute.Routes
                         {
                             var col = cols[j];
                             double metros = col.distance.value;
-                            double segundos =
-                                Traffic == TrafficEnum.NO_TRAFFIC
-                                ? col.duration.value
-                                : col.duration_in_traffic.value;
+                            double segundos = col.duration_in_traffic.value;
 
                             var rotaBase = new Rota
                             {
@@ -161,7 +158,7 @@ namespace CalcRoute.Routes
            => $"{Url}distancematrix/json?" +
                $"origins=enc:{Encode(ori)}:&" +
                $"destinations=enc:{Encode(des)}:&" +
-               (Traffic == TrafficEnum.NO_TRAFFIC ? "" : $"traffic_model={Traffic.ToString().ToLower()}&") +
+               $"traffic_model={Traffic.ToString().ToLower()}&" +
                $"departure_time={GetDepartureTime(depot.Period.From)}&" +
                $"sensor=false&key={Key}";
 

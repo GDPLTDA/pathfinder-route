@@ -34,7 +34,8 @@ export default class App extends React.Component {
                 population: 100,
                 mutation:   0,
                 traffic :   0,
-                useCache:   true
+                useCache:   true,
+                showConfig: false, 
         }
     }
 
@@ -149,6 +150,10 @@ export default class App extends React.Component {
                 this.setState({useCache: e.target.checked})
                 break;
         
+            case 'showConfig':
+                this.setState({showConfig: e.target.checked})
+                break;
+
             case 'traffic':
                 this.setState({traffic: e && e.value})
                 break;

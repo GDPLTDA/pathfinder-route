@@ -6,15 +6,6 @@ import 'react-select/dist/react-select.css'
 
 export default class AddressList extends React.Component
 {
-    constructor()
-    {
-        super()
-        this.state = {
-            showConfig:false,
-
-        }
-
-    }
 
     addLocation = () => {
         const locations = this.props.items
@@ -47,9 +38,6 @@ export default class AddressList extends React.Component
         this.props.onSortEnd(oldIndex, newIndex)
     };
 
-    showConfig = ({target}) =>  this.setState({showConfig:target.checked})
-
-
     render() {
         return (
             <div className="form-group search-bar">
@@ -76,11 +64,11 @@ export default class AddressList extends React.Component
                 <div className="row" >
                     <div className="checkbox col-md-5">
                         <label>
-                            <input type="checkbox" onChange={this.showConfig} /> Configuração avançada
+                            <input type="checkbox" onChange={this.props.setConfig('showConfig')} checked={this.props.location.showConfig} /> Configuração avançada
                         </label>
                     </div>
                 </div>
-                <div className="row form-group" hidden={!this.state.showConfig}>
+                <div className="row form-group" hidden={!this.props.location.showConfig}>
                     <div className=" checkbox col-md-2">
                        <label><input type="checkbox" onChange={this.props.setConfig('useCache')} checked={this.props.location.useCache}/>Usar cache</label>
                     </div>
@@ -90,10 +78,9 @@ export default class AddressList extends React.Component
                         onChange={this.props.setConfig('traffic')}
                         value={this.props.location.traffic}
                         options={[
-                        { value: 0, label: 'Sem tráfego' },
-                        { value: 1, label: 'Adivinhar' },
-                        { value: 2, label: 'Pessimista' },
-                        { value: 3, label: 'Otimista' },
+                        { value: 0, label: 'Média' },
+                        { value: 1, label: 'Pessimista' },
+                        { value: 2, label: 'Otimista' },
                         ]}
                         />
                     </div>
