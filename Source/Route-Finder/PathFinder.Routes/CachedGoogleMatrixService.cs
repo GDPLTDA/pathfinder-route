@@ -64,20 +64,27 @@ namespace CalcRoute.Routes
             if (!UseCache)
                 return;
 
-            var routeFile = $"Cache\\{name}_Route.txt";
-            if (File.Exists(routeFile))
+            try
             {
-                var jsonRoutes = File.ReadAllText(routeFile);
-                routes = JsonConvert.DeserializeObject<ConcurrentDictionary<string, RouteMatrix>>(jsonRoutes);
-            }
+                var routeFile = $"Cache\\{name}_Route.txt";
+                if (File.Exists(routeFile))
+                {
+                    var jsonRoutes = File.ReadAllText(routeFile);
+                    routes = JsonConvert.DeserializeObject<ConcurrentDictionary<string, RouteMatrix>>(jsonRoutes);
+                }
 
-            var localFile = $"Cache\\{name}_Point.txt";
-            if (File.Exists(localFile))
+                var localFile = $"Cache\\{name}_Point.txt";
+                if (File.Exists(localFile))
+                {
+                    var jsonLocals = File.ReadAllText(localFile);
+                    locals = JsonConvert.DeserializeObject<ConcurrentDictionary<string, Local>>(jsonLocals);
+                }
+            }
+            catch (System.Exception)
             {
-                var jsonLocals = File.ReadAllText(localFile);
-                locals = JsonConvert.DeserializeObject<ConcurrentDictionary<string, Local>>(jsonLocals);
-            }
 
+                throw;
+            }
         }
         public string GetRouteCache() => JsonConvert.SerializeObject(routes);
     }
