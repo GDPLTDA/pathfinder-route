@@ -525,8 +525,8 @@ export default [
         lat:0,
         lng:0,
         from: '06:00', 
-        to: '19:20',
-        wait: 30
+        to: '18:00',
+        wait: 0
     },
     {
         address: 'Av. das Nações Unidas, 22540',
