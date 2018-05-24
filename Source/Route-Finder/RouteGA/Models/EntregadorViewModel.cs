@@ -38,7 +38,7 @@ namespace RouteGA.Models
             Id = entregador.Id;
             Rotas = rotas;
             TotalDistancia = entregador.Routes.Sum(r => r.Km);
-            TotalTempo = (entregador.Routes.First().DhSaida - entregador.DepotBack.DhChegada).ToString();
+            TotalTempo = (entregador.DepotBack.DhChegada - entregador.Routes.First().DhSaida ).ToString();
         }
 
         string ConvMinutos(double segundos)
