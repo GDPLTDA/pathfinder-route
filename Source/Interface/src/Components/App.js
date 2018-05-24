@@ -241,7 +241,7 @@ export default class App extends React.Component {
         const state = this.state;
         let { results, loading } = state;
         const { selectedOptionTest } = state;
-
+        
         if(results.length !== 0){
             if(typeof results.mensagem !== 'undefined'){
                 console.log(results.mensagem)

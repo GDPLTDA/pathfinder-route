@@ -9,6 +9,8 @@ namespace RouteGA.Models
     {
         public int Id { get; set; }
         public string Mensagem { get; set; }
+        public double TotalDistancia { get; set; }
+        public string TotalTempo { get; set; }
         public IEnumerable<RotaViewModel> Rotas { get; private set; }
         public static EntregadorViewModel[] Empty { get => new[] { new EntregadorViewModel() }; }
 
@@ -35,6 +37,8 @@ namespace RouteGA.Models
 
             Id = entregador.Id;
             Rotas = rotas;
+            TotalDistancia = entregador.Routes.Sum(r => r.Km);
+            TotalTempo = (entregador.Routes.First().DhSaida - entregador.DepotBack.DhChegada).ToString();
         }
 
         string ConvMinutos(double segundos)

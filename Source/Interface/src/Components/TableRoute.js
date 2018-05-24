@@ -73,44 +73,64 @@ export default class TableRoute extends React.Component {
       const reloading = this.props.reloading
 
       return this.props.listEntregador.map((item, index) =>(
-        <div className="div-entregador" key={index}>
+        <div className="div-entregador panel" key={index}>
           { reloading[index] && <LoadingSpinner  />  }
           { !reloading[index] &&
-          <div>
+          <div className="" >
             <ReactTable
-                data={item.rotas}
-                columns={[
-                    {
-                      Header: "Entregador " + (index + 1),
-                      columns: columns
-                    }]}
-                defaultPageSize={item.rotas.length}
-                showPagination={false}
-                className="-striped -highlight"
-                resizable={true}
-                sortable={false}
+              data={item.rotas}
+              columns={[
+                {
+                  Header: "Entregador " + (index + 1),
+                  columns: columns
+                }]}
+              defaultPageSize={item.rotas.length}
+              showPagination={false}
+              className="-striped -highlight"
+              resizable={true}
+              sortable={false}
             />
-          <div className="row">
-            <div className="col-sm-4">
-              Saída <TimePicker
-                      showSecond={false}
-                      className="form-control"
-                      defaultValue={selectTimes[index]}
-                      onChange={(value) =>this.onChange(index, value)}
-                      format='HH:mm'/>
+
+
+            <div className='row'>
+              <div className='col-sm-4'>
+                <h6>
+                  <span>Distancia total: </span>
+                  <span>{item.totalDistancia}Km</span>
+                </h6>
+              </div>
+              <div className='col-sm-4'>
+                <h6>
+                  <span>Tempo total: </span>
+                  <span>{item.totalTempo}</span>
+                </h6>
+              </div>
             </div>
-            <div className="col-sm-8">
-              <ResearchRouteButton 
+
+        
+            <div className="row">
+              <div className="col-sm-4">
+                Saída <TimePicker
+                  showSecond={false}
+                  className="form-control"
+                  defaultValue={selectTimes[index]}
+                  onChange={(value) => this.onChange(index, value)}
+                  format='HH:mm' />
+              </div>
+              <div className="col-sm-8">
+                <ResearchRouteButton
                   Research={this.props.research}
                   Rotas={item.rotas}
-                  Time={() => {return times[index] == null ? moment().format(format) : times[index]}}
+                  Time={() => { return times[index] == null ? moment().format(format) : times[index] }}
                   Index={index}
-                  Label="Proxima Rota"/>
-              <MensagemErro mensagem = {this.props.listEntregador[index].mensagem} />
+                  Label="Proxima Rota" />
+                <MensagemErro mensagem={this.props.listEntregador[index].mensagem} />
+              </div>
             </div>
-          </div>
+            
+          
           </div>}
-        </div>
+      </div>
     ));
   }
 }
