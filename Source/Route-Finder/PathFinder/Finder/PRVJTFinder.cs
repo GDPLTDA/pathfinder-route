@@ -47,7 +47,10 @@ namespace CalcRoute
 
                 var route = await GaFinder.FindPathAsync(map);
                 result.ListEntregadores = route.Trucks.Where(e => e.Locals.Any()).ToList();
-                result.TipoErro = (route.Trucks.SelectMany(e => e.Routes.Concat(EnumerableEx.Return(e.DepotBack))).Any(l => l.Late)) ? TipoErro.EstourouTempo : TipoErro.Concluido;
+
+
+                result.TipoErro = (route.Trucks.Where(t => t.DepotBack != null)
+                    .SelectMany(e => e.Routes.Concat(EnumerableEx.Return(e.DepotBack))).Any(l => l.Late)) ? TipoErro.EstourouTempo : TipoErro.Concluido;
                 result.BestGenome = route;
             }
 
