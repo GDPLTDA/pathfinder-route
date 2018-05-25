@@ -37,7 +37,7 @@ namespace CalcRoute.Routes
 
         public async override Task<Local> GetPointAsync(Local local)
         {
-            if (locals.TryGetValue(local.Endereco, out var _local))
+            if (UseCache && locals.TryGetValue(local.Endereco, out var _local))
                 return _local;
 
             var point = await base.GetPointAsync(local);
