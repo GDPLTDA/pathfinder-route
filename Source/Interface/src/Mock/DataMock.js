@@ -192,7 +192,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 320
+        wait: 220
     },
     { 
         address: 'Av. Guido Caloi, 25 - Jardim São Luís, São Paulo - SP',
@@ -201,7 +201,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 200
+        wait: 140
     },
     { 
         address: 'Avenida Washignton Luís, 5859 - Jd. Aeroporto, São Paulo - SP',
@@ -210,7 +210,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 360
+        wait: 120
     },
     { 
         address: 'R. João Cachoeira, 899 - Itaim Bibi, São Paulo - SP',
@@ -219,7 +219,7 @@ export default [
         lng:0,
         from: '06:00', 
         to: '22:00',
-        wait: 150
+        wait: 210
     },
     { 
         address: 'Av. Dr. Ricardo Jafet, 1501 - Vila Mariana, São Paulo - SP',
@@ -246,7 +246,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 200
+        wait: 300
     },
     { 
         address: 'Rua Três Rios, 282 - Bom Retiro, São Paulo - SP',
@@ -255,7 +255,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 500
+        wait: 350
     },
     { 
         address: 'Av. Guarapiranga, 752 - Socorro, São Paulo - SP',
@@ -273,7 +273,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 160
+        wait: 110
     },
     { 
         address: 'Av. Sen. Teotônio Vilela, 2926 - Jardim Iporanga, São Paulo - SP',
@@ -282,7 +282,7 @@ export default [
         lng:0,
         from: '09:00', 
         to: '22:00',
-        wait: 120
+        wait: 70
     }
 ]},
 

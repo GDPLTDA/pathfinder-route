@@ -90,10 +90,10 @@ export default class AddressList extends React.Component
                         onChange={this.props.setConfig('mutation')}
                         value={this.props.location.mutation}
                         options={[
-                        { value: 0, label: 'Swap' },
-                        { value: 1, label: 'Inversion' },
-                        { value: 2, label: 'Insertion' },
                         { value: 3, label: 'Displacement' },
+                        { value: 2, label: 'Insertion' },
+                        { value: 1, label: 'Inversion' },
+                        { value: 0, label: 'Swap' }
                         ]}
                         />
                     </div>
