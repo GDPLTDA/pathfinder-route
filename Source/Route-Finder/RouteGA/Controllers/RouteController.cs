@@ -53,12 +53,13 @@ namespace RouteGA.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]RoteiroViewModel roteiro)
         {
-            EnsureLoadCaches();
 
+            EnsureLoadCaches();
             var settings = new GASettings();
 
             routeService.UseCache = roteiro.UseCache;
             routeService.Traffic = roteiro.Traffic;
+
 
             var config = await roteiro.ToPRVJTConfig(routeService, settings);
             var finder = new PRVJTFinder(config, routeService);
